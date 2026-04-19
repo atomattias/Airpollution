@@ -2,12 +2,32 @@
 
 This workspace contains the draft paper (`Airpolution.tex`) and the dataset (`Tema Data.csv`).
 
+### Project layout
+
+| Path | Purpose |
+|------|---------|
+| **`Tema Data.csv`** | Raw hourly sensor CSV at repo root (input to the whole pipeline). |
+| **`Airpolution.tex`** | Elsevier CAS-style manuscript (paths to figures vary; Overleaf often uses `figs/`). |
+| **`pyproject.toml`** | Editable install name **`airpollution-tema`**; Python package sources live under `src/`. |
+| **`requirements.txt`** | Pinned Python deps (tabular + plotting; deep learning backends installed separately—see Notes). |
+| **`src/airpollution/`** | Library code: **`constants`**, **`io`**, **`preprocess`**, **`features`**, **`tabular`**, **`sequences`**, **`eval`**, **`utils`**. |
+| **`scripts/`** | Runnable pipeline (**`01`** … **`08`**), **`project_path.py`** (prepends `src/` so `import airpollution` works without `pip install -e .`), **`09_results_forecast_figures.py`** (optional MAE-by-horizon plot from merged metrics). |
+| **`data/processed/`** | Parquet artifacts from tabular dataset build (written by **`04`**). |
+| **`data/features/`** | Horizon-specific supervised feature tables (`tabular_h*.parquet`). |
+| **`data/sequences/`** | **`sequences_h*_L*.npz`** tensors for **`07`** deep training. |
+| **`reports/tables/`** | CSV metrics (QC, EDA summaries, `results_*` for tables / Overleaf copy-paste). |
+| **`reports/figures/`** | PNG figures from **`01`** / **`02`** / **`03`** / **`09`** (boxplots, diurnal, heatmap, MAE bars). |
+| **`figures/`** / **`figs/`** | Optional mirrors of key PNG/PDF assets for LaTeX (`\graphicspath`), if you separate assets from **`reports/figures/`**. |
+
+**Dependency direction (high level):** raw CSV → **`01`** (QC) → **`02`**/**`03`** (EDA) → **`04`**/**`05`** (tabular models) → **`06`**/**`07`** (sequences + LSTM) → **`08`** (merge metrics). **`09`** consumes **`reports/tables/results_merged_wide_mae.csv`** after **`08`**.
+
 ### Quick start
 
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
+pip install -e .
 ```
 
 ### Run the pipeline (in order)
@@ -32,6 +52,9 @@ python scripts/07_train_lstm_models.py
 
 # 5) Merge tabular + deep metrics (LaTeX-friendly tables)
 python scripts/08_merge_results.py
+
+# Optional: MAE-by-horizon bar chart from merged wide metrics
+python scripts/09_results_forecast_figures.py
 ```
 
 Outputs are written to:

@@ -28,8 +28,13 @@
 %\usepackage[authoryear]{natbib}
 %\usepackage[authoryear,longnamesfirst]{natbib}
 \usepackage{rotating}%
-%\usepackage{multirow}%
+\usepackage{multirow}%
+\usepackage{booktabs}%
+\usepackage{graphicx}%
+% Overleaf: put PNG/PDF figures in ./figs/ (matches Elsevier convention). Repo also searches figures/ and reports/.
+\graphicspath{{figs/}{figures/}{./}{reports/figures/}}
 \usepackage{subcaption}
+\usepackage{float}%
 %%%Author definitions
 \def\tsc#1{\csdef{#1}{\textsc{\lowercase{#1}}\xspace}}
 \tsc{WGM}
@@ -321,7 +326,7 @@ h_t = o_t \tanh\left(c_t\right)
     
     \begin{subfigure}[b]{0.48\textwidth}
         \centering
-        \includegraphics[width=\linewidth]{lstm.pdf}
+        \includegraphics[width=\linewidth]{lstm.pdf}%
         \caption{Long Short-Term Memory cell \cite{diekuu2025predicting}}
         \label{fig:lstm}
     \end{subfigure}
@@ -476,25 +481,100 @@ Location & Parameter & Mean & Std & 25\% & 50\% (Median) & 75\% & Skewness \\
 
 Table~\ref{tab:timeseries-data} summarises the hourly observations and highlights clear spatial heterogeneity across monitoring locations. Mean PM$_{2.5}$ concentrations range from approximately 19 to 35 µg/m$^3$, consistently exceeding WHO guideline levels. Particulate variables exhibit pronounced positive skewness, indicating episodic high-concentration events rather than symmetric variability. NOX and TVOC show extreme skewness at selected sites, suggesting intermittent but intense emission episodes. In contrast, meteorological variables display lower dispersion and more stable distributions; humidity is mildly negatively skewed, while temperature remains relatively symmetric. These patterns indicate that pollutant dynamics are shaped primarily by episodic emissions and seasonal forcing, with strong localised source effects.
 
-Figure~\ref{boxplot} further illustrates the distribution of raw and corrected PM$_{2.5}$ concentrations by location. Corrected values are consistently lower than raw measurements, reflecting calibration adjustments. Sites such as Divine Healer’s Church and Satet International School show wider interquartile ranges and longer upper whiskers, indicating greater variability and frequent high-concentration episodes. Across all locations, right-skewed distributions and numerous upper outliers confirm the presence of recurrent pollution spikes. Collectively, the results underscore substantial spatial variation in both central tendency and dispersion of PM${2.5}$ levels
-\begin{figure*}[ht]
-    \centering   
-    \includegraphics[scale=0.400]{boxplot_location.pdf}
-    \caption{Distribution of Raw and Corrected PM$_{2.5}$ by Location}
-    \label{boxplot}
-\end{figure*}
-
 
 
 
 
 \section{Results}\label{sec3}
+
 \subsection{Distribution of corrected PM$_{2.5}$ Concentrations in locations}
+Corrected PM$_{2.5}$ concentrations are markedly heterogeneous across the seven fixed monitoring locations in Tema. Summary statistics in Table~\ref{tab:timeseries-data} show site-level means of approximately \mbox{19--35~$\mu$g/m$^3$}, with the highest central tendency at Divine Healer's Church (mean 35.15~$\mu$g/m$^3$; median 33.4~$\mu$g/m$^3$) and comparatively lower levels at Tema Community~25 Estate (mean 19.12~$\mu$g/m$^3$; median 16.1~$\mu$g/m$^3$). Interquartile ranges differ by site (roughly 15--28~$\mu$g/m$^3$), indicating that variability---not only average exposure---depends on micro-environment. Positive skewness in PM$_{2.5}$ is present at every site (skewness from about 1.1 to 3.2), consistent with episodic excursions rather than tightly symmetric fluctuations.
+
+Figure~\ref{fig:pm25_distribution} visualises these contrasts using raw and corrected distributions by location. The figure highlights wider dispersion and heavier upper tails at sites such as Divine Healer's Church and Satet International School, reinforcing that pollution risk is spatially structured and repeatedly punctuated by high-concentration episodes across the monitoring network.
+
+\begin{figure*}[t]
+    \centering
+    \includegraphics[width=0.92\textwidth]{eda_pm25_boxplot_by_location.png}%
+    \caption{Distribution of raw and corrected PM$_{2.5}$ ($\mu$g/m$^3$) by monitoring location.}
+    \label{fig:pm25_distribution}
+\end{figure*}
+
 \subsection{Temporal diurnal Variation in corrected PM$_{2.5}$ Concentrations}
+Pooling all locations on local hourly time, corrected PM$_{2.5}$ exhibits a pronounced diurnal cycle (Figure~\ref{fig:diurnal_pooled}). Pooled hourly means rise toward a morning maximum around 05:00--07:00 (means up to approximately 48~$\mu$g/m$^3$ near 06:00), decline through midday, and reach an afternoon minimum around 13:00--14:00 (median near 15--17~$\mu$g/m$^3$), before increasing again through evening hours. This profile is broadly consistent with coupled influences of boundary-layer ventilation, emission activity rhythms, and regional aerosol transport.
+
+Harmattan versus pre-Harmattan regimes further reshape the diurnal curve (Figure~\ref{fig:diurnal_regime}). Under Harmattan conditions, pooled median concentrations remain elevated throughout the day; for example, median PM$_{2.5}$ near midday is substantially higher than under pre-Harmattan conditions at comparable clock hours (Harmattan midday medians near 23--26~$\mu$g/m$^3$ versus about 8--12~$\mu$g/m$^3$ pre-Harmattan). Early-morning peaks are likewise amplified during Harmattan (median near 50~$\mu$g/m$^3$ around 06:00) compared with pre-Harmattan (median near 36~$\mu$g/m$^3$). Together, Figures~\ref{fig:diurnal_pooled}--\ref{fig:diurnal_regime} motivate reporting forecast performance under pooled conditions while interpreting limitations whenever models must generalise across sharply different atmospheric regimes.
+
+\begin{figure*}[t]
+    \centering
+    \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{eda_diurnal_curve_pooled.png}%
+        \caption{Pooled hourly profile (mean, median, and interquartile band).}%
+        \label{fig:diurnal_pooled}
+    \end{subfigure}\hfill
+    \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{eda_diurnal_curve_by_regime.png}%
+        \caption{Median diurnal curves stratified by Harmattan versus pre-Harmattan conditions.}%
+        \label{fig:diurnal_regime}
+    \end{subfigure}
+    \caption{Diurnal variation in corrected PM$_{2.5}$ on local time (all sites pooled).}
+    \label{fig:diurnal}
+\end{figure*}
+
 \subsection{Temporal Multi-Horizon predictions}
-\subsubsection{Short-term (24hr)}
-\subsubsection{Mid-terms (7d and 14d)}
-\subsubsection{Long-terms (28d)}
+Forecasting models are trained and evaluated as \emph{direct} horizon-specific regressors on leakage-safe splits defined by label time (Section~\ref{sec2}), with horizons $H\in\{24,168,336,672\}$ hours.
+
+Figure~\ref{fig:forecast_mae} summarises pooled test-set MAE across horizons for a compact set of interpretable benchmarks: both sequence architectures (LSTM and LSTM with multi-head attention), the restricted ridge autoregressive baseline with Fourier terms, seasonal naïve forecasting anchored at weekly recurrence, and---for context---linear SVR on engineered lag features. The chart makes two empirical features immediate: absolute error tends to rise with horizon for several baselines, while relative rankings reorganise at medium horizons where structured linear models become competitive.
+
+\begin{figure*}[t]
+    \centering
+    \includegraphics[width=0.92\textwidth]{results_mae_by_horizon.png}%
+    \caption{Mean absolute error (MAE; $\mu$g/m$^3$) on pooled multi-site test windows for selected models, shown by direct forecasting horizon.}
+    \label{fig:forecast_mae}
+\end{figure*}
+
+Table~\ref{tab:forecast-summary} complements Figure~\ref{fig:forecast_mae} with RMSE and $R^2$ alongside MAE for headline comparisons used in Sections~\ref{sec:res24}--\ref{sec:res672}. Episode-focused errors in the upper decile of observed concentrations remain materially larger than pooled MAE for deep models (not reproduced column-by-column here), reflecting the heavy upper tail documented in Section~3.1.
+
+\begin{table}[H]
+\centering
+\caption{Representative out-of-sample forecasting accuracy on pooled multi-site test splits (corrected PM$_{2.5}$, $\mu$g/m$^3$). Sequence models use TensorFlow-backed Keras training; ``Ridge AR+Fourier'' denotes the restricted autoregressive ridge baseline with seasonal Fourier terms.}
+\label{tab:forecast-summary}
+\resizebox{0.95\textwidth}{!}{%
+\begin{tabular}{llrrr}
+\toprule
+Horizon & Model & MAE & RMSE & $R^2$ \\
+\midrule
+24~h & LSTM + multi-head attention & 11.70 & 17.44 & 0.220 \\
+24~h & Ridge AR+Fourier & 11.75 & 18.16 & 0.215 \\
+24~h & Seasonal naïve (weekly anchor) & 14.59 & 21.46 & $-0.094$ \\
+\midrule
+7~d (168~h) & LSTM & 13.42 & 18.81 & 0.150 \\
+7~d (168~h) & LSTM + multi-head attention & 13.67 & 19.43 & 0.093 \\
+7~d (168~h) & Seasonal naïve (weekly anchor) & 15.39 & 22.74 & $-0.226$ \\
+\midrule
+14~d (336~h) & Linear SVR (tabular lags) & 13.94 & 19.06 & 0.136 \\
+14~d (336~h) & LSTM & 14.46 & 20.61 & 0.135 \\
+14~d (336~h) & LSTM + multi-head attention & 16.29 & 22.31 & $-0.014$ \\
+\midrule
+28~d (672~h) & LSTM + multi-head attention & 13.48 & 20.56 & $-0.126$ \\
+28~d (672~h) & LSTM & 14.15 & 20.52 & $-0.122$ \\
+28~d (672~h) & Ridge AR+Fourier & 15.28 & 20.92 & $-0.041$ \\
+\bottomrule
+\end{tabular}}
+\end{table}
+
+\subsubsection{Short-term (24hr)}\label{sec:res24}
+At $H=24$~h, the attention-augmented sequence model attains the lowest MAE among the headline comparisons in Table~\ref{tab:forecast-summary} (MAE~=~11.70~$\mu$g/m$^3$; RMSE~=~17.44~$\mu$g/m$^3$; $R^2\approx 0.22$), narrowly edging the ridge AR+Fourier baseline (MAE~=~11.75~$\mu$g/m$^3$). Relative to the weekly seasonal naïve benchmark shown in the table, MAE falls by roughly 2--3~$\mu$g/m$^3$, indicating that learned nonlinear dynamics provide measurable short-horizon value beyond simple seasonal anchors on this evaluation window.
+
+\subsubsection{Mid-terms (7d and 14d)}\label{sec:res714}
+For $H=168$~h, sequence models outperform the weekly seasonal naïve comparator by a clear margin on MAE (Table~\ref{tab:forecast-summary}; Figure~\ref{fig:forecast_mae}). Vanilla LSTM slightly improves upon LSTM+attention on MAE at this horizon (13.42 vs.\ 13.67~$\mu$g/m$^3$), illustrating that attention is not guaranteed to reduce point error at weekly lead times without additional tuning.
+
+At $H=336$~h, rankings diversify: linear SVR on tabular lag features achieves the lowest MAE among the tabulated candidates (13.94~$\mu$g/m$^3$), marginally ahead of LSTM (14.46~$\mu$g/m$^3$). LSTM+attention records higher MAE (16.29~$\mu$g/m$^3$) and near-zero pooled explanatory skill ($R^2\approx -0.01$). Rather than interpreting this as evidence against sequence modelling broadly, we emphasise that medium-horizon forecasting here approaches the limits of pooled stationarity assumptions under regime mixing; reporting should therefore pair accuracy metrics with regime-aware diagnostics whenever possible.
+
+\subsubsection{Long-terms (28d)}\label{sec:res672}
+At $H=672$~h, pooled $R^2$ for the sequence models tabulated becomes negative (Table~\ref{tab:forecast-summary}), indicating limited incremental variance explained relative to the test-set mean predictor under this split. Nonetheless, MAE remains competitive for operational comparisons: LSTM+attention yields MAE~=~13.48~$\mu$g/m$^3$, slightly lower than LSTM (14.15~$\mu$g/m$^3$) and ridge AR+Fourier (15.28~$\mu$g/m$^3$). Upper-tail episodes remain systematically harder for all models at long leads, consistent with the concentration extremes visible in Figure~\ref{fig:pm25_distribution}.
+
 \section{Discussion}\label{sec4}
 
 \section{Conclusion}\label{sec5}

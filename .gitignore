@@ -1,0 +1,37 @@
+.DS_Store
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Virtualenvs
+.venv/
+.venv*/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Data / generated artifacts
+data/processed/
+data/features/
+data/sequences/
+data/**/*.parquet
+data/**/*.npz
+
+# Reports (keep tables if you want; ignore heavy figures by default)
+reports/figures/
+
+# Local matplotlib cache
+.mplconfig/
+
+# Build metadata (generated)
+src/*.egg-info/
+
+# LaTeX build artifacts
+*.aux
+*.log
+*.out
+*.synctex.gz
+*.abs
+*.pdf

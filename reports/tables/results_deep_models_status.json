@@ -1,0 +1,6 @@
+{
+  "status": "skipped",
+  "reason": "no_deep_learning_wheels_for_python_3_14",
+  "python": "3.14.3",
+  "hint": "Script 07 (LSTM) needs TensorFlow, jaxlib, or PyTorch. None of these publish pip wheels for Python 3.14 yet, so `pip install tensorflow` will fail.\n\nFix: create a Python 3.12 virtualenv, install the project + one backend, then run this script:\n  python3.12 -m venv .venv312 && source .venv312/bin/activate\n  pip install -r requirements.txt && pip install -e . && pip install tensorflow\n  # tensorflow pins NumPy<2 on many platforms; install it last so deps resolve.\n  python scripts/07_train_lstm_models.py"
+}

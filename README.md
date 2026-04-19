@@ -7,7 +7,6 @@ This workspace contains the draft paper (`Airpolution.tex`) and the dataset (`Te
 | Path | Purpose |
 |------|---------|
 | **`Tema Data.csv`** | Raw hourly sensor CSV at repo root (input to the whole pipeline). |
-| **`Airpolution.tex`** | Elsevier CAS-style manuscript (paths to figures vary; Overleaf often uses `figs/`). |
 | **`pyproject.toml`** | Editable install name **`airpollution-tema`**; Python package sources live under `src/`. |
 | **`requirements.txt`** | Pinned Python deps (tabular + plotting; deep learning backends installed separately—see Notes). |
 | **`src/airpollution/`** | Library code: **`constants`**, **`io`**, **`preprocess`**, **`features`**, **`tabular`**, **`sequences`**, **`eval`**, **`utils`**. |

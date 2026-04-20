@@ -168,7 +168,11 @@ def main() -> None:
         print(stub["reason"])
         return
 
-    cfg = SplitConfig(val_days=14, test_days=28)
+    # Allow alternative split lengths (useful for regime-spanning evaluation).
+    cfg = SplitConfig(
+        val_days=int(os.environ.get("AIRP_VAL_DAYS", "14")),
+        test_days=int(os.environ.get("AIRP_TEST_DAYS", "28")),
+    )
 
     for npz_path in sorted(SEQ_DIR.glob("sequences_h*.npz")):
         data = np.load(npz_path, allow_pickle=True)
@@ -225,13 +229,23 @@ def main() -> None:
                 m["mae_top_decile"] = np.nan
                 m["rmse_top_decile"] = np.nan
 
+            # Regime-slice metrics (pre-Harmattan vs Harmattan).
+            # Always write keys so downstream tables can rely on stable columns.
+            for k in ("mae_pre_harmattan", "rmse_pre_harmattan", "r2_pre_harmattan", "mae_harmattan", "rmse_harmattan", "r2_harmattan"):
+                m.setdefault(k, np.nan)
             if harm is not None:
                 h_te = harm[m_te]
                 pre = h_te < 0.5
                 ha = h_te >= 0.5
                 if pre.sum() > 50 and ha.sum() > 50:
-                    m["mae_pre_harmattan"] = float(np.mean(np.abs(y_te[pre] - pred[pre])))
-                    m["mae_harmattan"] = float(np.mean(np.abs(y_te[ha] - pred[ha])))
+                    m_pre = regression_metrics(y_te[pre], pred[pre])
+                    m_ha = regression_metrics(y_te[ha], pred[ha])
+                    m["mae_pre_harmattan"] = m_pre["mae"]
+                    m["rmse_pre_harmattan"] = m_pre["rmse"]
+                    m["r2_pre_harmattan"] = m_pre["r2"]
+                    m["mae_harmattan"] = m_ha["mae"]
+                    m["rmse_harmattan"] = m_ha["rmse"]
+                    m["r2_harmattan"] = m_ha["r2"]
 
             rows.append(m)
 

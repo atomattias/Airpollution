@@ -564,6 +564,24 @@ Horizon & Model & MAE & RMSE & $R^2$ \\
 \end{tabular}}
 \end{table}
 
+\begin{table}[H]
+\centering
+\caption{Forecast accuracy stratified by regime on a regime-spanning evaluation window (test window length increased to 84~days to include both pre-Harmattan and Harmattan periods). Values are MAE ($\mu$g/m$^3$) on the test set for simple benchmarks; this table is intended as a regime-aware diagnostic complementary to the primary 28-day test results in Table~\ref{tab:forecast-summary}.}
+\label{tab:forecast-regime}
+\resizebox{0.95\textwidth}{!}{%
+\begin{tabular}{llrrr}
+\toprule
+Horizon & Model & Overall MAE & Pre-Harmattan MAE & Harmattan MAE \\
+\midrule
+24~h & Naïve level (persistence) & 12.59 & 10.40 & 12.84 \\
+24~h & Seasonal naïve (weekly anchor) & 13.75 & 10.86 & 14.10 \\
+\midrule
+7~d (168~h) & Naïve level (persistence) & 13.61 & 10.84 & 14.25 \\
+7~d (168~h) & Seasonal naïve (weekly anchor) & 14.46 & 13.31 & 14.73 \\
+\bottomrule
+\end{tabular}}
+\end{table}
+
 \subsubsection{Short-term (24hr)}\label{sec:res24}
 At $H=24$~h, the attention-augmented sequence model attains the lowest MAE among the headline comparisons in Table~\ref{tab:forecast-summary} (MAE~=~11.70~$\mu$g/m$^3$; RMSE~=~17.44~$\mu$g/m$^3$; $R^2\approx 0.22$), narrowly edging the ridge AR+Fourier baseline (MAE~=~11.75~$\mu$g/m$^3$). Relative to the weekly seasonal naïve benchmark shown in the table, MAE falls by roughly 2--3~$\mu$g/m$^3$, indicating that learned nonlinear dynamics provide measurable short-horizon value beyond simple seasonal anchors on this evaluation window.
 

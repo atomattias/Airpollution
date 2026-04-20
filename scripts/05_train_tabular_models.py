@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import os
 from pathlib import Path
 
 import project_path  # noqa: F401 — side effect: repo src/ on sys.path
@@ -35,6 +36,21 @@ TABLES_DIR = ensure_dir(ROOT / "reports" / "tables")
 
 
 HORIZONS = ["h24", "h168", "h336", "h672"]
+FAST_MODE = os.environ.get("AIRP_FAST", "").strip().lower() in ("1", "true", "yes", "y")
+
+# Make slow model sizes configurable for quick iteration / Overleaf tables.
+RF_TREES = int(os.environ.get("AIRP_RF_TREES", "600"))
+XGB_TREES = int(os.environ.get("AIRP_XGB_TREES", "2000"))
+RF_MAX_DEPTH = os.environ.get("AIRP_RF_MAX_DEPTH", "").strip()
+RF_MAX_DEPTH = None if RF_MAX_DEPTH == "" else int(RF_MAX_DEPTH)
+RF_N_JOBS = int(os.environ.get("AIRP_RF_N_JOBS", "-1"))
+_rf_mf = os.environ.get("AIRP_RF_MAX_FEATURES", "sqrt").strip()
+try:
+    RF_MAX_FEATURES = float(_rf_mf)  # allow e.g. "0.3"
+except Exception:
+    RF_MAX_FEATURES = _rf_mf  # "sqrt" / "log2" / "None"
+if isinstance(RF_MAX_FEATURES, str) and RF_MAX_FEATURES.lower() == "none":
+    RF_MAX_FEATURES = None
 
 
 def _feature_target_split(df: pd.DataFrame) -> tuple[pd.DataFrame, np.ndarray]:
@@ -82,6 +98,21 @@ def _eval_model(name: str, model, train: pd.DataFrame, val: pd.DataFrame, test: 
     pred_test = pipe.predict(X_test)
     m = regression_metrics(y_test, pred_test)
 
+    # Regime-slice metrics (Harmattan vs non-Harmattan) when label is available.
+    # This mirrors the deep-model evaluation and supports "dry vs wet" comparisons
+    # without requiring extra external meteorology.
+    if "harmattan" in test.columns:
+        harm = test["harmattan"].to_numpy(dtype=float)
+        pre = harm < 0.5
+        ha = harm >= 0.5
+        if pre.sum() > 50 and ha.sum() > 50:
+            m_pre = regression_metrics(y_test[pre], pred_test[pre])
+            m_ha = regression_metrics(y_test[ha], pred_test[ha])
+            for k, v in m_pre.items():
+                m[f"{k}_pre_harmattan"] = v
+            for k, v in m_ha.items():
+                m[f"{k}_harmattan"] = v
+
     # Peak-slice metrics (top decile of y_true in test)
     mask = top_decile_mask(y_test)
     if mask.any():
@@ -101,12 +132,25 @@ def _eval_model(name: str, model, train: pd.DataFrame, val: pd.DataFrame, test: 
 def _eval_baselines(df_test: pd.DataFrame) -> list[dict]:
     """Operational baselines using available lag features."""
     y_true = df_test["y"].to_numpy(dtype=float)
+    harm = df_test["harmattan"].to_numpy(dtype=float) if "harmattan" in df_test.columns else None
 
     def _safe_metrics(yhat: np.ndarray) -> dict | None:
         mask = np.isfinite(y_true) & np.isfinite(yhat)
         if mask.sum() < 10:
             return None
-        return regression_metrics(y_true[mask], yhat[mask])
+        m = regression_metrics(y_true[mask], yhat[mask])
+        if harm is not None:
+            h = harm[mask]
+            pre = h < 0.5
+            ha = h >= 0.5
+            if pre.sum() > 50 and ha.sum() > 50:
+                m_pre = regression_metrics(y_true[mask][pre], yhat[mask][pre])
+                m_ha = regression_metrics(y_true[mask][ha], yhat[mask][ha])
+                for k, v in m_pre.items():
+                    m[f"{k}_pre_harmattan"] = v
+                for k, v in m_ha.items():
+                    m[f"{k}_harmattan"] = v
+        return m
 
     out = []
 
@@ -179,6 +223,18 @@ def _eval_ridge_ar_lag_fourier(
     pred_test = pipe.predict(X_test).astype(float)
     m = regression_metrics(y_test, pred_test)
 
+    if "harmattan" in test.columns:
+        harm = test["harmattan"].to_numpy(dtype=float)
+        pre = harm < 0.5
+        ha = harm >= 0.5
+        if pre.sum() > 50 and ha.sum() > 50:
+            m_pre = regression_metrics(y_test[pre], pred_test[pre])
+            m_ha = regression_metrics(y_test[ha], pred_test[ha])
+            for k, v in m_pre.items():
+                m[f"{k}_pre_harmattan"] = v
+            for k, v in m_ha.items():
+                m[f"{k}_harmattan"] = v
+
     mask = top_decile_mask(y_test)
     if mask.any():
         m_peak = regression_metrics(y_test[mask], pred_test[mask])
@@ -198,17 +254,43 @@ def main() -> None:
     metrics_rows: list[dict] = []
     split_rows: list[dict] = []
 
+    # Allow reproducible alternative splits without editing code.
+    # Default matches the paper (val=14d, test=28d).
+    cfg = SplitConfig(
+        val_days=int(os.environ.get("AIRP_VAL_DAYS", "14")),
+        test_days=int(os.environ.get("AIRP_TEST_DAYS", "28")),
+    )
+
     for hz in HORIZONS:
-        path = FEATURE_DIR / f"tabular_{hz}.parquet"
-        mb = path.stat().st_size / (1024 * 1024)
-        print(f"[{hz}] Loading {path.name} (~{mb:.1f} MB)...", flush=True)
-        ds = pd.read_parquet(path)
+        path_parquet = FEATURE_DIR / f"tabular_{hz}.parquet"
+        path_csv = FEATURE_DIR / f"tabular_{hz}.csv.gz"
+
+        ds = None
+        if path_parquet.exists():
+            try:
+                mb = path_parquet.stat().st_size / (1024 * 1024)
+                print(f"[{hz}] Loading {path_parquet.name} (~{mb:.1f} MB)...", flush=True)
+                ds = pd.read_parquet(path_parquet)
+            except Exception as e:
+                print(f"[{hz}] Parquet load failed ({e!s}); falling back to {path_csv.name}...", flush=True)
+                ds = None
+
+        if ds is None:
+            if not path_csv.exists():
+                raise FileNotFoundError(
+                    f"Missing feature dataset for {hz}. Expected {path_parquet.name} or {path_csv.name}. "
+                    "Run scripts/04_make_tabular_dataset.py first."
+                )
+            mb = path_csv.stat().st_size / (1024 * 1024)
+            print(f"[{hz}] Loading {path_csv.name} (~{mb:.1f} MB)...", flush=True)
+            ds = pd.read_csv(path_csv)
+
         print(f"[{hz}] Loaded {ds.shape[0]:,} rows × {ds.shape[1]} columns.", flush=True)
 
         # Ensure target_time is parsed
         ds["target_time"] = pd.to_datetime(ds["target_time"])
 
-        train, val, test, meta = time_split_by_target_time(ds, cfg=SplitConfig(val_days=14, test_days=28))
+        train, val, test, meta = time_split_by_target_time(ds, cfg=cfg)
         meta_row = {"horizon": hz, **{k: (str(v) if isinstance(v, pd.Timestamp) else v) for k, v in meta.items()}}
         split_rows.append(meta_row)
 
@@ -222,46 +304,48 @@ def main() -> None:
             metrics_rows.append({"horizon": hz, **m_ar})
 
         # Models
-        models = {
-            "ridge": Ridge(alpha=1.0, random_state=42),
-            "rf": RandomForestRegressor(
-                n_estimators=600,
+        models = {"ridge": Ridge(alpha=1.0, random_state=42)}
+        if not FAST_MODE:
+            models["rf"] = RandomForestRegressor(
+                n_estimators=RF_TREES,
                 random_state=42,
-                n_jobs=-1,
-                max_depth=None,
+                n_jobs=RF_N_JOBS,
+                max_depth=RF_MAX_DEPTH,
                 min_samples_leaf=3,
-            ),
+                max_features=RF_MAX_FEATURES,
+            )
             # Liblinear: epsilon-insensitive + L2 penalty requires dual=True in recent scikit-learn
             # (dual=False raises ValueError). Prefer SVR(kernel="linear") if you need primal formulation.
-            "linear_svr": LinearSVR(
+            models["linear_svr"] = LinearSVR(
                 random_state=42,
                 C=1.0,
                 epsilon=0.2,
                 max_iter=20_000,
                 tol=1e-3,
                 dual=True,
-            ),
-        }
-        if _HAS_XGBOOST:
-            models["xgboost"] = XGBRegressor(
-                n_estimators=2000,
-                learning_rate=0.03,
-                max_depth=6,
-                subsample=0.8,
-                colsample_bytree=0.8,
-                reg_lambda=1.0,
-                objective="reg:squarederror",
-                random_state=42,
-                n_jobs=-1,
             )
+        if _HAS_XGBOOST:
+            if not FAST_MODE:
+                models["xgboost"] = XGBRegressor(
+                    n_estimators=XGB_TREES,
+                    learning_rate=0.03,
+                    max_depth=6,
+                    subsample=0.8,
+                    colsample_bytree=0.8,
+                    reg_lambda=1.0,
+                    objective="reg:squarederror",
+                    random_state=42,
+                    n_jobs=-1,
+                )
         else:
             # Portable boosted-tree baseline when XGBoost can't load (e.g., missing libomp on macOS).
-            models["hgbt"] = HistGradientBoostingRegressor(
-                learning_rate=0.05,
-                max_depth=8,
-                max_iter=500,
-                random_state=42,
-            )
+            if not FAST_MODE:
+                models["hgbt"] = HistGradientBoostingRegressor(
+                    learning_rate=0.05,
+                    max_depth=8,
+                    max_iter=500,
+                    random_state=42,
+                )
 
         # Drop non-numeric / leakage-prone columns from train/val/test before feeding to pipeline
         drop_cols = [c for c in [ds.columns[0], "target_time"] if c in ds.columns]  # defensive
@@ -270,6 +354,7 @@ def main() -> None:
             print(f"[{hz}] Training {name}...", flush=True)
             m = _eval_model(name, model, train, val, test)
             metrics_rows.append({"horizon": hz, **m})
+            print(f"[{hz}] Done {name}: MAE={m['mae']:.2f}", flush=True)
 
     metrics_df = pd.DataFrame(metrics_rows)
     metrics_df = metrics_df.sort_values(["horizon", "mae", "rmse"]).reset_index(drop=True)

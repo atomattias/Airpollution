@@ -73,21 +73,26 @@ def make_supervised_tabular(
         loc_df["y"] = loc_df[C.COL_PM25_CORR].shift(-horizon_hours)
         loc_df["target_time"] = loc_df[time_col].shift(-horizon_hours)
 
+        # Feature engineering: build columns in bulk to avoid pandas fragmentation.
+        feat_cols: dict[str, pd.Series] = {}
+
         # Lag features
         for col in base_cols:
             series = loc_df[col]
             for lag in s.lags_hours:
-                loc_df[f"lag_{col}_{lag}h"] = series.shift(lag)
+                feat_cols[f"lag_{col}_{lag}h"] = series.shift(lag)
 
         # Rolling stats (use history only -> shift by 1)
         for col in base_cols:
-            series = loc_df[col]
-            shifted = series.shift(1)
+            shifted = loc_df[col].shift(1)
             for w in s.rolling_windows:
                 roll = shifted.rolling(window=w, min_periods=max(2, w // 3))
-                loc_df[f"roll_mean_{col}_{w}h"] = roll.mean()
-                loc_df[f"roll_std_{col}_{w}h"] = roll.std()
-                loc_df[f"roll_max_{col}_{w}h"] = roll.max()
+                feat_cols[f"roll_mean_{col}_{w}h"] = roll.mean()
+                feat_cols[f"roll_std_{col}_{w}h"] = roll.std()
+                feat_cols[f"roll_max_{col}_{w}h"] = roll.max()
+
+        if feat_cols:
+            loc_df = pd.concat([loc_df, pd.DataFrame(feat_cols)], axis=1)
 
         parts.append(loc_df)
 

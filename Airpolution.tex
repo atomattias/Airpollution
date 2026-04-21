@@ -300,7 +300,7 @@ The Long Short-Term Memory (LSTM) network, introduced by Hochreiter and Schmidhu
 
 Each LSTM unit consists of a memory cell and three gating mechanisms: the input gate $i(t)$, the forget gate $f(t)$, and the output gate $o(t)$. These gates regulate the flow of information into, within, and out of the cell state $c(t)$. The forget gate $f(t)$ determines which previously stored information should be discarded. The input gate $i(t)$ controls which new information is written into the cell state. The output gate $o(t)$ governs how much of the updated cell state is exposed as the hidden output. This gated structure allows the LSTM to selectively retain relevant historical signals while suppressing noise.
 
-Given an input vector $x(t)$ at time step $t$, the LSTM updates its internal states according to a sequence of nonlinear transformations. The hidden states $h(t-1)$ and $h(t)$ represent the output activations at time steps $t-1$ and $t$, respectively, as shown in Figure \ref{fig:lstm}. The full modelling process is formally defined by Equations (\ref{equ1}-\ref{equ5}), which describe the gating operations and cell state updates that collectively enable long-term sequence learning.
+Given an input vector $x(t)$ at time step $t$, the LSTM updates its internal states according to a sequence of nonlinear transformations. The hidden states $h(t-1)$ and $h(t)$ represent the output activations at time steps $t-1$ and $t$, respectively. The full modelling process is formally defined by Equations (\ref{equ1}-\ref{equ5}), which describe the gating operations and cell state updates that collectively enable long-term sequence learning.
 \begin{equation}
 i_t = \sigma \left( W_{x_i} \cdot x_t + W_{h_i} \cdot h_{t-1} + W_{c_i} \cdot c_{t-1} + b_i\right)
 \label{equ1}
@@ -321,26 +321,6 @@ o_t = \sigma\left(W_{x_o} \cdot x_t + W_{h_o} \cdot h_{t-1} + W_{c_o} \cdot c_t 
 h_t = o_t \tanh\left(c_t\right)
 \label{equ5}
 \end{equation}
-\begin{figure}[htb]
-    \centering
-    
-    \begin{subfigure}[b]{0.48\textwidth}
-        \centering
-        \includegraphics[width=\linewidth]{lstm.pdf}%
-        \caption{Long Short-Term Memory cell \cite{diekuu2025predicting}}
-        \label{fig:lstm}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}[b]{0.48\textwidth}
-        \centering
-        \includegraphics[width=\linewidth]{LSTM.png}
-        \caption{Architecture of the proposed LSTM + attention model \cite{abbasimehr2022improving}}
-        \label{fig:lstm-attention}
-    \end{subfigure}
-    
-    \caption{LSTM memory and overall forecasting architecture.}
-    \label{fig:model-architecture}
-\end{figure}
 
 \subsection{Multi-Head Attention}
 
@@ -352,7 +332,7 @@ Multi-head attention extends this mechanism by employing multiple parallel atten
 
 
 \subsection{Architecture of the LSTM with attention mechanism}
-Figure~\ref{fig:lstm-attention} presents the architecture of the proposed framework. The model first derives a latent representation from the LSTM component and a complementary representation from the multi-head attention module. These learned embeddings are then concatenated with a residual copy of the original input sequence. The combined feature vector is passed to a fully connected dense layer to generate the final prediction.
+The proposed framework proceeds as follows. The model first derives a latent representation from the LSTM component and a complementary representation from the multi-head attention module. These learned embeddings are then concatenated with a residual copy of the original input sequence. The combined feature vector is passed to a fully connected dense layer to generate the final prediction.
 The LSTM component is designed to capture long-term temporal dependencies inherent in sequential data. Its gated structure explicitly models the ordered nature of time series and preserves relevant historical information across extended horizons. In parallel, the multi-head attention mechanism identifies salient temporal features by assigning adaptive weights to different time steps and feature dimensions. This is particularly important in environmental time series, where specific periods (e.g., peak hours or seasonal transitions) contribute disproportionately to forecast accuracy.
 
 Both the LSTM and attention modules receive the raw input sequence structured in input–output format. To enable fusion of the learned representations, a flattening operation reshapes their outputs into compatible vectors. These vectors, together with a transformed copy of the original time series input, are concatenated into a unified feature representation. The dense output layer then maps this integrated representation to the forecast value.
@@ -523,9 +503,9 @@ Harmattan versus pre-Harmattan regimes further reshape the diurnal curve (Figure
 \end{figure*}
 
 \subsection{Temporal Multi-Horizon predictions}
-Forecasting models are trained and evaluated as \emph{direct} horizon-specific regressors on leakage-safe splits defined by label time (Section~\ref{sec2}), with horizons $H\in\{24,168,336,672\}$ hours.
+Forecasting models are trained and evaluated as \emph{direct} horizon-specific regressors on leakage-safe splits defined by label time (Section~\ref{sec2}), with horizons $H\in\{24,168,336,672\}$ hours. Table~\ref{tab:eval-splits} reports train, validation, and test row counts and the test-window start date for each horizon (label-time contiguous blocks; the most recent segment is held out for testing). Pooled metrics, upper-decile MAE, and the figures below are generated from the merged tabular and sequence evaluation outputs produced by the project scripts.
 
-Figure~\ref{fig:forecast_mae} summarises pooled test-set MAE across horizons for a compact set of interpretable benchmarks: both sequence architectures (LSTM and LSTM with multi-head attention), the restricted ridge autoregressive baseline with Fourier terms, seasonal naïve forecasting anchored at weekly recurrence, and---for context---linear SVR on engineered lag features. The chart makes two empirical features immediate: absolute error tends to rise with horizon for several baselines, while relative rankings reorganise at medium horizons where structured linear models become competitive.
+Figure~\ref{fig:forecast_mae} summarises pooled test-set MAE across horizons for a compact set of interpretable benchmarks: both sequence architectures (LSTM and LSTM with multi-head attention), the restricted ridge autoregressive baseline with Fourier terms, seasonal naïve forecasting anchored at weekly recurrence, Random Forest and XGBoost on tabular lag features, and---for additional linear context---linear SVR on engineered lag features. The chart makes two empirical features immediate: absolute error tends to rise with horizon for several baselines, while relative rankings reorganise at medium horizons where structured linear models become competitive.
 
 \begin{figure*}[t]
     \centering
@@ -534,35 +514,128 @@ Figure~\ref{fig:forecast_mae} summarises pooled test-set MAE across horizons for
     \label{fig:forecast_mae}
 \end{figure*}
 
-Table~\ref{tab:forecast-summary} complements Figure~\ref{fig:forecast_mae} with RMSE and $R^2$ alongside MAE for headline comparisons used in Sections~\ref{sec:res24}--\ref{sec:res672}. Episode-focused errors in the upper decile of observed concentrations remain materially larger than pooled MAE for deep models (not reproduced column-by-column here), reflecting the heavy upper tail documented in Section~3.1.
+Table~\ref{tab:forecast-summary} complements Figure~\ref{fig:forecast_mae} with RMSE and $R^2$ alongside MAE for headline comparisons used in Sections~\ref{sec:res24}--\ref{sec:res672}. Episode-focused error on hours whose realised PM$_{2.5}$ lies in the upper decile of the test window (MAE$^{90}$) is reported explicitly in Table~\ref{tab:forecast-upper-decile}; values there are typically far larger than pooled MAE, reflecting the heavy upper tail documented in Section~3.1.
 
 \begin{table}[H]
 \centering
-\caption{Representative out-of-sample forecasting accuracy on pooled multi-site test splits (corrected PM$_{2.5}$, $\mu$g/m$^3$). Sequence models use TensorFlow-backed Keras training; ``Ridge AR+Fourier'' denotes the restricted autoregressive ridge baseline with seasonal Fourier terms.}
+\caption{Evaluation splits by direct-forecast horizon (label-time contiguous blocks). $n$ counts hourly forecast rows after feature construction; test rows are the held-out tail of the study period.}
+\label{tab:eval-splits}
+\resizebox{0.95\textwidth}{!}{%
+\begin{tabular}{lrrrr}
+\toprule
+Horizon & $n_{\mathrm{train}}$ & $n_{\mathrm{val}}$ & $n_{\mathrm{test}}$ & Test window starts (local) \\
+\midrule
+24~h & 17\,285 & 1\,827 & 4\,037 & 2026-01-18 \\
+7~d (168~h) & 16\,277 & 1\,827 & 4\,037 & 2026-01-18 \\
+14~d (336~h) & 15\,101 & 1\,827 & 4\,037 & 2026-01-18 \\
+28~d (672~h) & 13\,263 & 1\,827 & 4\,037 & 2026-01-18 \\
+\bottomrule
+\end{tabular}}
+\end{table}
+
+\begin{table}[H]
+\centering
+\caption{Representative out-of-sample forecasting accuracy on pooled multi-site test splits (corrected PM$_{2.5}$, $\mu$g/m$^3$). Sequence models use TensorFlow-backed Keras training; ``Ridge AR+Fourier'' denotes the restricted autoregressive ridge baseline with seasonal Fourier terms; RF, linear SVR, and XGBoost use tabular lag features. Values match merged pipeline outputs.}
 \label{tab:forecast-summary}
 \resizebox{0.95\textwidth}{!}{%
 \begin{tabular}{llrrr}
 \toprule
 Horizon & Model & MAE & RMSE & $R^2$ \\
 \midrule
-24~h & LSTM + multi-head attention & 11.70 & 17.44 & 0.220 \\
+24~h & LSTM & 11.31 & 17.77 & 0.190 \\
+24~h & LSTM + multi-head attention & 11.65 & 17.22 & 0.240 \\
 24~h & Ridge AR+Fourier & 11.75 & 18.16 & 0.215 \\
+24~h & Random Forest (tabular lags) & 14.78 & 19.47 & 0.099 \\
+24~h & XGBoost (tabular lags) & 21.37 & 26.32 & $-0.648$ \\
+24~h & Linear SVR (tabular lags) & 20.13 & 26.20 & $-0.633$ \\
 24~h & Seasonal naïve (weekly anchor) & 14.59 & 21.46 & $-0.094$ \\
 \midrule
-7~d (168~h) & LSTM & 13.42 & 18.81 & 0.150 \\
-7~d (168~h) & LSTM + multi-head attention & 13.67 & 19.43 & 0.093 \\
+7~d (168~h) & LSTM & 13.40 & 18.80 & 0.151 \\
+7~d (168~h) & LSTM + multi-head attention & 14.82 & 19.96 & 0.042 \\
+7~d (168~h) & Random Forest (tabular lags) & 19.68 & 24.76 & $-0.459$ \\
+7~d (168~h) & XGBoost (tabular lags) & 41.97 & 49.16 & $-4.749$ \\
+7~d (168~h) & Linear SVR (tabular lags) & 38.61 & 42.43 & $-3.283$ \\
 7~d (168~h) & Seasonal naïve (weekly anchor) & 15.39 & 22.74 & $-0.226$ \\
 \midrule
 14~d (336~h) & Linear SVR (tabular lags) & 13.94 & 19.06 & 0.136 \\
-14~d (336~h) & LSTM & 14.46 & 20.61 & 0.135 \\
-14~d (336~h) & LSTM + multi-head attention & 16.29 & 22.31 & $-0.014$ \\
+14~d (336~h) & LSTM & 14.68 & 20.79 & 0.120 \\
+14~d (336~h) & LSTM + multi-head attention & 15.41 & 21.78 & 0.035 \\
 \midrule
-28~d (672~h) & LSTM + multi-head attention & 13.48 & 20.56 & $-0.126$ \\
-28~d (672~h) & LSTM & 14.15 & 20.52 & $-0.122$ \\
+14~d (336~h) & Random Forest (tabular lags) & 20.35 & 25.92 & $-0.598$ \\
+14~d (336~h) & XGBoost (tabular lags) & 30.56 & 38.14 & $-2.460$ \\
+\midrule
+28~d (672~h) & LSTM & 15.51 & 21.17 & $-0.194$ \\
+28~d (672~h) & LSTM + multi-head attention & 29.77 & 34.80 & $-2.228$ \\
 28~d (672~h) & Ridge AR+Fourier & 15.28 & 20.92 & $-0.041$ \\
+28~d (672~h) & Random Forest (tabular lags) & 16.47 & 22.33 & $-0.186$ \\
+28~d (672~h) & XGBoost (tabular lags) & 19.55 & 25.91 & $-0.597$ \\
+28~d (672~h) & Linear SVR (tabular lags) & 25.42 & 30.52 & $-1.215$ \\
 \bottomrule
 \end{tabular}}
 \end{table}
+
+\begin{table}[H]
+\centering
+\caption{Pooled MAE versus upper-decile MAE (MAE$^{90}$: mean absolute error on test hours whose observed PM$_{2.5}$ is at or above the 90th percentile of observed concentrations in the test window). Sequence rows are from deep-model metrics; tabular rows from tabular-model metrics.}
+\label{tab:forecast-upper-decile}
+\resizebox{0.95\textwidth}{!}{%
+\begin{tabular}{llrr}
+\toprule
+Horizon & Model & MAE & MAE$^{90}$ \\
+\midrule
+24~h & LSTM & 11.31 & 36.37 \\
+24~h & LSTM + multi-head attention & 11.65 & 30.01 \\
+24~h & Ridge AR+Fourier & 11.75 & 36.19 \\
+24~h & Random Forest (tabular lags) & 14.78 & 26.54 \\
+24~h & Linear SVR (tabular lags) & 20.13 & 52.16 \\
+24~h & XGBoost (tabular lags) & 21.37 & 23.07 \\
+\midrule
+7~d (168~h) & LSTM & 13.40 & 31.72 \\
+7~d (168~h) & LSTM + multi-head attention & 14.82 & 26.25 \\
+7~d (168~h) & Random Forest (tabular lags) & 19.68 & 22.84 \\
+7~d (168~h) & Linear SVR (tabular lags) & 38.61 & 71.73 \\
+7~d (168~h) & XGBoost (tabular lags) & 41.97 & 28.91 \\
+\midrule
+14~d (336~h) & LSTM & 14.68 & 31.51 \\
+14~d (336~h) & LSTM + multi-head attention & 15.41 & 37.28 \\
+14~d (336~h) & Linear SVR (tabular lags) & 13.94 & 27.51 \\
+14~d (336~h) & Random Forest (tabular lags) & 20.35 & 24.23 \\
+14~d (336~h) & XGBoost (tabular lags) & 30.56 & 21.83 \\
+\midrule
+28~d (672~h) & LSTM & 15.51 & 32.72 \\
+28~d (672~h) & LSTM + multi-head attention & 29.77 & 61.73 \\
+28~d (672~h) & Ridge AR+Fourier & 15.28 & 33.49 \\
+28~d (672~h) & Random Forest (tabular lags) & 16.47 & 27.00 \\
+28~d (672~h) & XGBoost (tabular lags) & 19.55 & 26.84 \\
+28~d (672~h) & Linear SVR (tabular lags) & 25.42 & 25.64 \\
+\bottomrule
+\end{tabular}}
+\end{table}
+
+To complement pooled accuracy in Table~\ref{tab:forecast-summary}, Figure~\ref{fig:scatter_tabular_h24} shows \emph{point-level} test-set diagnostics for three tabular models at $H{=}24$~h only (Random Forest, linear SVR, XGBoost). Each row gives: (left) actual versus predicted PM$_{2.5}$ with the $y{=}x$ reference; (center) residuals versus predicted values; (right) actual and predicted series against label time on the held-out test window. These panels make systematic behaviour at moderate versus high concentrations visible in a way that scalar MAE/RMSE alone does not; we retain a single horizon here to avoid repeating the same message across figures.
+
+\begin{figure*}[!t]
+    \centering
+    \begin{subfigure}[b]{\textwidth}
+        \centering
+        \includegraphics[width=0.95\textwidth]{results_scatter_rf_h24.png}
+        \caption{Random Forest (tabular lags).}
+    \end{subfigure}
+
+    \begin{subfigure}[b]{\textwidth}
+        \centering
+        \includegraphics[width=0.95\textwidth]{results_scatter_linear_svr_h24.png}
+        \caption{Linear SVR (tabular lags).}
+    \end{subfigure}
+
+    \begin{subfigure}[b]{\textwidth}
+        \centering
+        \includegraphics[width=0.95\textwidth]{results_scatter_xgboost_h24.png}
+        \caption{XGBoost (tabular lags).}
+    \end{subfigure}
+    \caption{Diagnostic scatter plots for direct 24~h forecasts on the pooled multi-site test split (tabular models refit with the same leakage-safe protocol as Table~\ref{tab:forecast-summary}). The layout mirrors standard regression and residual views used in applied ML reporting: departure from the diagonal at high concentrations indicates conditional bias in the upper tail; the time overlay highlights how point forecasts track the bulk trajectory but often smooth short-lived spikes.}
+    \label{fig:scatter_tabular_h24}
+\end{figure*}
 
 \begin{table}[H]
 \centering
@@ -582,16 +655,48 @@ Horizon & Model & Overall MAE & Pre-Harmattan MAE & Harmattan MAE \\
 \end{tabular}}
 \end{table}
 
+\begin{table}[H]
+\centering
+\caption{Tabular models: test-set MAE ($\mu$g/m$^3$) stratified by Harmattan regime on an \textbf{84-day} label-time held-out window (both regimes present). The primary pooled scores in Table~\ref{tab:forecast-summary} use the standard \textbf{28-day} test and are not directly comparable row-for-row.}
+\label{tab:tabular-regime-mae}
+\resizebox{0.98\textwidth}{!}{%
+\begin{tabular}{llrrr}
+\toprule
+Horizon & Model & Overall MAE & Pre-Harmattan MAE & Harmattan MAE \\
+\midrule
+24~h & Ridge AR+Fourier & 16.79 & 10.55 & 17.51 \\
+24~h & Random Forest (tabular lags) & 10.33 & 7.89 & 10.61 \\
+24~h & Linear SVR (tabular lags) & 14.61 & 9.77 & 15.17 \\
+24~h & XGBoost (tabular lags) & 10.90 & 8.81 & 11.15 \\
+\midrule
+7~d (168~h) & Ridge AR+Fourier & 35.25 & 12.19 & 40.40 \\
+7~d (168~h) & Random Forest (tabular lags) & 12.01 & 8.56 & 12.78 \\
+7~d (168~h) & Linear SVR (tabular lags) & 13.58 & 8.86 & 14.63 \\
+7~d (168~h) & XGBoost (tabular lags) & 12.89 & 9.76 & 13.59 \\
+\midrule
+14~d (336~h) & Ridge AR+Fourier & 48.80 & 34.82 & 54.06 \\
+14~d (336~h) & Random Forest (tabular lags) & 11.73 & 9.85 & 12.44 \\
+14~d (336~h) & Linear SVR (tabular lags) & 33.74 & 21.33 & 38.41 \\
+14~d (336~h) & XGBoost (tabular lags) & 13.38 & 11.51 & 14.09 \\
+\midrule
+28~d (672~h) & Ridge AR+Fourier & 63.08 & 27.13 & 93.17 \\
+28~d (672~h) & Random Forest (tabular lags) & 13.04 & 10.86 & 14.87 \\
+28~d (672~h) & Linear SVR (tabular lags) & 41.02 & 17.32 & 60.86 \\
+28~d (672~h) & XGBoost (tabular lags) & 14.44 & 12.25 & 16.27 \\
+\bottomrule
+\end{tabular}}
+\end{table}
+
 \subsubsection{Short-term (24hr)}\label{sec:res24}
-At $H=24$~h, the attention-augmented sequence model attains the lowest MAE among the headline comparisons in Table~\ref{tab:forecast-summary} (MAE~=~11.70~$\mu$g/m$^3$; RMSE~=~17.44~$\mu$g/m$^3$; $R^2\approx 0.22$), narrowly edging the ridge AR+Fourier baseline (MAE~=~11.75~$\mu$g/m$^3$). Relative to the weekly seasonal naïve benchmark shown in the table, MAE falls by roughly 2--3~$\mu$g/m$^3$, indicating that learned nonlinear dynamics provide measurable short-horizon value beyond simple seasonal anchors on this evaluation window.
+At $H=24$~h, vanilla LSTM attains the lowest pooled MAE among sequence models in Table~\ref{tab:forecast-summary} (MAE~=~11.31~$\mu$g/m$^3$; RMSE~=~17.77~$\mu$g/m$^3$; $R^2\approx 0.19$), slightly ahead of LSTM+multi-head attention (MAE~=~11.65~$\mu$g/m$^3$; higher $R^2$) and ridge AR+Fourier (MAE~=~11.75~$\mu$g/m$^3$). Relative to the weekly seasonal naïve benchmark in the same table, MAE for the best sequence model falls by roughly 3~$\mu$g/m$^3$, indicating that learned nonlinear dynamics provide measurable short-horizon value beyond a simple seasonal anchor on this evaluation window. Table~\ref{tab:forecast-upper-decile} shows that MAE$^{90}$ on upper-decile hours is several times larger than pooled MAE for the sequence and ridge rows, while tabular tree models and SVR show the same qualitative pattern. Figure~\ref{fig:scatter_tabular_h24} illustrates for RF, SVR, and XGBoost how favourable pooled accuracy can coexist with visible compression of high-concentration excursions. Harmattan-aware tabular diagnostics on an extended 84-day test window appear in Tables~\ref{tab:forecast-regime}--\ref{tab:tabular-regime-mae}; pooled MAE in Table~\ref{tab:tabular-regime-mae} is not directly comparable to Table~\ref{tab:forecast-summary} because of window length (and stochasticity in tree ensembles).
 
 \subsubsection{Mid-terms (7d and 14d)}\label{sec:res714}
-For $H=168$~h, sequence models outperform the weekly seasonal naïve comparator by a clear margin on MAE (Table~\ref{tab:forecast-summary}; Figure~\ref{fig:forecast_mae}). Vanilla LSTM slightly improves upon LSTM+attention on MAE at this horizon (13.42 vs.\ 13.67~$\mu$g/m$^3$), illustrating that attention is not guaranteed to reduce point error at weekly lead times without additional tuning.
+For $H=168$~h, sequence models outperform the weekly seasonal naïve comparator by a clear margin on pooled MAE (Table~\ref{tab:forecast-summary}; Figure~\ref{fig:forecast_mae}). Vanilla LSTM slightly improves upon LSTM+attention on MAE at this horizon (13.40 vs.\ 14.82~$\mu$g/m$^3$), illustrating that attention is not guaranteed to reduce point error at weekly lead times without additional tuning; MAE$^{90}$ remains large for both sequence models (Table~\ref{tab:forecast-upper-decile}), with the gap especially pronounced for linear SVR. Simple naïve benchmarks stratified by Harmattan regime on an 84-day test span are summarised in Table~\ref{tab:forecast-regime}.
 
-At $H=336$~h, rankings diversify: linear SVR on tabular lag features achieves the lowest MAE among the tabulated candidates (13.94~$\mu$g/m$^3$), marginally ahead of LSTM (14.46~$\mu$g/m$^3$). LSTM+attention records higher MAE (16.29~$\mu$g/m$^3$) and near-zero pooled explanatory skill ($R^2\approx -0.01$). Rather than interpreting this as evidence against sequence modelling broadly, we emphasise that medium-horizon forecasting here approaches the limits of pooled stationarity assumptions under regime mixing; reporting should therefore pair accuracy metrics with regime-aware diagnostics whenever possible.
+At $H=336$~h, rankings diversify: linear SVR on tabular lag features achieves the lowest pooled MAE among the tabulated candidates (13.94~$\mu$g/m$^3$), marginally ahead of LSTM (14.68~$\mu$g/m$^3$). LSTM+attention records higher pooled MAE (15.41~$\mu$g/m$^3$) and only modest pooled $R^2$ (Table~\ref{tab:forecast-summary}). MAE$^{90}$ for LSTM+attention exceeds that for linear SVR in this snapshot (Table~\ref{tab:forecast-upper-decile}), underscoring that medium-horizon rankings depend on whether one emphasises pooled error or stress episodes. Rather than interpreting a single scalar as evidence against sequence modelling broadly, we emphasise that medium-horizon forecasting here approaches the limits of pooled stationarity assumptions under regime mixing; reporting should therefore pair accuracy metrics with regime-aware diagnostics whenever possible. On the 84-day regime-stratified tabular evaluation (Table~\ref{tab:tabular-regime-mae}), ridge AR+Fourier deteriorates sharply in Harmattan relative to pre-Harmattan at this lead, whereas RF and XGBoost remain more stable across regimes (still not comparable numerically to the 28-day pooled table).
 
 \subsubsection{Long-terms (28d)}\label{sec:res672}
-At $H=672$~h, pooled $R^2$ for the sequence models tabulated becomes negative (Table~\ref{tab:forecast-summary}), indicating limited incremental variance explained relative to the test-set mean predictor under this split. Nonetheless, MAE remains competitive for operational comparisons: LSTM+attention yields MAE~=~13.48~$\mu$g/m$^3$, slightly lower than LSTM (14.15~$\mu$g/m$^3$) and ridge AR+Fourier (15.28~$\mu$g/m$^3$). Upper-tail episodes remain systematically harder for all models at long leads, consistent with the concentration extremes visible in Figure~\ref{fig:pm25_distribution}.
+At $H=672$~h, pooled $R^2$ is negative for both sequence architectures tabulated (Table~\ref{tab:forecast-summary}), indicating limited incremental variance explained relative to the test-set mean predictor under this split. Pooled MAE is lowest for ridge AR+Fourier (15.28~$\mu$g/m$^3$) and for vanilla LSTM (15.51~$\mu$g/m$^3$), whereas LSTM+attention yields much higher pooled MAE (29.77~$\mu$g/m$^3$) and the largest MAE$^{90}$ among sequence models in Table~\ref{tab:forecast-upper-decile}. Random Forest and XGBoost remain competitive on pooled MAE relative to several baselines. Upper-tail episodes (MAE$^{90}$) remain systematically harder than pooled MAE for all models at this lead, consistent with the concentration extremes in Figure~\ref{fig:pm25_distribution} and with the diagnostic scatter plots at 24~h (Figure~\ref{fig:scatter_tabular_h24}).
 
 \section{Discussion}\label{sec4}
 

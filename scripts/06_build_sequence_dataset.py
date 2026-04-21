@@ -24,8 +24,10 @@ def seq_len_for_horizon(h: int) -> int:
     if h <= 24:
         return 168  # 7 days
     if h <= 168:
-        return 168
-    return 336  # 14 days for 14d / 28d targets
+        return 336  # 14 days for weekly-ahead
+    if h <= 336:
+        return 672  # 28 days for 14d-ahead
+    return 1344  # 56 days for 28d-ahead
 
 
 def main() -> None:
@@ -38,7 +40,15 @@ def main() -> None:
 
     for name, h in HORIZONS.items():
         sl = seq_len_for_horizon(h)
-        spec = SequenceSpec(horizon_hours=h, seq_len=sl, time_col=C.COL_LOCAL_DT)
+        spec = SequenceSpec(
+            horizon_hours=h,
+            seq_len=sl,
+            time_col=C.COL_LOCAL_DT,
+            add_location_onehot=True,
+            add_time_features=True,
+            add_fourier_daily=True,
+            add_fourier_weekly=True,
+        )
         X, y, target_time, meta, harmattan_y = build_sequence_arrays(df, spec)
 
         out_path = OUT_DIR / f"sequences_{name}_L{sl}.npz"

@@ -11,6 +11,7 @@ TABLES = ROOT / "reports" / "tables"
 
 TABULAR_CSV = TABLES / "results_tabular_model_metrics.csv"
 DEEP_CSV = TABLES / "results_deep_model_metrics.csv"
+DEEP_MH_CSV = TABLES / "results_deep_model_metrics_multihorizon.csv"
 STATUS_JSON = TABLES / "results_deep_models_status.json"
 OUT_LONG = TABLES / "results_merged_long.csv"
 OUT_WIDE = TABLES / "results_merged_wide_mae.csv"
@@ -70,6 +71,36 @@ def _load_deep() -> pd.DataFrame:
     return df[[c for c in cols if c in df.columns]]
 
 
+def _load_deep_multihorizon() -> pd.DataFrame:
+    """Optional: multi-horizon deep metrics (already one row per horizon)."""
+    if not DEEP_MH_CSV.exists():
+        return pd.DataFrame()
+    df = pd.read_csv(DEEP_MH_CSV)
+    if df.empty:
+        return pd.DataFrame()
+    df["pipeline"] = "deep"
+    df["horizon"] = df["horizon_hours"].map(HOURS_TO_HORIZON)
+    df["model"] = df["model"].astype(str)
+    rename_map = {
+        "n_train_split": "n_train",
+        "n_val_split": "n_val",
+        "n_test_split": "n_test",
+    }
+    df = df.rename(columns={k: v for k, v in rename_map.items() if k in df.columns})
+    base = [
+        "pipeline",
+        "horizon",
+        "horizon_hours",
+        "model",
+        "mae",
+        "rmse",
+        "r2",
+    ]
+    rest = [c for c in df.columns if c not in base]
+    cols = [c for c in base if c in df.columns] + [c for c in rest if c in df.columns]
+    return df[[c for c in cols if c in df.columns]]
+
+
 def _wide_mae(long_df: pd.DataFrame) -> pd.DataFrame:
     """Pivot: rows=model (+pipeline), columns=horizon, values=MAE."""
     if long_df.empty or "mae" not in long_df.columns:
@@ -86,12 +117,15 @@ def _wide_mae(long_df: pd.DataFrame) -> pd.DataFrame:
 def main() -> None:
     tab = _load_tabular()
     deep = _load_deep()
+    deep_mh = _load_deep_multihorizon()
 
     parts = []
     if not tab.empty:
         parts.append(tab)
     if not deep.empty:
         parts.append(deep)
+    if not deep_mh.empty:
+        parts.append(deep_mh)
 
     if not parts:
         print(f"No inputs found. Expected at least {TABULAR_CSV}")

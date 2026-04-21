@@ -90,8 +90,17 @@ def build_mh_lstm_attention(
     inp = keras.Input(shape=input_shape[1:])
     seq = layers.LSTM(lstm_units, return_sequences=True)(inp)
     seq = layers.LayerNormalization()(seq)
-    key_dim = max(8, lstm_units // num_heads)
-    attn = layers.MultiHeadAttention(num_heads=num_heads, key_dim=key_dim)(seq, seq, seq)
+    # IMPORTANT: dot-product self-attention is O(T^2) in sequence length T.
+    # For long lookbacks (e.g., T=1344 for 56 days), this can OOM on GPU.
+    # We downsample the time axis before attention to make it tractable.
+    attn_stride = int(os.environ.get("AIRP_ATTN_STRIDE", "4"))
+    if attn_stride > 1:
+        seq_attn = layers.AveragePooling1D(pool_size=attn_stride, strides=attn_stride, padding="valid")(seq)
+    else:
+        seq_attn = seq
+    num_heads = int(os.environ.get("AIRP_NUM_HEADS", str(num_heads)))
+    key_dim = max(8, lstm_units // max(1, num_heads))
+    attn = layers.MultiHeadAttention(num_heads=num_heads, key_dim=key_dim)(seq_attn, seq_attn, seq_attn)
     attn_pool = layers.GlobalAveragePooling1D()(attn)
     lstm_vec = layers.LSTM(lstm_units)(inp)
     gap_inp = layers.GlobalAveragePooling1D()(inp)
@@ -111,6 +120,8 @@ def train_one(
     epochs: int = 100,
     batch_size: int = 128,
 ):
+    # Allow overriding batch size to avoid GPU OOM on long sequences / attention.
+    batch_size = int(os.environ.get("AIRP_BATCH_SIZE", str(batch_size)))
     model.compile(optimizer=keras.optimizers.Adam(1e-3), loss="mse", metrics=["mae"])
     cb = [
         keras.callbacks.EarlyStopping(monitor="val_loss", patience=14, restore_best_weights=True),

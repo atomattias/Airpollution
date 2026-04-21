@@ -169,7 +169,10 @@ def main() -> None:
     )
     train, _val, test, meta = time_split_by_target_time(ds, cfg=cfg)
 
-    requested = os.environ.get("AIRP_SCATTER_MODELS", "rf,linear_svr,xgboost").strip()
+    # NOTE: Some environments can crash with low-level floating point exceptions
+    # in specific estimators (observed for LinearSVR on some macOS builds).
+    # Default to robust tree models; you can explicitly request linear_svr if desired.
+    requested = os.environ.get("AIRP_SCATTER_MODELS", "rf,xgboost").strip()
     requested_set = {m.strip() for m in requested.split(",") if m.strip()}
 
     models: dict[str, object] = {}
@@ -204,11 +207,15 @@ def main() -> None:
         )
 
     for name, model in models.items():
-        y_true, y_pred, tt = _fit_predict(model, train, test)
-        title = f"{name} ({hz}) — test window from {meta['test_start']:%Y-%m-%d} to {meta['tmax']:%Y-%m-%d}"
-        out = FIGS_DIR / f"results_scatter_{name}_{hz}.png"
-        _plot_triptych(y_true=y_true, y_pred=y_pred, tt=tt, title=title, out_path=out)
-        print(f"Wrote {out}")
+        try:
+            y_true, y_pred, tt = _fit_predict(model, train, test)
+            title = f"{name} ({hz}) — test window from {meta['test_start']:%Y-%m-%d} to {meta['tmax']:%Y-%m-%d}"
+            out = FIGS_DIR / f"results_scatter_{name}_{hz}.png"
+            _plot_triptych(y_true=y_true, y_pred=y_pred, tt=tt, title=title, out_path=out)
+            print(f"Wrote {out}")
+        except Exception as e:
+            # Keep the script usable even when one model fails in a given environment.
+            print(f"Skipping {name} due to error: {e!s}")
 
 
 if __name__ == "__main__":

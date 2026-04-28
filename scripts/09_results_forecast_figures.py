@@ -26,8 +26,10 @@ def main() -> None:
     df = df.set_index("pipeline_model")
 
     series_map = {
-        "deep:lstm": "LSTM",
-        "deep:lstm_mha": "LSTM + MHA",
+        "deep:mh_lstm": "Joint LSTM (mh_lstm)",
+        "deep:mh_lstm_mha": "Joint LSTM + MHA (mh_lstm_mha)",
+        "deep:lstm": "LSTM (per-horizon)",
+        "deep:lstm_mha": "LSTM + MHA (per-horizon)",
         "tabular:ridge_ar_lag_fourier": "Ridge AR+Fourier",
         "tabular:seasonal_naive_168h": "Seasonal naïve (168 h)",
         "tabular:linear_svr": "Linear SVR",

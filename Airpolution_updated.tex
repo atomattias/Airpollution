@@ -1,0 +1,797 @@
+%% 
+%% Copyright 2019-2020 Elsevier Ltd
+%% 
+%% This file is part of the 'CAS Bundle'.
+%% --------------------------------------
+%% 
+%% It may be distributed under the conditions of the LaTeX Project Public
+%% License, either version 1.2 of this license or (at your option) any
+%% later version.  The latest version of this license is in
+%%    http://www.latex-project.org/lppl.txt
+%% and version 1.2 or later is part of all distributions of LaTeX
+%% version 1999/12/01 or later.
+%% 
+%% The list of all files belonging to the 'CAS Bundle' is
+%% given in the file `manifest.txt'.
+%% 
+%% Template article for cas-sc documentclass for 
+%% double column output.
+
+%\documentclass[a4paper,fleqn,longmktitle]{cas-sc}
+\documentclass[a4paper,fleqn]{cas-sc}
+\usepackage[utf8]{inputenc}
+\usepackage{newunicodechar}
+\newunicodechar{₂}{$_2$}
+\newunicodechar{₅}{$_5$}
+
+ \usepackage[numbers]{natbib}
+%\usepackage[authoryear]{natbib}
+%\usepackage[authoryear,longnamesfirst]{natbib}
+\usepackage{rotating}%
+\usepackage{multirow}%
+\usepackage{booktabs}%
+\usepackage{graphicx}%
+% Overleaf: put PNG/PDF figures in ./figs/ (matches Elsevier convention). Repo also searches figures/ and reports/.
+\graphicspath{{figs/}{figures/}{./}{reports/figures/}}
+\usepackage{subcaption}
+\usepackage{float}%
+%%%Author definitions
+\def\tsc#1{\csdef{#1}{\textsc{\lowercase{#1}}\xspace}}
+\tsc{WGM}
+\tsc{QE}
+\tsc{EP}
+\tsc{PMS}
+\tsc{BEC}
+\tsc{DE}
+%%%
+
+% Uncomment and use as if needed
+%\newtheorem{theorem}{Theorem}
+%\newtheorem{lemma}[theorem]{Lemma}
+%\newdefinition{rmk}{Remark}
+%\newproof{pf}{Proof}
+%\newproof{pot}{Proof of Theorem \ref{thm}}
+
+\begin{document}
+\let\WriteBookmarks\relax
+\def\floatpagepagefraction{1}
+\def\textpagefraction{.001}
+
+% Short title
+\shorttitle{Multi-Horizon Machine Learning Forecasting}
+
+% Short author
+\shortauthors{JB Diekuu et~al.}
+
+% Main title of the paper
+\title [mode = title]{Leakage-Safe Multi-Horizon Forecasting of Urban PM$_{2.5}$ Using Joint LSTM Sequence Models with Attention: Evidence from Coastal Ghana}                      
+% Title footnote mark
+% eg: \tnotemark[1]
+% \tnotemark[1,2]
+
+% Title footnote 1.
+% eg: \tnotetext[1]{Title footnote text}
+% \tnotetext[<tnote number>]{<tnote text>} 
+%\tnotetext[1]{This document is the results of the research project funded by the National Science Foundation.}
+
+% \tnotetext[2]{The second title footnote which is a longer text matter
+%    to fill through the whole text width and overflow into
+%    another line in the footnotes area of the first page.}
+
+
+% First author
+%
+% Options: Use if required
+% eg: \author[1,3]{Author Name}[type=editor,
+%       style=chinese,
+%       auid=000,
+%       bioid=1,
+%       prefix=Sir,
+%       orcid=0000-0000-0000-0000,
+%       facebook=<facebook id>,
+%       twitter=<twitter id>,
+%       linkedin=<linkedin id>,
+%       gplus=<gplus id>]
+\author[]{John-Bosco Diekuu}
+                        %[type=editor,
+                        %auid=000,bioid=1,
+                        %prefix=Sir,
+                        %role=Researcher,
+                        %orcid=0000-0001-7511-2910]
+
+% Corresponding author indication
+\cormark[1]
+
+% Footnote of the first author
+%\fnmark[1]
+
+% Email id of the first author
+\ead{j.diekuu@rgu.ac.uk}
+
+% URL of the first author
+%\ead[url]{www.cvr.cc, cvr@sayahna.org}
+
+%  Credit authorship
+% \credit{Conceptualization, Methodology, Resources,Formal analysis, Data curation, Investigation, Writing - original draft, Writing - review \& editing, Visualization}
+
+% Address/affiliation
+\affiliation[1]{organization= {School of Computing}, {Robert Gordon University},
+    addressline={Garthdee}, 
+    city={Aberdeen},
+    % citysep={}, % Uncomment if no comma needed between city and postcode
+    postcode={AB10 7GJ}, 
+    % state={},
+    country={UK}}
+
+% Second author
+\author%
+%[]
+{Ulric Sena Abonie}
+%\cormark[2]
+%\fnmark[1]
+% \ead{ms.mekala@rgu.ac.uk}
+%\ead[URL]{www.stmdocs.in}
+
+%\affiliation[3]{organization={STM Document Engineering Pvt Ltd.},
+  %  addressline={Mepukada}, 
+    %city={Malayinkil},
+    % citysep={}, % Uncomment if no comma needed between city and postcode
+   % postcode={695571}, 
+   % state={Trivandrum},
+   % country={India}}
+   % \credit{ Writing - review \& editing}
+% Address/affiliation
+%\affiliation[2]{organization={Sayahna Foundation},
+    % addressline={}, 
+   % city={Jagathy},
+    % citysep={}, % Uncomment if no comma needed between city and postcode
+    %postcode={695014}, 
+   % state={Trivandrum},
+  %  country={India}}
+
+% Fourth author
+\author%
+%[]
+{Prosper K. Yeng}
+%\cormark[2]
+%\fnmark[1]
+% \ead{j.p.isaacs@rgu.ac.uk}
+%\ead[URL]{www.stmdocs.in}
+
+%\affiliation[3]{organization={STM Document Engineering Pvt Ltd.},
+  %  addressline={Mepukada}, 
+    %city={Malayinkil},
+    % citysep={}, % Uncomment if no comma needed between city and postcode
+   % postcode={695571}, 
+   % state={Trivandrum},
+   % country={India}}
+   % \credit{ Writing - review \& editing}
+\author%
+%[]
+{Eric Kemeh}
+%\cormark[2]
+%\fnmark[1]
+% \ead{j.p.isaacs@rgu.ac.uk}
+%\ead[URL]{www.stmdocs.in}
+
+%\affiliation[3]{organization={STM Document Engineering Pvt Ltd.},
+  %  addressline={Mepukada}, 
+    %city={Malayinkil},
+    % citysep={}, % Uncomment if no comma needed between city and postcode
+   % postcode={695571}, 
+   % state={Trivandrum},
+   % country={India}}
+   % \credit{ Writing - review \& editing}
+
+   \author[]{Eyad Elyan}
+
+% Third author
+%\author[2,3]{CV Rajagopal}[%
+  % role=Co-ordinator,
+   %suffix=Jr,
+  % ]
+% \cormark[2]
+%\fnmark[1]
+% \ead{e.elyan@rgu.ac.uk}
+%\ead[URL]{www.sayahna.org}
+
+% \credit{Conceptualization, Methodology, Formal analysis, Investigation, Writing - original draft, Writing - review \& editing, Data curation}
+
+
+% Corresponding author text
+\cortext[cor1]{Corresponding author}
+% \cortext[cor2]{Principal corresponding author}
+
+
+% Footnote text
+% \fntext[fn1]{This is the first author footnote. but is common to third
+%   author as well.}
+% \fntext[fn2]{Another author footnote, this is a very long footnote and
+%   it should be a really long footnote. But this footnote is not yet
+%   sufficiently long enough to make two lines of footnote text.}
+
+% % For a title note without a number/mark
+% \nonumnote{This note has no numbers. In this work we demonstrate $a_b$
+%   the formation Y\_1 of a new type of polariton on the interface
+%   between a cuprous oxide slab and a polystyrene micro-sphere placed
+%   on the slab.
+%   }
+
+% Here goes the abstract
+\begin{abstract}
+Accurate forecasting of fine particulate matter (PM$_{2.5}$) is critical for managing air quality risks in rapidly urbanising cities, yet forecasting in sub-Saharan Africa is constrained by sparse monitoring and limited leakage-safe evaluation of modern models. This study presents a multi-horizon PM$_{2.5}$ forecasting framework using five months of hourly ground-based observations (September 2025--February 2026) from seven fixed sites in Tema, coastal Ghana, a city that experiences strong seasonal pollution from Harmattan dust.
+
+We benchmark Long Short-Term Memory (LSTM) sequence models against seasonal-na\"{i}ve and Ridge+Fourier autoregressive baselines, and classical machine learning models (linear SVR, Random Forest, XGBoost) using direct forecasting at 24~h, 7~d, 14~d, and 28~d horizons under leakage-safe, label-time blocked splits. We additionally evaluate \emph{joint} multi-horizon training, where one model predicts all horizons simultaneously, to test whether sharing information across lead times improves generalisation. Evaluation reports pooled MAE and upper-decile MAE (MAE$^{90}$), alongside regime-aware diagnostics where feasible.
+
+Four findings emerge from this limited five-month observational window.
+
+\textbf{First, joint multi-horizon training materially improves accuracy across horizons.} The best model at 24~h is a jointly trained LSTM (MAE 10.82~\textmu g/m\textsuperscript{3}), while a jointly trained LSTM+multi-head attention achieves the lowest MAE at 7~d, 14~d, and 28~d (12.03, 9.88, and 12.00~\textmu g/m\textsuperscript{3}, respectively), outperforming both per-horizon LSTM baselines and seasonal-na\"{i}ve forecasts.
+
+\textbf{Second, attention alone does not consistently improve per-horizon models, but becomes highly effective under joint multi-horizon training.} In per-horizon direct training, the attention-augmented LSTM is not consistently better than a vanilla LSTM; however, in the jointly trained setting, attention yields the best pooled MAE at 7--28~days.
+
+\textbf{Third, spike prediction remains an open challenge for all models.} Even for the best-performing joint models, upper-decile error MAE$^{90}$ is typically about three times larger than pooled MAE (e.g., at 14~d: 34.33 vs 9.88~\textmu g/m\textsuperscript{3}).
+
+\textbf{Fourth, the Harmattan regime shift substantially increases forecast error.} Regime-stratified evaluation indicates that Harmattan-period error is consistently higher than pre-Harmattan error for multiple baselines, underscoring the need for regime-aware reporting in seasonal West African settings.
+
+Given the limited five-month observational window, these findings are preliminary but actionable. We conclude that (a) leakage-safe evaluation is essential; (b) joint multi-horizon training can substantially improve medium- and long-horizon forecasting; and (c) tail-aware metrics such as MAE$^{90}$ should be standard reporting practice for public-health-oriented forecasting systems.
+
+\end{abstract}
+
+
+
+% Use if graphical abstract is present
+% \begin{graphicalabstract}
+% \includegraphics{figs/grabs.pdf}
+% \end{graphicalabstract}
+
+% Research highlights
+\begin{highlights}
+\item Leakage-safe multi-horizon evaluation of PM$_{2.5}$ forecasting in Tema, Ghana using five months of hourly data from seven fixed sites.
+\item Joint multi-horizon training improves accuracy across lead times: best MAE at 24~h is 10.82~\textmu g/m\textsuperscript{3} (joint LSTM), while joint LSTM+attention achieves 12.03 (7~d), 9.88 (14~d), and 12.00 (28~d).
+\item Upper-decile error (MAE$^{90}$) remains $\sim$3$\times$ larger than pooled MAE even for the best models (e.g., 14~d: 34.33 vs 9.88~\textmu g/m\textsuperscript{3}), highlighting persistent spike prediction difficulty.
+\item Harmattan regime shift degrades forecast accuracy relative to pre-Harmattan, motivating regime-stratified evaluation for operational early warning.
+\end{highlights}
+
+% Keywords
+% Each keyword is seperated by \sep
+\begin{keywords}
+Urban air quality modelling\sep Multi-horizon prediction\sep PM$_{2.5}$ forecasting\sep Joint training\sep LSTM forecasting\sep Harmattan
+\end{keywords}
+
+
+\maketitle
+
+\section{Introduction} \label{sec1}
+
+Urban air quality is a defining element of the quality of life and the health of the increasingly urban population of industrial societies \cite{volgyesi2008air}. The increasing population, its automobiles and industries in urban cities pollute the air and degrade the air quality \cite{kang2018air}. Ambient air pollution directly affects respiratory and cardiovascular systems, reduces life expectancy, and undermines everyday function \cite{jia2023effect,zhang2023air}. Fine particulate matter including PM$_{2.5}$ and PM$_{10}$, arising from combustion, dust, and chemical transformations, is particularly harmful because it can contain various poisonous chemicals and be breathed into human lungs. PM$_{2.5}$ is globally recognised as a critical indicator of urban air quality and is commonly used to define national air quality standards \cite{hodoli2024urban}. Elevated PM$_{2.5}$ is associated with increased hospital admissions for asthma, bronchitis and other cardiorespiratory conditions and millions of premature deaths globally each year \cite{lelieveld2019effects,world2021global}. The World Health Organization’s updated air quality guidelines recommend an annual mean PM$_{2.5}$ concentration of 5~$\mu$g/m$^3$, yet most cities exceed this threshold \cite{pai2022updated}. Environmental effects of air pollution include haze, eutrophication, and global climate change \cite{kang2018air}. Air pollution directly undermines the attainment of SDG 3 (Good Health and Well-Being) and SDG 11 (Sustainable Cities and Communities). 
+
+% Urban air quality is a defining element of environmental health in rapidly growing cities. Ambient air is a shared resource; when it degrades, it directly affects respiratory and cardiovascular systems, reduces life expectancy, and undermines everyday function \cite{jia2023effect,zhang2023air}.  Fine particulate matter (PM$_{2.5}$ and PM$_{1.0}$), arising from combustion, dust, and chemical transformations, is particularly harmful because it penetrates deep into the lungs and bloodstream. Exposure to PM$_{2.5}$ has been linked to millions of premature deaths globally each year \cite{world2021global}. The World Health Organization’s updated air quality guidelines recommend an annual mean PM$_{2.5}$ concentration of 5~$\mu$g/m$^3$, yet most cities exceed this threshold \cite{world2021global}. Elevated PM$_{2.5}$ is associated with increased hospital admissions for asthma, bronchitis and other cardiopulmonary conditions \cite{lelieveld2019effects}. Improving air quality contributes directly to SDG~3 (Good Health and Well-Being) and SDG~11 (Sustainable Cities and Communities).
+Air pollution has become a pressing problem for developing countries, due to the rapid development in industry and transportation \cite{zheng2016design}. Urban air quality management is dependent on the availability of local air pollution data and the ability to predict future pollution patterns. If air quality continues to deteriorate, the cost of pollution harness may become a heavy burden for governments \cite{zheng2016design}. Thus, air quality monitoring systems are very useful in effectively monitoring air pollution before the situation becomes worse \cite{zheng2016design}. Research in developed countries demonstrates that systematic measurement and policy can improve air quality. In cities in the UK, the introduction of ultra-low emission zones and stricter vehicle standards reduced traffic-related PM$_{2.5}$ and nitrogen dioxide, lowering population exposure \cite{rodrigues2025london}. Similarly, dense monitoring networks in cities such as Tokyo and Los Angeles have enabled real-time air quality forecasting, supporting public health advisories and mitigation strategies \cite{agarwal2025assessing,lu2021estimating}.
+
+% High-income cities demonstrate that systematic measurement and policy can improve air quality. In London, the introduction of ultra-low emission zones and stricter vehicle standards reduced traffic-related PM$_{2.5}$ and nitrogen dioxide, lowering population exposure \cite{rodrigues2025london}. Dense monitoring networks in cities such as Tokyo and Los Angeles have enabled real-time air quality forecasting, supporting public health advisories and mitigation strategies.
+% These patterns are relevant for Accra, Ghana, where PM$_{2.5}$ burdens are elevated due to road transport emissions, industrial activity, open waste burning and seasonal Harmattan dust incursions. Community-based measurements in Greater Accra show seasonal PM$_{2.5}$ peaks that coincide with increases in respiratory symptoms.
+
+
+In many developing countries, air quality management remains constrained by sparse monitoring and limited forecasting capacity. Studies from Nairobi and Kampala report ambient PM$_{2.5}$ levels several times above WHO guidelines, with pronounced diurnal and seasonal variation driven by traffic, biomass combustion and dust \cite{atuyambe2025air,singh2022urban}. Studies across Africa consistently identify asthma as the most common health condition associated with elevated PM$_{2.5}$, such as vehicular pollution \cite{glenn2022ambient}, alongside chronic bronchitis, chronic obstructive pulmonary disease (COPD), and allergic rhinitis \cite{nkansah2025assessment}. In 2019, approximately 1.1 million deaths were attributed to air pollution, making it the second leading cause of mortality on the continent \cite{nkansah2025assessment}.
+
+In Ghana, empirical studies identify particulate matter and gaseous emissions as major contributors to ambient air pollution, driven by biomass combustion, petroleum fuel use, and transportation activities \cite {amegah2022particulate,nkansah2025assessment}. In 2018 alone, air pollution was linked to approximately 28,000 deaths nationwide \cite{sewor2021ghana}. National burden estimates further indicate that ambient air pollution contributes substantially to premature mortality in Ghana, with thousands of deaths and disability-adjusted life years recorded annually \cite{owusu2020global}. Chronic respiratory conditions, including COPD and asthma, have increased over the past three decades, consistent with prolonged exposure to environmental irritants such as PM$_{2.5}$ and dust \cite{mensah2025burden}. 
+School-based and urban monitoring campaigns report pronounced peaks driven by the harmattan and traffic-related spikes, with levels frequently exceeding WHO thresholds \cite{lu2021estimating,owusu2025spatiotemporal}. Air quality exhibits irregular shifts, nonlinear pollutant–meteorological interactions, and extreme upper-tail events that drive respiratory risk \cite{alli2021spatial}. These trends reinforce that improving air quality is both an environmental objective and a public health imperative. However, existing studies primarily focus on exposure measurement and source characterization, with little or no attention to temporal forecasting. This may limit public health systems' ability to anticipate high-risk periods and issue timely public health advisories. Data captured by current low-cost micro-sensor networks provides an avenue for advanced time-series analysis and pollution predictions. This study seeks to answer two questions: (i) How effectively can deep learning models anticipate high-pollution episodes that carry the greatest health risk? (ii) Which temporal patterns and predictors are most influential in forecasting hazardous events?
+
+% However, current studies in Accra often utilised traditional machine learning models that lack the capacity to capture temporal dimensions. 
+
+% Prior studies in Ghana consistently show that ambient PM$_{2.5}$ concentrations exceed health-based guidelines and exhibit strong diurnal and seasonal variability. School-based and urban monitoring campaigns report pronounced Harmattan-driven peaks and traffic-related spikes, with levels frequently surpassing WHO thresholds \cite{owusu2020global,owusu2025spatiotemporal}. Thus, air pollution in Ghana is persistent, episodic, and health-relevant \cite{alli2021spatial}. However, existing studies focus primarily on exposure measurement and source characterization. Operational temporal forecasting systems that can anticipate high-pollution episodes remain largely absent. Consequently, monitoring capacity in Ghana has improved through low-cost sensor deployments and satellite-assisted estimation approaches. Micro-sensor networks in Accra demonstrate the feasibility of high-resolution ground monitoring after calibration \cite{attey2025utility,hodoli2024urban}. Models using satellite aerosol optical depth, low-cost micro-sensors, and meteorology data show that machine learning can improve predictive accuracy relative to simple linear models \cite{adong2025evaluating,aram2024machine}. Yet these approaches remain limited to retrospective estimation or short-term interpolation. 
+% They do not provide robust multi-horizon forecasts capable of supporting early warning, health advisories, or mitigation planning.
+
+% There is therefore a clear methodological and operational gap. Ghana’s air quality literature documents seasonal regime shifts, nonlinear pollutant–meteorology interactions, and extreme upper-tail events that drive respiratory risk. These characteristics require forecasting models that capture both short-term dynamics and longer memory effects. This study addresses that gap by developing a multi-horizon deep learning forecasting framework for Accra. By combining corrected ground-based PM$_{2.5}$ observations with meteorological and temporal features, and by evaluating performance under high-pollution stress conditions, the study moves beyond measurement toward actionable prediction. This contribution supports risk-informed public health planning and aligns with national and global goals for sustainable urban air quality management.
+
+% Ghana’s air quality literature documents seasonal regime shifts, nonlinear pollutant–meteorology interactions, and extreme upper-tail events that drive respiratory risk. Real-time forecasting systems capturing temporal dynamics are absent. In addition to temporal dimension, it is important to take into account the spatial interactions between monitoring locations. Pollution levels at one station may be influenced by neighbouring sites through shared emission sources, transport pathways, and atmospheric dispersion. Ignoring these spatial dependencies can limit predictive accuracy and mask localized risk patterns. Traditional machine learning and statistical forecasting methods often fail to capture nonlinear interactions among pollutant sources, weather, and temporal patterns. Therefore, there is an urgent need for accurate, operational multi-horizon PM$_{2.5}$ forecasting in Accra to support early warning, clinical preparedness, public health advisories, and policy formulations. 
+
+
+
+We propose a sequence-based forecasting framework using Long Short-Term Memory (LSTM) networks with two training strategies: (1) conventional per-horizon direct forecasting, and (2) joint multi-horizon training where one model predicts all lead times simultaneously. We evaluate both vanilla LSTM and multi-head attention-augmented variants. The joint training approach --- particularly when combined with attention --- yields the strongest results at 7--28~day horizons in this dataset, suggesting that sharing information across lead times provides valuable inductive bias in this data-sparse setting. Performance is assessed at 24~h, 7~d, 14~d, and 28~d, benchmarked against seasonal-na\"{i}ve, Ridge+Fourier, and classical machine learning baselines, with stress testing on upper-decile PM$_{2.5}$ episodes.
+
+
+
+% \section{Related work}
+
+
+\section{Methodology}\label{sec2}
+
+\subsection{Description of Equipment Used for Data Collection}
+Air quality data were collected using the AirGradient Open Air monitor (Model O-1PST), an outdoor air quality monitoring device designed to assess ambient environmental conditions. The instrument measures key air quality parameters, including particulate matter (PM$_{2.5}$), carbon dioxide (CO$_2$), total volatile organic compounds (TVOCs), nitrogen oxides (NO$_x$), and meteorological parameters such as temperature and relative humidity. 
+The monitoring sites included: Tema Port, Tema Community 7, Royal School, Tema Community 25 Estate, Divine Healer’s Church (Bethlehem), Satet International School, Tema Manhean, and Kpone Methodist School.
+These locations were strategically selected to represent a mix of industrial and residential environments along Ghana’s eastern Greater Accra coast (Tema). The inclusion of industrial zones (e.g., Tema Port) enables assessment of emissions from industrial activities, while residential and institutional areas (e.g., schools and communities) provide insight into population exposure to air pollution. 
+All monitoring instruments used in this study are ground-based sensors, installed at fixed locations to measure ambient air quality in real time.
+
+
+\subsection{LSTM architecture}
+The Long Short-Term Memory (LSTM) network, introduced by Hochreiter and Schmidhuber \cite{hochreiter1997long}, extends the traditional recurrent neural network (RNN) architecture to address the vanishing and exploding gradient problems commonly encountered during sequence training \cite{abbasimehr2022improving}. Unlike standard RNNs, LSTMs incorporate a structured memory cell that enables stable learning of long-range temporal dependencies.
+
+Each LSTM unit consists of a memory cell and three gating mechanisms: the input gate $i(t)$, the forget gate $f(t)$, and the output gate $o(t)$. These gates regulate the flow of information into, within, and out of the cell state $c(t)$. The forget gate $f(t)$ determines which previously stored information should be discarded. The input gate $i(t)$ controls which new information is written into the cell state. The output gate $o(t)$ governs how much of the updated cell state is exposed as the hidden output. This gated structure allows the LSTM to selectively retain relevant historical signals while suppressing noise.
+
+Given an input vector $x(t)$ at time step $t$, the LSTM updates its internal states according to a sequence of nonlinear transformations. The hidden states $h(t-1)$ and $h(t)$ represent the output activations at time steps $t-1$ and $t$, respectively. The full modelling process is formally defined by Equations (\ref{equ1}-\ref{equ5}), which describe the gating operations and cell state updates that collectively enable long-term sequence learning.
+\begin{equation}
+i_t = \sigma \left( W_{x_i} \cdot x_t + W_{h_i} \cdot h_{t-1} + W_{c_i} \cdot c_{t-1} + b_i\right)
+\label{equ1}
+\end{equation}
+\begin{equation}
+f_t = \sigma\left(W_{x_f} \cdot x_t + W_{h_f} \cdot h_{t-1} + W_{c_f} \cdot c_{t-1} + b_f\right)
+\label{equ2}
+\end{equation}
+\begin{equation}
+c_t = f_t \cdot c_{t-1} + i_t \tanh\left(W_{x_c} \cdot x_t + W_{h_c} \cdot h_{t-1} + b_c\right)
+\label{equ3}
+\end{equation}
+\begin{equation}
+o_t = \sigma\left(W_{x_o} \cdot x_t + W_{h_o} \cdot h_{t-1} + W_{c_o} \cdot c_t + b_o\right)
+\label{equ4}
+\end{equation}
+\begin{equation}
+h_t = o_t \tanh\left(c_t\right)
+\label{equ5}
+\end{equation}
+
+\subsection{Multi-Head Attention}
+
+Attention mechanisms have recently demonstrated strong performance in sequence modelling, particularly in natural language processing \cite{abbasimehr2022improving}. Vaswani et al. \cite{vaswani2017attention} proposed the transformer architecture, showing that attention alone can effectively model dependencies in sequential data without relying solely on recurrence. In this study, we adopt the multi-head attention mechanism proposed by Vaswani et al. to enhance temporal representation learning.
+
+An attention function operates by mapping a query matrix and corresponding key–value pairs to an output representation. This operation, commonly referred to as scaled dot-product attention, computes similarity scores between queries and keys, scales them, and applies a softmax function to obtain attention weights. These weights are then used to aggregate the values, producing a context-aware representation of the sequence.
+
+Multi-head attention extends this mechanism by employing multiple parallel attention heads. Each head learns a distinct projection of the input sequence, enabling the model to capture diverse temporal relationships at different positions and feature subspaces \cite{li2018multi}. By jointly attending to multiple aspects of the sequence, the multi-head structure enhances the model’s ability to represent complex, long-range dependencies in time-series data.
+
+
+\subsection{Architecture of the LSTM with attention mechanism}
+The proposed framework proceeds as follows. The model first derives a latent representation from the LSTM component and a complementary representation from the multi-head attention module. These learned embeddings are then concatenated with a residual copy of the original input sequence. The combined feature vector is passed to a fully connected dense layer to generate the final prediction.
+The LSTM component is designed to capture long-term temporal dependencies inherent in sequential data. Its gated structure explicitly models the ordered nature of time series and preserves relevant historical information across extended horizons. In parallel, the multi-head attention mechanism identifies salient temporal features by assigning adaptive weights to different time steps and feature dimensions. This is particularly important in environmental time series, where specific periods (e.g., peak hours or seasonal transitions) contribute disproportionately to forecast accuracy.
+
+Both the LSTM and attention modules receive the raw input sequence structured in input–output format. To enable fusion of the learned representations, a flattening operation reshapes their outputs into compatible vectors. These vectors, together with a transformed copy of the original time series input, are concatenated into a unified feature representation. The dense output layer then maps this integrated representation to the forecast value.
+
+We note that the benefit of attention in this study is contingent on training setup: in per-horizon direct training, attention does not consistently improve over vanilla LSTM; however, in the joint multi-horizon setting, attention becomes the best-performing variant (see Results).
+
+
+\subsection{Dataset Analysis}
+This study uses ground-based air quality data collected from fixed monitoring sensors deployed across multiple locations in Tema, Ghana. The dataset spans from 19 September 2025 to 15 February 2026, covering approximately five months of continuous monitoring. Observations are recorded at hourly resolution, resulting in 23,816 time-stamped records. Each observation includes corrected particulate and environmental measurements. The primary outcome variable is PM$_{2.5}$ (µg/m$^3$), representing fine particulate matter concentrations. Additional particulate indicators include PM$_{1}$, PM$_{10}$, and particle number concentration (0.3 µm). Environmental covariates comprise temperature (°C), relative humidity (\%), carbon dioxide (ppm), total volatile organic compounds (TVOC, ppb), and a nitrogen oxides (NOX) index. Metadata fields include location, sensor identifiers, and time, as well as categorical indicators such as location name and site openness.
+Monitoring sites represent diverse micro-environments within Tema, including residential areas, school environments, and mixed-use urban zones. This spatial diversity allows assessment of geographic heterogeneity in pollutant levels. All timestamps are provided in local time, enabling the extraction of temporal features such as hour of day, day of week, and seasonal indicators.
+
+Data quality assessment indicated minimal missingness for core particulate variables. TVOC and NOX variables contained approximately 3.6\% missing observations, primarily clustered toward the end of the study period, likely due to temporary sensor interruptions. Short gaps were imputed using time-ordered linear interpolation to preserve temporal continuity. Variables with no informational variance (e.g., constant site descriptors) and non-essential identifiers were removed prior to modelling.
+The study period captures both pre-Harmattan and Harmattan conditions, allowing analysis of strong seasonal variability in PM$_{2.5}$. This temporal coverage is suitable for evaluating short- (24 h), medium- (7 d) and (14 d), and extended (28 d) forecasting horizons under varying atmospheric regimes.
+
+\subsection{Forecasting formulation and experimental protocol}
+We formulate multi-horizon forecasting as \emph{direct} regression: for forecast origin time $t$ and horizon $H \in \{24,168,336,672\}$ hours, the target is corrected PM$_{2.5}$ at label time $t+H$. Sequence models consume a fixed-length history of past hours ending at $t$; tabular baselines use lag--rolling--Fourier features constructed from information available at or before $t$. Train, validation, and test partitions are defined by \emph{label time} using contiguous blocks, with the most recent segment reserved for testing, so that future observations cannot influence training. Models are compared using mean absolute error (MAE), root mean squared error (RMSE), and coefficient of determination ($R^2$), supplemented by evaluation on the upper decile of observed concentrations and by stratification into pre-Harmattan versus Harmattan regimes where applicable.
+
+\begin{table}[htb]
+\centering
+\caption{Basic Statistics for Various Environmental Parameters}
+\resizebox{0.7500\textwidth}{!}{%
+% \begin{tabular}{lccccccccc}
+\begin{tabular}{llrrrrrr}
+\toprule
+Location & Parameter & Mean & Std & 25\% & 50\% (Median) & 75\% & Skewness \\
+\midrule
+
+\multirow{11}{*}{Divine Healer’s Church, Bethlehem}
+& PM$_{2.5}$ & 35.1507 & 20.4792 & 22.4 & 33.4 & 44.4 & 1.7861 \\
+& PM$_1$ & 21.7871 & 12.9154 & 12.2 & 21.8 & 28.6 & 1.1081 \\
+& PM$_{10}$ & 39.2128 & 22.8008 & 23.3 & 37.1 & 52.4 & 1.3309 \\
+& Particle Count & 1461.6865 & 924.1628 & 816.0 & 1253.0 & 1874.0 & 1.8027 \\
+& CO$_2$ & 543.7726 & 63.8664 & 501.0 & 542.0 & 580.0 & 0.4133 \\
+& Temperature & 28.2485 & 2.4634 & 26.5 & 27.5 & 30.1 & 0.6321 \\
+& Heat Index & 33.4196 & 5.2656 & 29.5 & 32.5 & 37.5 & 0.3953 \\
+& Humidity & 85.2387 & 8.8145 & 78.0 & 89.0 & 92.0 & -0.7973 \\
+& TVOC & 143.7646 & 138.3601 & 70.0 & 102.0 & 163.0 & 3.8437 \\
+& TVOC Index & 129.0867 & 81.2753 & 73.0 & 107.0 & 162.0 & 1.4666 \\
+& NOX Index & 1.1080 & 0.4254 & 1.0 & 1.0 & 1.0 & 5.3102 \\
+\midrule
+
+\multirow{11}{*}{Kpone Methodists School}
+& PM$_{2.5}$ & 20.7903 & 21.2845 & 2.75 & 18.7 & 30.6 & 3.2142 \\
+& PM$_1$ & 12.3342 & 12.5892 & 0.85 & 9.5 & 19.9 & 1.9575 \\
+& PM$_{10}$ & 22.6451 & 23.2542 & 2.95 & 19.5 & 33.2 & 2.8317 \\
+& Particle Count & 1274.5462 & 867.9515 & 682.5 & 1044.0 & 1645.5 & 2.3753 \\
+& CO$_2$ & 1125.1575 & 481.4314 & 731.5 & 947.0 & 1464.0 & 0.9101 \\
+& Temperature & 27.7575 & 1.6000 & 26.8 & 27.7 & 28.5 & 0.7838 \\
+& Heat Index & 32.9316 & 3.8173 & 30.8 & 33.2 & 35.1 & 0.1572 \\
+& Humidity & 89.0529 & 5.8500 & 87.0 & 90.0 & 93.0 & -1.3207 \\
+& TVOC & 163.3739 & 168.2272 & 70.0 & 113.0 & 192.0 & 3.6706 \\
+& TVOC Index & 139.6331 & 92.2967 & 73.0 & 117.0 & 182.0 & 1.2540 \\
+& NOX Index & 2.7539 & 16.5221 & 1.0 & 1.0 & 2.0 & 21.4757 \\
+\midrule
+
+\multirow{11}{*}{Satet International School, Tema Manhean}
+& PM$_{2.5}$ & 34.7627 & 26.2727 & 18.9 & 29.0 & 43.0 & 2.5693 \\
+& PM$_1$ & 21.9310 & 16.1668 & 10.5 & 19.6 & 28.5 & 1.9242 \\
+& PM$_{10}$ & 38.3854 & 28.6828 & 19.9 & 31.2 & 50.6 & 2.3234 \\
+& Particle Count & 1534.1690 & 1191.2897 & 770.0 & 1149.0 & 1904.5 & 2.3721 \\
+& CO$_2$ & 409.6265 & 8.7165 & 404.0 & 410.0 & 415.0 & 1.2237 \\
+& Temperature & 28.7937 & 2.0609 & 27.4 & 28.4 & 30.5 & 0.2829 \\
+& Heat Index & 35.1443 & 4.7276 & 32.0 & 34.8 & 38.85 & 0.0125 \\
+& Humidity & 84.9601 & 7.0012 & 79.0 & 87.0 & 90.0 & -0.5559 \\
+& TVOC & 156.0372 & 161.8372 & 64.0 & 105.0 & 184.0 & 3.9079 \\
+& TVOC Index & 133.3449 & 91.1555 & 66.0 & 108.0 & 176.0 & 1.2940 \\
+& NOX Index & 1.1861 & 0.8014 & 1.0 & 1.0 & 1.0 & 13.0968 \\
+\midrule
+
+\multirow{11}{*}{Tema Community 25 Estate}
+& PM$_{2.5}$ & 19.1187 & 12.3902 & 10.8 & 16.1 & 25.6 & 1.6759 \\
+& PM$_1$ & 18.9518 & 10.5298 & 10.3 & 19.3 & 25.9 & 0.6779 \\
+& PM$_{10}$ & 33.0528 & 17.8615 & 20.5 & 30.5 & 45.3 & 0.8436 \\
+& Particle Count & 1241.2735 & 706.4633 & 742.0 & 1064.0 & 1588.0 & 1.6528 \\
+& CO$_2$ & 521.4981 & 50.3581 & 488.0 & 517.0 & 544.0 & 1.2160 \\
+& Temperature & 28.2471 & 2.1503 & 26.9 & 27.8 & 29.6 & 0.6072 \\
+& Heat Index & 33.1704 & 4.3064 & 30.6 & 32.9 & 36.0 & 0.2057 \\
+& Humidity & 83.8868 & 8.6199 & 77.0 & 87.0 & 91.0 & -0.7878 \\
+& TVOC & 141.8982 & 129.2846 & 76.0 & 105.0 & 159.0 & 4.0268 \\
+& TVOC Index & 130.0163 & 77.1320 & 80.0 & 110.0 & 159.0 & 1.6103 \\
+& NOX Index & 1.1621 & 0.5146 & 1.0 & 1.0 & 1.0 & 4.1715 \\
+\midrule
+
+\multirow{11}{*}{Tema Community 3 SSNIT Flat}
+& PM$_{2.5}$ & 24.8065 & 20.9875 & 8.1 & 21.8 & 35.925 & 2.4092 \\
+& PM$_1$ & 15.0189 & 13.2838 & 4.1 & 11.6 & 23.6 & 1.5065 \\
+& PM$_{10}$ & 27.4233 & 23.4506 & 8.5 & 22.6 & 40.8 & 2.0445 \\
+& Particle Count & 1040.5761 & 866.2836 & 451.75 & 776.0 & 1371.75 & 2.6291 \\
+& CO$_2$ & 576.1674 & 103.0334 & 501.75 & 558.0 & 632.0 & 0.9370 \\
+& Temperature & 28.1589 & 1.8527 & 26.9 & 27.9 & 29.4 & 0.2266 \\
+& Heat Index & 33.6989 & 4.4620 & 30.8 & 33.5 & 36.7 & 0.0403 \\
+& Humidity & 86.8197 & 6.3862 & 82.0 & 88.0 & 92.0 & -0.4383 \\
+& TVOC & 158.1219 & 174.1002 & 65.0 & 102.0 & 188.0 & 3.8773 \\
+& TVOC Index & 135.2513 & 95.5831 & 68.0 & 107.0 & 182.0 & 1.2931 \\
+& NOX Index & 1.3472 & 0.8285 & 1.0 & 1.0 & 1.0 & 4.8093 \\
+\midrule
+
+\multirow{11}{*}{Tema Community 7, Royal School}
+& PM$_{2.5}$ & 28.3864 & 19.7791 & 14.3 & 26.7 & 38.3 & 2.5316 \\
+& PM$_1$ & 17.4160 & 12.6373 & 6.8 & 16.7 & 25.2 & 1.3593 \\
+& PM$_{10}$ & 31.6907 & 22.3319 & 15.3 & 28.0 & 44.6 & 2.0604 \\
+& Particle Count & 1193.6866 & 859.0131 & 605.0 & 963.0 & 1548.0 & 2.5052 \\
+& CO$_2$ & 460.9066 & 31.0177 & 437.0 & 460.0 & 477.0 & 0.6816 \\
+& Temperature & 28.3482 & 2.1615 & 26.9 & 27.8 & 30.0 & 0.5604 \\
+& Heat Index & 33.7408 & 4.5352 & 31.0 & 33.4 & 37.3 & 0.1166 \\
+& Humidity & 85.2396 & 8.5591 & 79.0 & 89.0 & 92.0 & -0.8140 \\
+& TVOC & 155.6156 & 150.9939 & 74.0 & 111.0 & 182.0 & 3.8927 \\
+& TVOC Index & 137.0143 & 86.1431 & 77.0 & 115.0 & 177.0 & 1.3166 \\
+& NOX Index & 1.2561 & 0.7109 & 1.0 & 1.0 & 1.0 & 3.6172 \\
+\midrule
+
+\multirow{11}{*}{Tema Port}
+& PM$_{2.5}$ & 25.7750 & 16.7039 & 12.7 & 23.6 & 36.0 & 1.1372 \\
+& PM$_1$ & 16.0620 & 11.3525 & 6.6 & 13.8 & 24.0 & 0.9534 \\
+& PM$_{10}$ & 28.6979 & 19.3024 & 13.5 & 24.8 & 40.9 & 0.9996 \\
+& Particle Count & 1120.3803 & 741.3476 & 604.0 & 911.0 & 1446.0 & 1.7759 \\
+& CO$_2$ & 465.8182 & 24.4599 & 449.0 & 463.0 & 481.0 & 0.8227 \\
+& Temperature & 29.0394 & 1.9365 & 27.8 & 28.7 & 30.3 & 0.3989 \\
+& Heat Index & 35.7426 & 4.4853 & 32.9 & 35.4 & 38.7 & 0.1167 \\
+& Humidity & 84.0947 & 6.2794 & 80.0 & 86.0 & 89.0 & -0.7249 \\
+& TVOC & 150.3369 & 152.3300 & 68.0 & 103.0 & 176.0 & 3.9675 \\
+& TVOC Index & 130.8572 & 86.2846 & 70.0 & 107.0 & 170.5 & 1.3079 \\
+& NOX Index & 1.1991 & 0.7203 & 1.0 & 1.0 & 1.0 & 11.7325 \\
+\bottomrule
+\end{tabular}}
+\label{tab:timeseries-data}
+\end{table}
+
+Table~\ref{tab:timeseries-data} summarises the hourly observations and highlights clear spatial heterogeneity across monitoring locations. Mean PM$_{2.5}$ concentrations range from approximately 19 to 35 µg/m$^3$, consistently exceeding WHO guideline levels. Particulate variables exhibit pronounced positive skewness, indicating episodic high-concentration events rather than symmetric variability. NOX and TVOC show extreme skewness at selected sites, suggesting intermittent but intense emission episodes. In contrast, meteorological variables display lower dispersion and more stable distributions; humidity is mildly negatively skewed, while temperature remains relatively symmetric. These patterns indicate that pollutant dynamics are shaped primarily by episodic emissions and seasonal forcing, with strong localised source effects.
+
+
+
+
+
+\section{Results}\label{sec3}
+
+\subsection{Distribution of corrected PM$_{2.5}$ Concentrations in locations}
+Corrected PM$_{2.5}$ concentrations are markedly heterogeneous across the seven fixed monitoring locations in Tema. Summary statistics in Table~\ref{tab:timeseries-data} show site-level means of approximately \mbox{19--35~$\mu$g/m$^3$}, with the highest central tendency at Divine Healer's Church (mean 35.15~$\mu$g/m$^3$; median 33.4~$\mu$g/m$^3$) and comparatively lower levels at Tema Community~25 Estate (mean 19.12~$\mu$g/m$^3$; median 16.1~$\mu$g/m$^3$). Interquartile ranges differ by site (roughly 15--28~$\mu$g/m$^3$), indicating that variability---not only average exposure---depends on micro-environment. Positive skewness in PM$_{2.5}$ is present at every site (skewness from about 1.1 to 3.2), consistent with episodic excursions rather than tightly symmetric fluctuations.
+
+Figure~\ref{fig:pm25_distribution} visualises these contrasts using raw and corrected distributions by location. The figure highlights wider dispersion and heavier upper tails at sites such as Divine Healer's Church and Satet International School, reinforcing that pollution risk is spatially structured and repeatedly punctuated by high-concentration episodes across the monitoring network.
+
+\begin{figure*}[t]
+    \centering
+    \includegraphics[width=0.92\textwidth]{eda_pm25_boxplot_by_location.png}%
+    \caption{Distribution of raw and corrected PM$_{2.5}$ ($\mu$g/m$^3$) by monitoring location.}
+    \label{fig:pm25_distribution}
+\end{figure*}
+
+\subsection{Temporal diurnal Variation in corrected PM$_{2.5}$ Concentrations}
+Pooling all locations on local hourly time, corrected PM$_{2.5}$ exhibits a pronounced diurnal cycle (Figure~\ref{fig:diurnal_pooled}). Pooled hourly means rise toward a morning maximum around 05:00--07:00 (means up to approximately 48~$\mu$g/m$^3$ near 06:00), decline through midday, and reach an afternoon minimum around 13:00--14:00 (median near 15--17~$\mu$g/m$^3$), before increasing again through evening hours. This profile is broadly consistent with coupled influences of boundary-layer ventilation, emission activity rhythms, and regional aerosol transport.
+
+Harmattan versus pre-Harmattan regimes further reshape the diurnal curve (Figure~\ref{fig:diurnal_regime}). Under Harmattan conditions, pooled median concentrations remain elevated throughout the day; for example, median PM$_{2.5}$ near midday is substantially higher than under pre-Harmattan conditions at comparable clock hours (Harmattan midday medians near 23--26~$\mu$g/m$^3$ versus about 8--12~$\mu$g/m$^3$ pre-Harmattan). Early-morning peaks are likewise amplified during Harmattan (median near 50~$\mu$g/m$^3$ around 06:00) compared with pre-Harmattan (median near 36~$\mu$g/m$^3$). Together, Figures~\ref{fig:diurnal_pooled}--\ref{fig:diurnal_regime} motivate reporting forecast performance under pooled conditions while interpreting limitations whenever models must generalise across sharply different atmospheric regimes.
+
+\begin{figure*}[t]
+    \centering
+    \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{eda_diurnal_curve_pooled.png}%
+        \caption{Pooled hourly profile (mean, median, and interquartile band).}%
+        \label{fig:diurnal_pooled}
+    \end{subfigure}\hfill
+    \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{eda_diurnal_curve_by_regime.png}%
+        \caption{Median diurnal curves stratified by Harmattan versus pre-Harmattan conditions.}%
+        \label{fig:diurnal_regime}
+    \end{subfigure}
+    \caption{Diurnal variation in corrected PM$_{2.5}$ on local time (all sites pooled).}
+    \label{fig:diurnal}
+\end{figure*}
+
+\subsection{Temporal Multi-Horizon predictions}
+Forecasting models are trained and evaluated as \emph{direct} horizon-specific regressors on leakage-safe splits defined by label time (Section~\ref{sec2}), with horizons $H\in\{24,168,336,672\}$ hours. Table~\ref{tab:eval-splits} reports train, validation, and test row counts and the test-window start date for each horizon (label-time contiguous blocks; the most recent segment is held out for testing). Pooled metrics, upper-decile MAE, and the figures below are generated from the merged tabular and sequence evaluation outputs produced by the project scripts.
+
+Figure~\ref{fig:forecast_mae} summarises pooled test-set MAE across horizons for a compact set of interpretable benchmarks. In addition to per-horizon sequence models (LSTM and LSTM with multi-head attention), we include jointly trained multi-horizon sequence models (``mh\_lstm'' and ``mh\_lstm\_mha'') to test whether sharing information across lead times improves generalisation. The chart makes two empirical features immediate: joint training yields the strongest accuracy at 7--28~days in this dataset, while the upper tail remains challenging for all approaches (Table~\ref{tab:forecast-upper-decile}).
+
+\begin{figure*}[t]
+    \centering
+    \includegraphics[width=0.92\textwidth]{results_mae_by_horizon.png}%
+    \caption{Mean absolute error (MAE; $\mu$g/m$^3$) on pooled multi-site test windows for selected models, shown by direct forecasting horizon.}
+    \label{fig:forecast_mae}
+\end{figure*}
+
+Table~\ref{tab:forecast-summary} complements Figure~\ref{fig:forecast_mae} with RMSE and $R^2$ alongside MAE for headline comparisons used in Sections~\ref{sec:res24}--\ref{sec:res672}. Episode-focused error on hours whose realised PM$_{2.5}$ lies in the upper decile of the test window (MAE$^{90}$) is reported explicitly in Table~\ref{tab:forecast-upper-decile}; values there are typically far larger than pooled MAE, reflecting the heavy upper tail documented in Section~3.1.
+
+\begin{table}[H]
+\centering
+\caption{Evaluation splits by direct-forecast horizon (label-time contiguous blocks). $n$ counts hourly forecast rows after feature construction; test rows are the held-out tail of the study period.}
+\label{tab:eval-splits}
+\resizebox{0.95\textwidth}{!}{%
+\begin{tabular}{lrrrr}
+\toprule
+Horizon & $n_{\mathrm{train}}$ & $n_{\mathrm{val}}$ & $n_{\mathrm{test}}$ & Test window starts (local) \\
+\midrule
+24~h & 17\,285 & 1\,827 & 4\,037 & 2026-01-18 \\
+7~d (168~h) & 16\,277 & 1\,827 & 4\,037 & 2026-01-18 \\
+14~d (336~h) & 15\,101 & 1\,827 & 4\,037 & 2026-01-18 \\
+28~d (672~h) & 13\,263 & 1\,827 & 4\,037 & 2026-01-18 \\
+\bottomrule
+\end{tabular}}
+\end{table}
+
+\begin{table}[H]
+\centering
+\caption{Representative out-of-sample forecasting accuracy on pooled multi-site test splits (corrected PM$_{2.5}$, $\mu$g/m$^3$). ``mh\_lstm'' / ``mh\_lstm\_mha'' are jointly trained multi-horizon sequence models that output all horizons. ``Ridge AR+Fourier'' denotes the restricted autoregressive ridge baseline with seasonal Fourier terms. Values match merged pipeline outputs.}
+\label{tab:forecast-summary}
+\resizebox{0.95\textwidth}{!}{%
+\begin{tabular}{llrrr}
+\toprule
+Horizon & Model & MAE & RMSE & $R^2$ \\
+\midrule
+24~h & Joint multi-horizon LSTM (mh\_lstm) & 10.82 & 17.71 & 0.176 \\
+24~h & LSTM & 11.31 & 17.77 & 0.190 \\
+24~h & Ridge AR+Fourier & 11.96 & 18.22 & 0.210 \\
+24~h & Seasonal naïve (24h anchor) & 13.76 & 21.94 & $-0.144$ \\
+\midrule
+7~d (168~h) & Joint multi-horizon LSTM + attention (mh\_lstm\_mha) & 12.03 & 18.34 & 0.117 \\
+7~d (168~h) & Joint multi-horizon LSTM (mh\_lstm) & 12.85 & 19.54 & $-0.002$ \\
+7~d (168~h) & LSTM & 13.40 & 18.80 & 0.151 \\
+7~d (168~h) & Seasonal naïve (weekly anchor) & 15.39 & 22.74 & $-0.226$ \\
+\midrule
+14~d (336~h) & Joint multi-horizon LSTM + attention (mh\_lstm\_mha) & 9.88 & 16.63 & 0.102 \\
+14~d (336~h) & Joint multi-horizon LSTM (mh\_lstm) & 13.64 & 19.39 & $-0.220$ \\
+14~d (336~h) & LSTM & 14.68 & 20.79 & 0.120 \\
+14~d (336~h) & Linear SVR (tabular lags) & 14.52 & 19.49 & 0.096 \\
+\midrule
+28~d (672~h) & Joint multi-horizon LSTM + attention (mh\_lstm\_mha) & 12.00 & 19.26 & 0.109 \\
+28~d (672~h) & Joint multi-horizon LSTM (mh\_lstm) & 13.53 & 19.79 & 0.060 \\
+28~d (672~h) & Ridge AR+Fourier & 15.48 & 21.02 & $-0.051$ \\
+28~d (672~h) & Seasonal naïve (28d anchor) & 17.99 & 25.17 & $-0.507$ \\
+\bottomrule
+\end{tabular}}
+\end{table}
+
+\begin{table}[H]
+\centering
+\caption{Pooled MAE versus upper-decile MAE (MAE$^{90}$: mean absolute error on test hours whose observed PM$_{2.5}$ is at or above the 90th percentile of observed concentrations in the test window). Sequence rows are from deep-model metrics; tabular rows from tabular-model metrics.}
+\label{tab:forecast-upper-decile}
+\resizebox{0.95\textwidth}{!}{%
+\begin{tabular}{llrr}
+\toprule
+Horizon & Model & MAE & MAE$^{90}$ \\
+\midrule
+24~h & Joint multi-horizon LSTM (mh\_lstm) & 10.82 & 37.34 \\
+24~h & Joint multi-horizon LSTM + attention (mh\_lstm\_mha) & 12.42 & 32.78 \\
+24~h & LSTM & 11.31 & 36.37 \\
+24~h & Ridge AR+Fourier & 11.96 & 35.65 \\
+\midrule
+7~d (168~h) & Joint multi-horizon LSTM + attention (mh\_lstm\_mha) & 12.03 & 33.99 \\
+7~d (168~h) & Joint multi-horizon LSTM (mh\_lstm) & 12.85 & 38.71 \\
+7~d (168~h) & LSTM & 13.40 & 31.72 \\
+\midrule
+14~d (336~h) & Joint multi-horizon LSTM + attention (mh\_lstm\_mha) & 9.88 & 34.33 \\
+14~d (336~h) & Joint multi-horizon LSTM (mh\_lstm) & 13.64 & 37.04 \\
+14~d (336~h) & LSTM & 14.68 & 31.51 \\
+\midrule
+28~d (672~h) & Joint multi-horizon LSTM + attention (mh\_lstm\_mha) & 12.00 & 37.88 \\
+28~d (672~h) & Joint multi-horizon LSTM (mh\_lstm) & 13.53 & 35.96 \\
+28~d (672~h) & Ridge AR+Fourier & 15.48 & 32.73 \\
+\bottomrule
+\end{tabular}}
+\end{table}
+
+To complement pooled accuracy in Table~\ref{tab:forecast-summary}, Figure~\ref{fig:scatter_tabular_h24} shows \emph{point-level} test-set diagnostics for three tabular models at $H{=}24$~h only (Random Forest, linear SVR, XGBoost). Each row gives: (left) actual versus predicted PM$_{2.5}$ with the $y{=}x$ reference; (center) residuals versus predicted values; (right) actual and predicted series against label time on the held-out test window. These panels make systematic behaviour at moderate versus high concentrations visible in a way that scalar MAE/RMSE alone does not; we retain a single horizon here to avoid repeating the same message across figures.
+
+\begin{figure*}[!t]
+    \centering
+    \begin{subfigure}[b]{\textwidth}
+        \centering
+        \IfFileExists{results_scatter_rf_h24.png}{%
+            \includegraphics[width=0.95\textwidth]{results_scatter_rf_h24.png}%
+        }{%
+            \fbox{\parbox[c][0.20\textheight][c]{0.95\linewidth}{\centering \textbf{Missing figure:} \texttt{results\_scatter\_rf\_h24.png}}}%
+        }%
+        \caption{Random Forest (tabular lags).}
+    \end{subfigure}
+
+    \begin{subfigure}[b]{\textwidth}
+        \centering
+        \IfFileExists{results_scatter_linear_svr_h24.png}{%
+            \includegraphics[width=0.95\textwidth]{results_scatter_linear_svr_h24.png}%
+        }{%
+            \fbox{\parbox[c][0.20\textheight][c]{0.95\linewidth}{\centering \textbf{Missing figure:} \texttt{results\_scatter\_linear\_svr\_h24.png}}}%
+        }%
+        \caption{Linear SVR (tabular lags).}
+    \end{subfigure}
+
+    \begin{subfigure}[b]{\textwidth}
+        \centering
+        \IfFileExists{results_scatter_xgboost_h24.png}{%
+            \includegraphics[width=0.95\textwidth]{results_scatter_xgboost_h24.png}%
+        }{%
+            \fbox{\parbox[c][0.20\textheight][c]{0.95\linewidth}{\centering \textbf{Missing figure:} \texttt{results\_scatter\_xgboost\_h24.png}}}%
+        }%
+        \caption{XGBoost (tabular lags).}
+    \end{subfigure}
+    \caption{Diagnostic scatter plots for direct 24~h forecasts on the pooled multi-site test split (tabular models refit with the same leakage-safe protocol as Table~\ref{tab:forecast-summary}). The layout mirrors standard regression and residual views used in applied ML reporting: departure from the diagonal at high concentrations indicates conditional bias in the upper tail; the time overlay highlights how point forecasts track the bulk trajectory but often smooth short-lived spikes.}
+    \label{fig:scatter_tabular_h24}
+\end{figure*}
+
+\begin{table}[H]
+\centering
+\caption{Forecast accuracy stratified by regime on a regime-spanning evaluation window (test window length increased to 84~days to include both pre-Harmattan and Harmattan periods). Values are MAE ($\mu$g/m$^3$) on the test set for simple benchmarks; this table is intended as a regime-aware diagnostic complementary to the primary 28-day test results in Table~\ref{tab:forecast-summary}.}
+\label{tab:forecast-regime}
+\resizebox{0.95\textwidth}{!}{%
+\begin{tabular}{llrrr}
+\toprule
+Horizon & Model & Overall MAE & Pre-Harmattan MAE & Harmattan MAE \\
+\midrule
+24~h & Naïve level (persistence) & 12.59 & 10.40 & 12.84 \\
+24~h & Seasonal naïve (weekly anchor) & 13.75 & 10.86 & 14.10 \\
+\midrule
+7~d (168~h) & Naïve level (persistence) & 13.61 & 10.84 & 14.25 \\
+7~d (168~h) & Seasonal naïve (weekly anchor) & 14.46 & 13.31 & 14.73 \\
+\bottomrule
+\end{tabular}}
+\end{table}
+
+\begin{table}[H]
+\centering
+\caption{Tabular models: test-set MAE ($\mu$g/m$^3$) stratified by Harmattan regime on an \textbf{84-day} label-time held-out window (both regimes present). The primary pooled scores in Table~\ref{tab:forecast-summary} use the standard \textbf{28-day} test and are not directly comparable row-for-row.}
+\label{tab:tabular-regime-mae}
+\resizebox{0.98\textwidth}{!}{%
+\begin{tabular}{llrrr}
+\toprule
+Horizon & Model & Overall MAE & Pre-Harmattan MAE & Harmattan MAE \\
+\midrule
+24~h & Ridge AR+Fourier & 16.79 & 10.55 & 17.51 \\
+24~h & Random Forest (tabular lags) & 10.33 & 7.89 & 10.61 \\
+24~h & Linear SVR (tabular lags) & 14.61 & 9.77 & 15.17 \\
+24~h & XGBoost (tabular lags) & 10.90 & 8.81 & 11.15 \\
+\midrule
+7~d (168~h) & Ridge AR+Fourier & 35.25 & 12.19 & 40.40 \\
+7~d (168~h) & Random Forest (tabular lags) & 12.01 & 8.56 & 12.78 \\
+7~d (168~h) & Linear SVR (tabular lags) & 13.58 & 8.86 & 14.63 \\
+7~d (168~h) & XGBoost (tabular lags) & 12.89 & 9.76 & 13.59 \\
+\midrule
+14~d (336~h) & Ridge AR+Fourier & 48.80 & 34.82 & 54.06 \\
+14~d (336~h) & Random Forest (tabular lags) & 11.73 & 9.85 & 12.44 \\
+14~d (336~h) & Linear SVR (tabular lags) & 33.74 & 21.33 & 38.41 \\
+14~d (336~h) & XGBoost (tabular lags) & 13.38 & 11.51 & 14.09 \\
+\midrule
+28~d (672~h) & Ridge AR+Fourier & 63.08 & 27.13 & 93.17 \\
+28~d (672~h) & Random Forest (tabular lags) & 13.04 & 10.86 & 14.87 \\
+28~d (672~h) & Linear SVR (tabular lags) & 41.02 & 17.32 & 60.86 \\
+28~d (672~h) & XGBoost (tabular lags) & 14.44 & 12.25 & 16.27 \\
+\bottomrule
+\end{tabular}}
+\end{table}
+
+\subsubsection{Short-term (24hr)}\label{sec:res24}
+At $H=24$~h, the best pooled MAE is achieved by the jointly trained multi-horizon LSTM (mh\_lstm; MAE~=~10.82~$\mu$g/m$^3$; Table~\ref{tab:forecast-summary}), improving on the per-horizon LSTM baseline (11.31) and on the restricted Ridge AR+Fourier benchmark (11.96). However, spike hours remain difficult: mh\_lstm exhibits MAE$^{90}$~=~37.34~$\mu$g/m$^3$ versus pooled MAE 10.82 (Table~\ref{tab:forecast-upper-decile}), a $\approx$3.5$\times$ gap. Figure~\ref{fig:scatter_tabular_h24} illustrates how models can track the bulk trajectory while smoothing short-lived high-concentration excursions. Harmattan-aware tabular diagnostics on an extended 84-day test window appear in Tables~\ref{tab:forecast-regime}--\ref{tab:tabular-regime-mae}; pooled MAE in Table~\ref{tab:tabular-regime-mae} is not directly comparable to Table~\ref{tab:forecast-summary} because of window length (and stochasticity in tree ensembles).
+
+\subsubsection{Mid-terms (7d and 14d)}\label{sec:res714}
+For $H=168$~h, joint multi-horizon training yields the strongest pooled accuracy. The attention-augmented jointly trained model (mh\_lstm\_mha) achieves MAE~=~12.03~$\mu$g/m$^3$, outperforming both the jointly trained mh\_lstm (12.85) and the per-horizon LSTM baseline (13.40), as well as the weekly seasonal-na\"{i}ve comparator (15.39; Table~\ref{tab:forecast-summary}). This suggests that, within this limited window, sharing supervision across horizons improves medium-term generalisation and that attention can be beneficial when trained jointly. As at 24~h, upper-decile error remains much larger than pooled MAE (Table~\ref{tab:forecast-upper-decile}), indicating persistent difficulty in the upper tail even when average error improves.
+
+At $H=336$~h, the joint attention model (mh\_lstm\_mha) achieves a substantial reduction in pooled MAE (9.88~$\mu$g/m$^3$), beating all listed tabular baselines (e.g., linear SVR: 14.52) and the per-horizon LSTM (14.68). This is the strongest relative gain observed in the updated experiments and indicates that the most informative improvements may arise when the model can learn a shared representation of temporal structure across horizons rather than being trained independently per lead time. Nevertheless, the spike gap remains: MAE$^{90}$ at 14~d is 34.33~$\mu$g/m$^3$ for mh\_lstm\_mha (Table~\ref{tab:forecast-upper-decile}), still $\approx$3.5$\times$ its pooled MAE.
+
+\subsubsection{Long-terms (28d)}\label{sec:res672}
+At $H=672$~h, the jointly trained attention model (mh\_lstm\_mha) attains MAE~=~12.00~$\mu$g/m$^3$ and positive pooled $R^2$ (0.109; Table~\ref{tab:forecast-summary}), outperforming the jointly trained mh\_lstm (13.53) and the Ridge AR+Fourier benchmark (15.48). This result contrasts sharply with the per-horizon attention model (lstm\_mha) which performs poorly at 28~d in the direct-training setting, suggesting that attention capacity can overfit when trained independently per horizon but can become effective when regularised implicitly through joint training across horizons. Upper-tail episodes remain systematically harder than pooled MAE at this lead (mh\_lstm\_mha MAE$^{90}$~=~37.88; Table~\ref{tab:forecast-upper-decile}), consistent with the heavy-tailed distributions in Figure~\ref{fig:pm25_distribution}.
+
+\section{Discussion}\label{sec4}
+\subsection{Joint Multi-Horizon Training Substantially Improves Forecasts}
+
+The central methodological finding of the updated experiments is that joint multi-horizon training changes model rankings and improves accuracy at medium and long horizons. Instead of training one independent model per horizon, the joint models learn a shared representation that must support multiple lead times simultaneously. In this dataset, mh\_lstm is the best-performing model at 24~h (MAE 10.82~$\mu$g/m$^3$), while mh\_lstm\_mha yields the lowest pooled MAE at 7~d, 14~d, and 28~d (12.03, 9.88, and 12.00~$\mu$g/m$^3$; Table~\ref{tab:forecast-summary}). A plausible explanation is multi-task regularisation: gradients from multiple horizons constrain the representation to remain useful beyond a single lead time, reducing variance and mitigating overfitting that can occur when optimising one horizon in isolation.
+
+\subsection{Attention Is Beneficial Only Under Joint Training}
+
+The attention mechanism is not uniformly beneficial in per-horizon direct training; its value depends on the training setup. In the per-horizon setting, the attention-augmented model is not consistently better than vanilla LSTM and can fail badly at long horizons (e.g., 28~d; Table~\ref{tab:forecast-summary}). Under joint training, however, attention becomes the best-performing variant at 7--28~days. One interpretation is that attention introduces additional capacity that is too flexible for a short record when trained independently, but becomes usable when the model is forced to satisfy multiple horizon objectives simultaneously. In effect, joint training provides an implicit regulariser and encourages attention weights to reflect stable temporal patterns that generalise across lead times.
+
+\subsection{The Spike Prediction Gap Persists Across All Models}
+
+Although pooled accuracy improves under joint training, spike prediction remains a binding limitation for public-health-oriented use. At 14~d, mh\_lstm\_mha attains MAE~=~9.88~$\mu$g/m$^3$, while MAE$^{90}$~=~34.33~$\mu$g/m$^3$ (Table~\ref{tab:forecast-upper-decile}), a ratio of approximately 3.5$\times$. This persistent gap indicates that standard point-forecast objectives weight the bulk of hours more heavily than rare high-pollution episodes. For early warning systems, this argues for explicit tail-aware modelling (e.g., weighted losses, quantile regression, or multi-task episode classification) and for routine reporting of tail metrics alongside pooled MAE/RMSE.
+
+\subsection{Regime Shift Remains Operationally Important}
+
+Seasonal regime changes remain a major operational concern. Regime-stratified tabular diagnostics (Tables~\ref{tab:forecast-regime}--\ref{tab:tabular-regime-mae}) show meaningfully different error levels between pre-Harmattan and Harmattan periods, reinforcing that pooled metrics can obscure degradation during the highest-risk season. Practical options for deployment include regime-specific calibration, explicit regime indicators, or separate models by regime when sufficient data are available.
+
+\subsection{Comparison with Prior Work}
+
+Prior work in air quality forecasting and environmental monitoring consistently highlights three practical themes: (i) strong diurnal and seasonal structure; (ii) the competitiveness of simple baselines in short or noisy datasets; and (iii) the importance of robust evaluation protocols for operational credibility. Our results align with these themes, while contributing a leakage-safe multi-horizon evaluation in a Harmattan-affected West African setting and showing that joint multi-horizon training can materially improve accuracy relative to per-horizon training within a modest-sized record.
+
+\subsection{Limitations}
+
+Several limitations constrain the generalisability of these findings.
+\begin{itemize}
+    \item The dataset spans only five months and includes only one Harmattan transition; longer records (e.g., $\geq$12 months) may change model rankings and stability.
+    \item The analysis focuses on one city (Tema) and seven sites; generalisation to other West African cities and seasons should be tested.
+    \item We report point forecasts; probabilistic forecasting would better quantify uncertainty during spikes.
+    \item We do not perform explicit tail optimisation; this likely contributes to the persistent MAE$^{90}$ gap.
+    \item Joint models share one architecture across horizons; horizon-specific fine-tuning or hybrid strategies may yield further gains.
+\end{itemize}
+
+\subsection{Implications for Practice}
+
+For air quality managers and public health stakeholders, the updated evidence suggests three actionable steps: (i) prefer leakage-safe evaluation and blocked test windows for any operational claim; (ii) use joint multi-horizon training for 7--28~day forecasts when training deep sequence models; and (iii) report tail-aware metrics (e.g., MAE$^{90}$) and regime-stratified performance so that reliability during Harmattan and high-pollution episodes is visible and auditable.
+
+\section{Conclusion}\label{sec5}
+
+Using five months of hourly observations from seven sites in Tema, Ghana, we evaluated leakage-safe multi-horizon PM$_{2.5}$ forecasting at 24~h, 7~d, 14~d, and 28~d. Joint multi-horizon training substantially improves medium and long horizon accuracy relative to per-horizon direct training and simple baselines: mh\_lstm is best at 24~h (MAE 10.82~$\mu$g/m$^3$), while mh\_lstm\_mha achieves the lowest MAE at 7~d, 14~d, and 28~d (12.03, 9.88, and 12.00~$\mu$g/m$^3$). However, upper-decile errors remain $\sim$3$\times$ larger than pooled MAE, highlighting persistent difficulty in forecasting extreme pollution hours. Finally, regime-aware evaluation remains essential in Harmattan-affected settings where seasonal shifts can dominate generalisation behaviour.
+
+Future work should extend the observational window to capture multiple Harmattan cycles, evaluate tail-aware loss functions (e.g., weighted MSE, quantile regression), and develop probabilistic forecasts to better characterise spike uncertainty. Operational deployment should pair joint-trained models with regime-specific calibration and explicit reporting of upper-decile error.
+
+
+
+\printcredits
+
+%% Loading bibliography style file
+% \bibliographystyle{model1-num-names}
+\bibliographystyle{cas-model2-names}
+
+% Loading bibliography database
+\bibliography{cas-refs}
+
+
+%\vskip3pt
+
+% \bio{}
+% Author biography without author photo.
+% Author biography. Author biography. Author biography.
+% Author biography. Author biography. Author biography.
+% Author biography. Author biography. Author biography.
+% Author biography. Author biography. Author biography.
+% Author biography. Author biography. Author biography.
+% Author biography. Author biography. Author biography.
+% Author biography. Author biography. Author biography.
+% Author biography. Author biography. Author biography.
+% Author biography. Author biography. Author biography.
+% \endbio
+
+% \bio{figs/pic1}
+% Author biography with author photo.
+% Author biography. Author biography. Author biography.
+% Author biography. Author biography. Author biography.
+% Author biography. Author biography. Author biography.
+% Author biography. Author biography. Author biography.
+% Author biography. Author biography. Author biography.
+% Author biography. Author biography. Author biography.
+% Author biography. Author biography. Author biography.
+% Author biography. Author biography. Author biography.
+% Author biography. Author biography. Author biography.
+% \endbio
+
+% \bio{figs/pic1}
+% Author biography with author photo.
+% Author biography. Author biography. Author biography.
+% Author biography. Author biography. Author biography.
+% Author biography. Author biography. Author biography.
+% Author biography. Author biography. Author biography.
+% \endbio
+
+\end{document}
+

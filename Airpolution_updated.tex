@@ -297,67 +297,75 @@ We propose a sequence-based forecasting framework using Long Short-Term Memory (
 
 \section{Methodology}\label{sec2}
 
-\subsection{Description of Equipment Used for Data Collection}
-Air quality data were collected using the AirGradient Open Air monitor (Model O-1PST), an outdoor air quality monitoring device designed to assess ambient environmental conditions. The instrument measures key air quality parameters, including particulate matter (PM$_{2.5}$), carbon dioxide (CO$_2$), total volatile organic compounds (TVOCs), nitrogen oxides (NO$_x$), and meteorological parameters such as temperature and relative humidity. 
-The monitoring sites included: Tema Port, Tema Community 7, Royal School, Tema Community 25 Estate, Divine Healer’s Church (Bethlehem), Satet International School, Tema Manhean, and Kpone Methodist School.
-These locations were strategically selected to represent a mix of industrial and residential environments along Ghana’s eastern Greater Accra coast (Tema). The inclusion of industrial zones (e.g., Tema Port) enables assessment of emissions from industrial activities, while residential and institutional areas (e.g., schools and communities) provide insight into population exposure to air pollution. 
-All monitoring instruments used in this study are ground-based sensors, installed at fixed locations to measure ambient air quality in real time.
+\subsection{Data Collection and Study Setting}
 
+Air quality data were collected using the AirGradient Open Air monitor (Model O-1PST), an outdoor monitoring device measuring particulate matter (PM$_{2.5}$, PM$_1$, PM$_{10}$), particle number concentration (0.3~\textmu m), and co-located environmental variables including temperature, relative humidity, carbon dioxide (CO$_2$), total volatile organic compounds (TVOC), and a nitrogen oxides (NOX) index. Sensors were deployed at seven fixed sites in Tema, coastal Ghana, spanning industrial and residential micro-environments (including Tema Port, schools, and community sites). Observations were recorded hourly from 19 September 2025 to 15 February 2026.
 
-\subsection{LSTM architecture}
-The Long Short-Term Memory (LSTM) network, introduced by Hochreiter and Schmidhuber \cite{hochreiter1997long}, extends the traditional recurrent neural network (RNN) architecture to address the vanishing and exploding gradient problems commonly encountered during sequence training \cite{abbasimehr2022improving}. Unlike standard RNNs, LSTMs incorporate a structured memory cell that enables stable learning of long-range temporal dependencies.
+\subsection{Preprocessing and Regime Annotation}
 
-Each LSTM unit consists of a memory cell and three gating mechanisms: the input gate $i(t)$, the forget gate $f(t)$, and the output gate $o(t)$. These gates regulate the flow of information into, within, and out of the cell state $c(t)$. The forget gate $f(t)$ determines which previously stored information should be discarded. The input gate $i(t)$ controls which new information is written into the cell state. The output gate $o(t)$ governs how much of the updated cell state is exposed as the hidden output. This gated structure allows the LSTM to selectively retain relevant historical signals while suppressing noise.
+Raw data were aligned to a continuous hourly time axis in local time and cleaned to produce a corrected PM$_{2.5}$ target series for modelling. Short gaps in TVOC and NOX were imputed using time-ordered linear interpolation to preserve temporal continuity. Calendar fields (hour, day-of-week, month) were extracted from the local timestamp. We additionally annotate a simple Harmattan proxy as a date-based regime flag (pre-Harmattan vs Harmattan) to support stratified evaluation under the dominant seasonal shift in this region.
 
-Given an input vector $x(t)$ at time step $t$, the LSTM updates its internal states according to a sequence of nonlinear transformations. The hidden states $h(t-1)$ and $h(t)$ represent the output activations at time steps $t-1$ and $t$, respectively. The full modelling process is formally defined by Equations (\ref{equ1}-\ref{equ5}), which describe the gating operations and cell state updates that collectively enable long-term sequence learning.
+\subsection{Supervised Forecasting Datasets}
+
+We study multi-horizon forecasting at horizons \(H \in \{24,168,336,672\}\) hours (24~h, 7~d, 14~d, 28~d). For a forecast origin time \(t\), the target is corrected PM$_{2.5}$ at label time \(t+H\). We evaluate two modelling paradigms.
+
+\subsubsection{Tabular direct-forecast datasets}
+
+For each horizon, we construct a supervised tabular dataset with one row per (site, origin time) and target \(y(t+H)\). Feature engineering uses only information available at or before time \(t\). Specifically, we generate:
+\begin{itemize}
+    \item lag features for the particulate and key environmental series (e.g., 1--48~h plus longer lags up to 168~h, and additional long lags where available),
+    \item rolling summary statistics (mean, standard deviation, max) computed on \emph{shifted} series (shift by 1) to avoid using the current hour in the window,
+    \item calendar features (hour, day-of-week, month),
+    \item Fourier terms on absolute time to represent daily (24~h) and weekly (168~h) seasonality,
+    \item one-hot encoding for site identity for pooled multi-site models.
+\end{itemize}
+
+\subsubsection{Sequence datasets (per-horizon and joint multi-horizon)}
+
+For sequence models, we construct input windows of length \(L\) hours ending at time \(t\), and predict corrected PM$_{2.5}$ at \(t+H\). The sequence feature tensor includes corrected pollutants and environmental covariates and is augmented with calendar encodings (sin/cos cyclic terms), Fourier terms, the Harmattan flag, and a location one-hot vector. We train two sequence variants:
+\begin{itemize}
+    \item \textbf{Per-horizon direct training}: one model per horizon trained on horizon-specific sequence datasets.
+    \item \textbf{Joint multi-horizon training}: one model outputs predictions for all horizons simultaneously (multi-output regression). To keep blocked splits leakage-safe across all horizons, the split key is the label time of the \emph{maximum} horizon.
+\end{itemize}
+
+\subsection{Models}
+
+\subsubsection{Baselines and classical machine learning}
+
+We include operational baselines based on persistence and seasonal recurrence using available lag features (e.g., weekly seasonal na\"{i}ve anchored at 168~h where applicable). As an interpretable statistical benchmark, we evaluate a restricted Ridge autoregressive model with PM$_{2.5}$ lags plus calendar/Fourier terms (``Ridge AR+Fourier''). We also fit classical machine learning models (linear SVR, Random Forest, XGBoost) on the same tabular feature matrices for each horizon.
+
+\subsubsection{LSTM sequence models and attention augmentation}
+
+We evaluate Long Short-Term Memory (LSTM) networks to model nonlinear temporal dynamics from multivariate input windows. The LSTM unit is defined by standard gating equations (Eqs.~\ref{equ1}--\ref{equ5}). We additionally test a multi-head attention augmentation that computes content-based reweighting over the sequence representation and fuses the attention summary with the LSTM representation and a pooled summary of the raw inputs.
+
 \begin{equation}
-i_t = \sigma \left( W_{x_i} \cdot x_t + W_{h_i} \cdot h_{t-1} + W_{c_i} \cdot c_{t-1} + b_i\right)
+i_t = \sigma \left( W_{x_i} x_t + W_{h_i} h_{t-1} + W_{c_i} c_{t-1} + b_i\right)
 \label{equ1}
 \end{equation}
 \begin{equation}
-f_t = \sigma\left(W_{x_f} \cdot x_t + W_{h_f} \cdot h_{t-1} + W_{c_f} \cdot c_{t-1} + b_f\right)
+f_t = \sigma\left(W_{x_f} x_t + W_{h_f} h_{t-1} + W_{c_f} c_{t-1} + b_f\right)
 \label{equ2}
 \end{equation}
 \begin{equation}
-c_t = f_t \cdot c_{t-1} + i_t \tanh\left(W_{x_c} \cdot x_t + W_{h_c} \cdot h_{t-1} + b_c\right)
+c_t = f_t \odot c_{t-1} + i_t \odot \tanh\left(W_{x_c} x_t + W_{h_c} h_{t-1} + b_c\right)
 \label{equ3}
 \end{equation}
 \begin{equation}
-o_t = \sigma\left(W_{x_o} \cdot x_t + W_{h_o} \cdot h_{t-1} + W_{c_o} \cdot c_t + b_o\right)
+o_t = \sigma\left(W_{x_o} x_t + W_{h_o} h_{t-1} + W_{c_o} c_t + b_o\right)
 \label{equ4}
 \end{equation}
 \begin{equation}
-h_t = o_t \tanh\left(c_t\right)
+h_t = o_t \odot \tanh\left(c_t\right)
 \label{equ5}
 \end{equation}
 
-\subsection{Multi-Head Attention}
+Importantly, the utility of attention in this study is contingent on training setup: in per-horizon direct training, attention does not consistently improve over vanilla LSTM, while in joint multi-horizon training it becomes the strongest-performing variant in our experiments (see Results).
 
-Attention mechanisms have recently demonstrated strong performance in sequence modelling, particularly in natural language processing \cite{abbasimehr2022improving}. Vaswani et al. \cite{vaswani2017attention} proposed the transformer architecture, showing that attention alone can effectively model dependencies in sequential data without relying solely on recurrence. In this study, we adopt the multi-head attention mechanism proposed by Vaswani et al. to enhance temporal representation learning.
+\subsection{Leakage-Safe Splits and Evaluation Metrics}
 
-An attention function operates by mapping a query matrix and corresponding key–value pairs to an output representation. This operation, commonly referred to as scaled dot-product attention, computes similarity scores between queries and keys, scales them, and applies a softmax function to obtain attention weights. These weights are then used to aggregate the values, producing a context-aware representation of the sequence.
+All train/validation/test splits are defined by \emph{label time} (``target\_time'') using contiguous blocked windows, with the most recent segment reserved for testing. This prevents leakage that would occur if observations from the test label period influenced training through feature construction or random shuffling. Unless otherwise specified, we use a 14-day validation window and a 28-day held-out test window for pooled evaluation; for regime-stratified diagnostics we also compute an extended regime-spanning test window (84 days) so that both pre-Harmattan and Harmattan label times are represented.
 
-Multi-head attention extends this mechanism by employing multiple parallel attention heads. Each head learns a distinct projection of the input sequence, enabling the model to capture diverse temporal relationships at different positions and feature subspaces \cite{li2018multi}. By jointly attending to multiple aspects of the sequence, the multi-head structure enhances the model’s ability to represent complex, long-range dependencies in time-series data.
-
-
-\subsection{Architecture of the LSTM with attention mechanism}
-The proposed framework proceeds as follows. The model first derives a latent representation from the LSTM component and a complementary representation from the multi-head attention module. These learned embeddings are then concatenated with a residual copy of the original input sequence. The combined feature vector is passed to a fully connected dense layer to generate the final prediction.
-The LSTM component is designed to capture long-term temporal dependencies inherent in sequential data. Its gated structure explicitly models the ordered nature of time series and preserves relevant historical information across extended horizons. In parallel, the multi-head attention mechanism identifies salient temporal features by assigning adaptive weights to different time steps and feature dimensions. This is particularly important in environmental time series, where specific periods (e.g., peak hours or seasonal transitions) contribute disproportionately to forecast accuracy.
-
-Both the LSTM and attention modules receive the raw input sequence structured in input–output format. To enable fusion of the learned representations, a flattening operation reshapes their outputs into compatible vectors. These vectors, together with a transformed copy of the original time series input, are concatenated into a unified feature representation. The dense output layer then maps this integrated representation to the forecast value.
-
-We note that the benefit of attention in this study is contingent on training setup: in per-horizon direct training, attention does not consistently improve over vanilla LSTM; however, in the joint multi-horizon setting, attention becomes the best-performing variant (see Results).
-
-
-\subsection{Dataset Analysis}
-This study uses ground-based air quality data collected from fixed monitoring sensors deployed across multiple locations in Tema, Ghana. The dataset spans from 19 September 2025 to 15 February 2026, covering approximately five months of continuous monitoring. Observations are recorded at hourly resolution, resulting in 23,816 time-stamped records. Each observation includes corrected particulate and environmental measurements. The primary outcome variable is PM$_{2.5}$ (µg/m$^3$), representing fine particulate matter concentrations. Additional particulate indicators include PM$_{1}$, PM$_{10}$, and particle number concentration (0.3 µm). Environmental covariates comprise temperature (°C), relative humidity (\%), carbon dioxide (ppm), total volatile organic compounds (TVOC, ppb), and a nitrogen oxides (NOX) index. Metadata fields include location, sensor identifiers, and time, as well as categorical indicators such as location name and site openness.
-Monitoring sites represent diverse micro-environments within Tema, including residential areas, school environments, and mixed-use urban zones. This spatial diversity allows assessment of geographic heterogeneity in pollutant levels. All timestamps are provided in local time, enabling the extraction of temporal features such as hour of day, day of week, and seasonal indicators.
-
-Data quality assessment indicated minimal missingness for core particulate variables. TVOC and NOX variables contained approximately 3.6\% missing observations, primarily clustered toward the end of the study period, likely due to temporary sensor interruptions. Short gaps were imputed using time-ordered linear interpolation to preserve temporal continuity. Variables with no informational variance (e.g., constant site descriptors) and non-essential identifiers were removed prior to modelling.
-The study period captures both pre-Harmattan and Harmattan conditions, allowing analysis of strong seasonal variability in PM$_{2.5}$. This temporal coverage is suitable for evaluating short- (24 h), medium- (7 d) and (14 d), and extended (28 d) forecasting horizons under varying atmospheric regimes.
-
-\subsection{Forecasting formulation and experimental protocol}
-We formulate multi-horizon forecasting as \emph{direct} regression: for forecast origin time $t$ and horizon $H \in \{24,168,336,672\}$ hours, the target is corrected PM$_{2.5}$ at label time $t+H$. Sequence models consume a fixed-length history of past hours ending at $t$; tabular baselines use lag--rolling--Fourier features constructed from information available at or before $t$. Train, validation, and test partitions are defined by \emph{label time} using contiguous blocks, with the most recent segment reserved for testing, so that future observations cannot influence training. Models are compared using mean absolute error (MAE), root mean squared error (RMSE), and coefficient of determination ($R^2$), supplemented by evaluation on the upper decile of observed concentrations and by stratification into pre-Harmattan versus Harmattan regimes where applicable.
+Models are evaluated using mean absolute error (MAE), root mean squared error (RMSE), and coefficient of determination (\(R^2\)). To stress-test performance on high-pollution events, we compute upper-decile error (MAE$^{90}$), defined as MAE on test rows where observed PM$_{2.5}$ falls in the top 10\% of the test window. Where the test window spans both regimes, we also report regime-stratified metrics for pre-Harmattan versus Harmattan subsets.
 
 \begin{table}[htb]
 \centering

@@ -13,7 +13,7 @@ from .features import add_harmattan_flag, add_time_columns
 @dataclass(frozen=True)
 class TabularFeatureSpec:
     # Lags in hours for particulate history
-    lags_hours: tuple[int, ...] = tuple(list(range(1, 49)) + [72, 96, 120, 144, 168])
+    lags_hours: tuple[int, ...] = tuple(list(range(1, 49)) + [72, 96, 120, 144, 168, 336, 672])
     # Rolling windows in hours
     rolling_windows: tuple[int, ...] = (3, 6, 24, 72, 168)
     # Which numeric columns to create lag/rolling features from (if present)

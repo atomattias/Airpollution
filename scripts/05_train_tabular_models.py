@@ -181,6 +181,24 @@ def _eval_baselines(df_test: pd.DataFrame) -> list[dict]:
             m["model"] = "seasonal_naive_168h"
             out.append(m)
 
+    # Seasonal naïve, period 336 h (14d): ŷ = y_{t-336}
+    lag336 = f"lag_{C.COL_PM25_CORR}_336h"
+    if lag336 in df_test.columns:
+        yhat = df_test[lag336].to_numpy(dtype=float)
+        m = _safe_metrics(yhat)
+        if m:
+            m["model"] = "seasonal_naive_336h"
+            out.append(m)
+
+    # Seasonal naïve, period 672 h (28d): ŷ = y_{t-672}
+    lag672 = f"lag_{C.COL_PM25_CORR}_672h"
+    if lag672 in df_test.columns:
+        yhat = df_test[lag672].to_numpy(dtype=float)
+        m = _safe_metrics(yhat)
+        if m:
+            m["model"] = "seasonal_naive_672h"
+            out.append(m)
+
     return out
 
 

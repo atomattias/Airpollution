@@ -5,6 +5,7 @@ from __future__ import annotations
 from pathlib import Path
 
 import pandas as pd
+from pandas.errors import EmptyDataError
 
 ROOT = Path(__file__).resolve().parents[1]
 TABLES = ROOT / "reports" / "tables"
@@ -15,6 +16,7 @@ DEEP_MH_CSV = TABLES / "results_deep_model_metrics_multihorizon.csv"
 STATUS_JSON = TABLES / "results_deep_models_status.json"
 OUT_LONG = TABLES / "results_merged_long.csv"
 OUT_WIDE = TABLES / "results_merged_wide_mae.csv"
+CI_CSV = TABLES / "results_confidence_intervals.csv"
 
 
 HOURS_TO_HORIZON = {24: "h24", 168: "h168", 336: "h336", 672: "h672"}
@@ -45,7 +47,11 @@ def _load_tabular() -> pd.DataFrame:
 def _load_deep() -> pd.DataFrame:
     if not DEEP_CSV.exists():
         return pd.DataFrame()
-    df = pd.read_csv(DEEP_CSV)
+    try:
+        df = pd.read_csv(DEEP_CSV)
+    except EmptyDataError:
+        # Common in Colab if a prior run created the file but didn't write rows.
+        return pd.DataFrame()
     if df.empty:
         return pd.DataFrame()
     df["pipeline"] = "deep"
@@ -75,7 +81,10 @@ def _load_deep_multihorizon() -> pd.DataFrame:
     """Optional: multi-horizon deep metrics (already one row per horizon)."""
     if not DEEP_MH_CSV.exists():
         return pd.DataFrame()
-    df = pd.read_csv(DEEP_MH_CSV)
+    try:
+        df = pd.read_csv(DEEP_MH_CSV)
+    except EmptyDataError:
+        return pd.DataFrame()
     if df.empty:
         return pd.DataFrame()
     df["pipeline"] = "deep"
@@ -137,6 +146,28 @@ def main() -> None:
     hz_order = {h: i for i, h in enumerate(["h24", "h168", "h336", "h672"])}
     long_df["_hz"] = long_df["horizon"].map(lambda x: hz_order.get(str(x), 99))
     long_df = long_df.sort_values(["_hz", "pipeline", "mae", "model"]).drop(columns=["_hz"])
+
+    if CI_CSV.exists():
+        ci = pd.read_csv(CI_CSV)
+        join_cols = ["pipeline", "horizon", "model"]
+        if all(c in ci.columns for c in join_cols):
+            ci_cols = [
+                c
+                for c in (
+                    "mae_lower95",
+                    "mae_upper95",
+                    "rmse_lower95",
+                    "rmse_upper95",
+                    "mae_top_decile_lower95",
+                    "mae_top_decile_upper95",
+                )
+                if c in ci.columns
+            ]
+            ci_sub = ci[join_cols + ci_cols].drop_duplicates(subset=join_cols, keep="last")
+            long_df = long_df.merge(ci_sub, on=join_cols, how="left")
+            print(f"Merged confidence intervals from {CI_CSV.name}")
+        else:
+            print(f"Note: {CI_CSV.name} missing join columns; skipping CI merge.")
 
     long_df.to_csv(OUT_LONG, index=False)
     print(f"Wrote {OUT_LONG} ({len(long_df)} rows)")

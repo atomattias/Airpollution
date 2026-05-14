@@ -26,11 +26,16 @@ import pandas as pd
 from sklearn.preprocessing import StandardScaler
 
 from airpollution.eval import SplitConfig, regression_metrics, time_split_masks, top_decile_mask
+from airpollution.predictions_export import safe_model_filename_tag, write_test_predictions_csv
 from airpollution.utils import ensure_dir
 
 ROOT = project_path.ROOT
 SEQ_DIR = ROOT / "data" / "sequences"
 TABLES_DIR = ensure_dir(ROOT / "reports" / "tables")
+PRED_DIR = ensure_dir(ROOT / "reports" / "predictions")
+
+HOURS_TO_HORIZON = {24: "h24", 168: "h168", 336: "h336", 672: "h672"}
+TRAIN_SEED = int(os.environ.get("AIRP_SEED", "42"))
 
 os.environ.setdefault("TF_CPP_MIN_LOG_LEVEL", "2")
 
@@ -155,6 +160,13 @@ def main() -> None:
     try:
         keras, backend_name = _try_keras_backend()
         print(f"Keras backend: {backend_name}", flush=True)
+        np.random.seed(TRAIN_SEED)
+        try:
+            import tensorflow as tf
+
+            tf.random.set_seed(TRAIN_SEED)
+        except Exception:
+            pass
     except Exception as e:
         stub = {
             "status": "skipped",
@@ -175,12 +187,16 @@ def main() -> None:
     harm = data["harmattan_y"] if "harmattan_y" in data.files else None
     if harm is not None:
         harm = np.asarray(harm).astype(np.float32)
+    loc = data["location"] if "location" in data.files else None
 
     m_tr, m_va, m_te, split_meta = time_split_masks(tt, cfg=cfg)
 
     X_tr, y_tr = X[m_tr], y[m_tr]
     X_va, y_va = X[m_va], y[m_va]
     X_te, y_te = X[m_te], y[m_te]
+    tt_te = tt[m_te]
+    harm_te = harm[m_te] if harm is not None else None
+    loc_te = loc[m_te] if loc is not None else None
 
     if len(X_tr) < 500 or len(X_va) < 100:
         raise RuntimeError("Insufficient samples after split; adjust AIRP_VAL_DAYS/AIRP_TEST_DAYS.")
@@ -204,6 +220,22 @@ def main() -> None:
         for k, h in enumerate(horizons):
             yk = y_te[:, k].reshape(-1)
             pk = pred[:, k].reshape(-1)
+            hz_tag = HOURS_TO_HORIZON[int(h)]
+            write_test_predictions_csv(
+                PRED_DIR / f"deep_mh_{hz_tag}_{safe_model_filename_tag(name)}.csv",
+                target_time=tt_te,
+                y_true=yk,
+                y_pred=pk.astype(float),
+                pipeline="deep",
+                model=name,
+                horizon=hz_tag,
+                harmattan=harm_te,
+                location=loc_te,
+                split_meta=split_meta,
+                keras_backend=backend_name,
+                seq_len=int(data["seq_len"]),
+                seed=TRAIN_SEED,
+            )
             m = regression_metrics(yk, pk)
             meta_row = {
                 "keras_backend": backend_name,

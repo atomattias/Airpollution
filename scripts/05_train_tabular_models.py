@@ -27,12 +27,15 @@ except Exception:
 
 from airpollution import constants as C
 from airpollution.eval import SplitConfig, regression_metrics, time_split_by_target_time, top_decile_mask
+from airpollution.predictions_export import safe_model_filename_tag, write_test_predictions_csv
 from airpollution.utils import ensure_dir
 
 
 ROOT = project_path.ROOT
 FEATURE_DIR = ROOT / "data" / "features"
 TABLES_DIR = ensure_dir(ROOT / "reports" / "tables")
+PRED_DIR = ensure_dir(ROOT / "reports" / "predictions")
+TABULAR_SEED = int(os.environ.get("AIRP_SEED", "42"))
 
 
 HORIZONS = ["h24", "h168", "h336", "h672"]
@@ -86,7 +89,16 @@ def _build_preprocessor(X: pd.DataFrame) -> tuple[Pipeline, list[str]]:
     return pre, numeric_cols
 
 
-def _eval_model(name: str, model, train: pd.DataFrame, val: pd.DataFrame, test: pd.DataFrame) -> dict:
+def _eval_model(
+    name: str,
+    model,
+    train: pd.DataFrame,
+    val: pd.DataFrame,
+    test: pd.DataFrame,
+    *,
+    horizon: str,
+    split_meta: dict,
+) -> dict:
     X_train, y_train = _feature_target_split(train)
     X_val, y_val = _feature_target_split(val)
     X_test, y_test = _feature_target_split(test)
@@ -97,6 +109,22 @@ def _eval_model(name: str, model, train: pd.DataFrame, val: pd.DataFrame, test: 
 
     pred_test = pipe.predict(X_test)
     m = regression_metrics(y_test, pred_test)
+
+    loc = test[C.COL_LOCATION_NAME].to_numpy() if C.COL_LOCATION_NAME in test.columns else None
+    harm = test["harmattan"].to_numpy(dtype=float) if "harmattan" in test.columns else None
+    write_test_predictions_csv(
+        PRED_DIR / f"tabular_{horizon}_{safe_model_filename_tag(name)}.csv",
+        target_time=test["target_time"],
+        y_true=y_test,
+        y_pred=np.asarray(pred_test, dtype=float),
+        pipeline="tabular",
+        model=name,
+        horizon=horizon,
+        harmattan=harm,
+        location=loc,
+        split_meta=split_meta,
+        seed=TABULAR_SEED,
+    )
 
     # Regime-slice metrics (Harmattan vs non-Harmattan) when label is available.
     # This mirrors the deep-model evaluation and supports "dry vs wet" comparisons
@@ -129,7 +157,7 @@ def _eval_model(name: str, model, train: pd.DataFrame, val: pd.DataFrame, test: 
     return m
 
 
-def _eval_baselines(df_test: pd.DataFrame) -> list[dict]:
+def _eval_baselines(df_test: pd.DataFrame, horizon: str, split_meta: dict) -> list[dict]:
     """Operational baselines using available lag features."""
     y_true = df_test["y"].to_numpy(dtype=float)
     harm = df_test["harmattan"].to_numpy(dtype=float) if "harmattan" in df_test.columns else None
@@ -161,6 +189,21 @@ def _eval_baselines(df_test: pd.DataFrame) -> list[dict]:
         m = _safe_metrics(yhat)
         if m:
             m["model"] = "naive_level"
+            write_test_predictions_csv(
+                PRED_DIR / f"tabular_{horizon}_{safe_model_filename_tag('naive_level')}.csv",
+                target_time=df_test["target_time"],
+                y_true=y_true,
+                y_pred=yhat.astype(float),
+                pipeline="tabular",
+                model="naive_level",
+                horizon=horizon,
+                harmattan=harm,
+                location=df_test[C.COL_LOCATION_NAME].to_numpy()
+                if C.COL_LOCATION_NAME in df_test.columns
+                else None,
+                split_meta=split_meta,
+                seed=TABULAR_SEED,
+            )
             out.append(m)
 
     # Seasonal naïve, period 24 h: ŷ = y_{t-24}
@@ -170,6 +213,21 @@ def _eval_baselines(df_test: pd.DataFrame) -> list[dict]:
         m = _safe_metrics(yhat)
         if m:
             m["model"] = "seasonal_naive_24h"
+            write_test_predictions_csv(
+                PRED_DIR / f"tabular_{horizon}_{safe_model_filename_tag('seasonal_naive_24h')}.csv",
+                target_time=df_test["target_time"],
+                y_true=y_true,
+                y_pred=yhat.astype(float),
+                pipeline="tabular",
+                model="seasonal_naive_24h",
+                horizon=horizon,
+                harmattan=harm,
+                location=df_test[C.COL_LOCATION_NAME].to_numpy()
+                if C.COL_LOCATION_NAME in df_test.columns
+                else None,
+                split_meta=split_meta,
+                seed=TABULAR_SEED,
+            )
             out.append(m)
 
     # Seasonal naïve, period 168 h (weekly): ŷ = y_{t-168}
@@ -179,6 +237,21 @@ def _eval_baselines(df_test: pd.DataFrame) -> list[dict]:
         m = _safe_metrics(yhat)
         if m:
             m["model"] = "seasonal_naive_168h"
+            write_test_predictions_csv(
+                PRED_DIR / f"tabular_{horizon}_{safe_model_filename_tag('seasonal_naive_168h')}.csv",
+                target_time=df_test["target_time"],
+                y_true=y_true,
+                y_pred=yhat.astype(float),
+                pipeline="tabular",
+                model="seasonal_naive_168h",
+                horizon=horizon,
+                harmattan=harm,
+                location=df_test[C.COL_LOCATION_NAME].to_numpy()
+                if C.COL_LOCATION_NAME in df_test.columns
+                else None,
+                split_meta=split_meta,
+                seed=TABULAR_SEED,
+            )
             out.append(m)
 
     # Seasonal naïve, period 336 h (14d): ŷ = y_{t-336}
@@ -188,6 +261,21 @@ def _eval_baselines(df_test: pd.DataFrame) -> list[dict]:
         m = _safe_metrics(yhat)
         if m:
             m["model"] = "seasonal_naive_336h"
+            write_test_predictions_csv(
+                PRED_DIR / f"tabular_{horizon}_{safe_model_filename_tag('seasonal_naive_336h')}.csv",
+                target_time=df_test["target_time"],
+                y_true=y_true,
+                y_pred=yhat.astype(float),
+                pipeline="tabular",
+                model="seasonal_naive_336h",
+                horizon=horizon,
+                harmattan=harm,
+                location=df_test[C.COL_LOCATION_NAME].to_numpy()
+                if C.COL_LOCATION_NAME in df_test.columns
+                else None,
+                split_meta=split_meta,
+                seed=TABULAR_SEED,
+            )
             out.append(m)
 
     # Seasonal naïve, period 672 h (28d): ŷ = y_{t-672}
@@ -197,6 +285,21 @@ def _eval_baselines(df_test: pd.DataFrame) -> list[dict]:
         m = _safe_metrics(yhat)
         if m:
             m["model"] = "seasonal_naive_672h"
+            write_test_predictions_csv(
+                PRED_DIR / f"tabular_{horizon}_{safe_model_filename_tag('seasonal_naive_672h')}.csv",
+                target_time=df_test["target_time"],
+                y_true=y_true,
+                y_pred=yhat.astype(float),
+                pipeline="tabular",
+                model="seasonal_naive_672h",
+                horizon=horizon,
+                harmattan=harm,
+                location=df_test[C.COL_LOCATION_NAME].to_numpy()
+                if C.COL_LOCATION_NAME in df_test.columns
+                else None,
+                split_meta=split_meta,
+                seed=TABULAR_SEED,
+            )
             out.append(m)
 
     return out
@@ -224,7 +327,7 @@ def _ar_lag_fourier_feature_names(df: pd.DataFrame) -> list[str]:
 
 
 def _eval_ridge_ar_lag_fourier(
-    train: pd.DataFrame, test: pd.DataFrame
+    train: pd.DataFrame, test: pd.DataFrame, horizon: str, split_meta: dict
 ) -> dict | None:
     cols = _ar_lag_fourier_feature_names(train)
     cols = [c for c in cols if c in train.columns and c in test.columns]
@@ -240,6 +343,22 @@ def _eval_ridge_ar_lag_fourier(
     pipe.fit(X_train, y_train)
     pred_test = pipe.predict(X_test).astype(float)
     m = regression_metrics(y_test, pred_test)
+
+    loc = test[C.COL_LOCATION_NAME].to_numpy() if C.COL_LOCATION_NAME in test.columns else None
+    harm = test["harmattan"].to_numpy(dtype=float) if "harmattan" in test.columns else None
+    write_test_predictions_csv(
+        PRED_DIR / f"tabular_{horizon}_{safe_model_filename_tag('ridge_ar_lag_fourier')}.csv",
+        target_time=test["target_time"],
+        y_true=y_test,
+        y_pred=pred_test,
+        pipeline="tabular",
+        model="ridge_ar_lag_fourier",
+        horizon=horizon,
+        harmattan=harm,
+        location=loc,
+        split_meta=split_meta,
+        seed=TABULAR_SEED,
+    )
 
     if "harmattan" in test.columns:
         harm = test["harmattan"].to_numpy(dtype=float)
@@ -313,11 +432,11 @@ def main() -> None:
         split_rows.append(meta_row)
 
         # Baselines on test (naive + seasonal naïve)
-        for m in _eval_baselines(test):
+        for m in _eval_baselines(test, hz, meta):
             metrics_rows.append({"horizon": hz, **m})
 
         # Regularised linear AR + Fourier (explicit benchmark requested for papers)
-        m_ar = _eval_ridge_ar_lag_fourier(train, test)
+        m_ar = _eval_ridge_ar_lag_fourier(train, test, hz, meta)
         if m_ar:
             metrics_rows.append({"horizon": hz, **m_ar})
 
@@ -370,7 +489,7 @@ def main() -> None:
         # Keep Location Name as it may be useful for reporting, but pipeline drops non-numeric anyway.
         for name, model in models.items():
             print(f"[{hz}] Training {name}...", flush=True)
-            m = _eval_model(name, model, train, val, test)
+            m = _eval_model(name, model, train, val, test, horizon=hz, split_meta=meta)
             metrics_rows.append({"horizon": hz, **m})
             print(f"[{hz}] Done {name}: MAE={m['mae']:.2f}", flush=True)
 

@@ -22,11 +22,16 @@ import pandas as pd
 from sklearn.preprocessing import StandardScaler
 
 from airpollution.eval import SplitConfig, regression_metrics, time_split_masks, top_decile_mask
+from airpollution.predictions_export import safe_model_filename_tag, write_test_predictions_csv
 from airpollution.utils import ensure_dir
 
 ROOT = project_path.ROOT
 SEQ_DIR = ROOT / "data" / "sequences"
 TABLES_DIR = ensure_dir(ROOT / "reports" / "tables")
+PRED_DIR = ensure_dir(ROOT / "reports" / "predictions")
+
+HOURS_TO_HORIZON = {24: "h24", 168: "h168", 336: "h336", 672: "h672"}
+TRAIN_SEED = int(os.environ.get("AIRP_SEED", "42"))
 
 os.environ.setdefault("TF_CPP_MIN_LOG_LEVEL", "2")
 
@@ -156,6 +161,13 @@ def main() -> None:
     try:
         keras, backend_name = _try_keras_backend()
         print(f"Keras backend: {backend_name}", flush=True)
+        np.random.seed(TRAIN_SEED)
+        try:
+            import tensorflow as tf
+
+            tf.random.set_seed(TRAIN_SEED)
+        except Exception:
+            pass
     except Exception as e:
         stub = {
             "status": "skipped",
@@ -174,7 +186,21 @@ def main() -> None:
         test_days=int(os.environ.get("AIRP_TEST_DAYS", "28")),
     )
 
-    for npz_path in sorted(SEQ_DIR.glob("sequences_h*.npz")):
+    npz_files = sorted(SEQ_DIR.glob("sequences_h*.npz"))
+    if not npz_files:
+        stub = {
+            "status": "skipped",
+            "reason": "no_sequence_npz_files_found",
+            "python": f"{sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro}",
+            "seq_dir": str(SEQ_DIR),
+            "hint": "Run scripts/06_build_sequence_dataset.py first (it writes data/sequences/sequences_h*.npz), "
+            "then rerun this script.",
+        }
+        (TABLES_DIR / "results_deep_models_status.json").write_text(json.dumps(stub, indent=2))
+        print(f"No sequence files found in {SEQ_DIR}.", flush=True)
+        return
+
+    for npz_path in npz_files:
         data = np.load(npz_path, allow_pickle=True)
         X = data["X"]
         y = data["y"].astype(np.float32)
@@ -182,12 +208,17 @@ def main() -> None:
         harm = data["harmattan_y"] if "harmattan_y" in data.files else None
         if harm is not None:
             harm = np.asarray(harm).astype(np.float32)
+        loc = data["location"] if "location" in data.files else None
 
         m_tr, m_va, m_te, split_meta = time_split_masks(tt, cfg=cfg)
 
         X_tr, y_tr = X[m_tr], y[m_tr]
         X_va, y_va = X[m_va], y[m_va]
         X_te, y_te = X[m_te], y[m_te]
+        tt_te = tt[m_te]
+        harm_te = harm[m_te] if harm is not None else None
+        loc_te = loc[m_te] if loc is not None else None
+        hz_tag = HOURS_TO_HORIZON[int(data["horizon_hours"])]
 
         if len(X_tr) < 500 or len(X_va) < 100:
             rows.append({"file": npz_path.name, "model": "—", "mae": np.nan, "note": "insufficient samples after split"})
@@ -205,6 +236,21 @@ def main() -> None:
             model = train_one(keras, model, X_tr, y_tr, X_va, y_va)
             pred = model.predict(X_te, verbose=0).reshape(-1)
             m = regression_metrics(y_te, pred)
+            write_test_predictions_csv(
+                PRED_DIR / f"deep_{hz_tag}_{safe_model_filename_tag(name)}.csv",
+                target_time=tt_te,
+                y_true=y_te,
+                y_pred=pred.astype(float),
+                pipeline="deep",
+                model=name,
+                horizon=hz_tag,
+                harmattan=harm_te,
+                location=loc_te,
+                split_meta=split_meta,
+                keras_backend=backend_name,
+                seq_len=int(data["seq_len"]),
+                seed=TRAIN_SEED,
+            )
             meta_row = {
                 "keras_backend": backend_name,
                 "file": npz_path.name,
@@ -250,6 +296,19 @@ def main() -> None:
             rows.append(m)
 
         print(f"Trained {tag}: lstm + lstm_mha, test n={split_meta['n_test']}")
+
+    if not rows:
+        stub = {
+            "status": "skipped",
+            "reason": "no_metrics_rows_produced",
+            "python": f"{sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro}",
+            "seq_dir": str(SEQ_DIR),
+            "hint": "Sequence files were found, but no horizon produced enough samples after the split. "
+            "Try reducing AIRP_TEST_DAYS, or verify timestamps and sequence construction.",
+        }
+        (TABLES_DIR / "results_deep_models_status.json").write_text(json.dumps(stub, indent=2))
+        print("No metrics rows produced (likely insufficient samples after split).", flush=True)
+        return
 
     out = pd.DataFrame(rows)
     out_path = TABLES_DIR / "results_deep_model_metrics.csv"

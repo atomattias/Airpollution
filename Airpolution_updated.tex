@@ -117,7 +117,7 @@
 
 % Joint first author
 \author[1]{Mattias Tsegaye Gebire}\fnmark[1]
-\ead{atomattias@gmail.com}
+\ead{mageb9209@oslomet.no}
 
 % Second author
 \author%
@@ -339,11 +339,7 @@ We evaluate Long Short-Term Memory (LSTM) networks to model nonlinear temporal d
 
 \begin{figure*}[t]
     \centering
-    \IfFileExists{Architecture.png}{%
-        \includegraphics[width=0.95\textwidth]{Architecture.png}%
-    }{%
-        \fbox{\parbox[c][0.22\textheight][c]{0.95\linewidth}{\centering \textbf{Missing figure:} \texttt{figs/Architecture.png}}}%
-    }%
+    \includegraphics[width=0.95\textwidth]{figs/Architecture.png}%
     \caption{Deep sequence model architectures. \textbf{(a)} Per-horizon direct forecasting: multivariate input window $\rightarrow$ LSTM encoder $\rightarrow$ optional multi-head attention pooling and fusion $\rightarrow$ dense head predicting PM$_{2.5}$ at one lead time $H$. \textbf{(b)} Joint multi-horizon training: shared representation predicts all horizons $\{24,168,336,672\}$~h simultaneously from one forward pass; splits are keyed to the maximum-horizon label time for leakage safety.}
     \label{fig:architecture}
 \end{figure*}
@@ -519,7 +515,7 @@ Figure~\ref{fig:pm25_distribution} visualises these contrasts using raw and corr
 
 \begin{figure*}[t]
     \centering
-    \includegraphics[width=0.92\textwidth]{eda_pm25_boxplot_by_location.png}%
+    \includegraphics[width=0.92\textwidth]{figs/eda_pm25_boxplot_by_location.png}%
     \caption{Distribution of raw and corrected PM$_{2.5}$ ($\mu$g/m$^3$) by monitoring location.}
     \label{fig:pm25_distribution}
 \end{figure*}
@@ -533,13 +529,13 @@ Harmattan versus pre-Harmattan regimes further reshape the diurnal curve (Figure
     \centering
     \begin{subfigure}[t]{0.48\textwidth}
         \centering
-        \includegraphics[width=\linewidth]{eda_diurnal_curve_pooled.png}%
+        \includegraphics[width=\linewidth]{figs/eda_diurnal_curve_pooled.png}%
         \caption{Pooled hourly profile (mean, median, and interquartile band).}%
         \label{fig:diurnal_pooled}
     \end{subfigure}\hfill
     \begin{subfigure}[t]{0.48\textwidth}
         \centering
-        \includegraphics[width=\linewidth]{eda_diurnal_curve_by_regime.png}%
+        \includegraphics[width=\linewidth]{figs/eda_diurnal_curve_by_regime.png}%
         \caption{Median diurnal curves stratified by Harmattan versus pre-Harmattan conditions.}%
         \label{fig:diurnal_regime}
     \end{subfigure}
@@ -554,7 +550,7 @@ Figure~\ref{fig:forecast_mae} summarises pooled test-set MAE across horizons for
 
 \begin{figure*}[t]
     \centering
-    \includegraphics[width=0.92\textwidth]{results_mae_by_horizon.png}%
+    \includegraphics[width=0.92\textwidth]{figs/results_mae_by_horizon.png}%
     \caption{Mean absolute error (MAE; $\mu$g/m$^3$) on pooled multi-site test windows for selected models, shown by direct forecasting horizon. Error bars denote 95\% percentile intervals from a moving-block bootstrap ($B{=}1000$, block length 168~h) on time-ordered test rows.}
     \label{fig:forecast_mae}
 \end{figure*}
@@ -658,11 +654,7 @@ Horizon & $n_{\mathrm{test}}$ & Mean & Std & ACF(1) \\
 
 \begin{figure}[H]
     \centering
-    \IfFileExists{results_horizon_target_variability_box.png}{%
-        \includegraphics[width=0.72\textwidth]{results_horizon_target_variability_box.png}%
-    }{%
-        \fbox{\parbox[c][0.12\textheight][c]{0.72\linewidth}{\centering \textbf{Missing:} \texttt{results\_horizon\_target\_variability\_box.png}}}%
-    }%
+    \includegraphics[width=0.72\textwidth]{figs/results_horizon_target_variability_box.png}%
     \caption{Distribution of test-set forecast targets $y(t+H)$ by horizon (pooled 28-day test window). Identical boxplots reflect the same underlying test rows in this export, not necessarily equal difficulty at each $H$.}
     \label{fig:horizon_variability}
 \end{figure}
@@ -692,31 +684,19 @@ To complement pooled accuracy in Table~\ref{tab:forecast-summary}, Figure~\ref{f
     \centering
     \begin{subfigure}[b]{\textwidth}
         \centering
-        \IfFileExists{results_scatter_rf_h24.png}{%
-            \includegraphics[width=0.95\textwidth]{results_scatter_rf_h24.png}%
-        }{%
-            \fbox{\parbox[c][0.20\textheight][c]{0.95\linewidth}{\centering \textbf{Missing figure:} \texttt{results\_scatter\_rf\_h24.png}}}%
-        }%
+        \includegraphics[width=0.95\textwidth]{figs/results_scatter_rf_h24.png}%
         \caption{Random Forest (tabular lags).}
     \end{subfigure}
 
     \begin{subfigure}[b]{\textwidth}
         \centering
-        \IfFileExists{results_scatter_linear_svr_h24.png}{%
-            \includegraphics[width=0.95\textwidth]{results_scatter_linear_svr_h24.png}%
-        }{%
-            \fbox{\parbox[c][0.20\textheight][c]{0.95\linewidth}{\centering \textbf{Missing figure:} \texttt{results\_scatter\_linear\_svr\_h24.png}}}%
-        }%
+        \includegraphics[width=0.95\textwidth]{figs/results_scatter_linear_svr_h24.png}%
         \caption{Linear SVR (tabular lags).}
     \end{subfigure}
 
     \begin{subfigure}[b]{\textwidth}
         \centering
-        \IfFileExists{results_scatter_xgboost_h24.png}{%
-            \includegraphics[width=0.95\textwidth]{results_scatter_xgboost_h24.png}%
-        }{%
-            \fbox{\parbox[c][0.20\textheight][c]{0.95\linewidth}{\centering \textbf{Missing figure:} \texttt{results\_scatter\_xgboost\_h24.png}}}%
-        }%
+        \includegraphics[width=0.95\textwidth]{figs/results_scatter_xgboost_h24.png}%
         \caption{XGBoost (tabular lags).}
     \end{subfigure}
     \caption{Diagnostic scatter plots for direct 24~h forecasts on the pooled multi-site test split, using exported test predictions (\texttt{reports/predictions/}; script~10). The layout mirrors standard regression and residual views: departure from the diagonal at high concentrations indicates conditional bias in the upper tail; the time overlay highlights how point forecasts track the bulk trajectory but often smooth short-lived spikes.}

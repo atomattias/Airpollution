@@ -12,12 +12,11 @@ __pycache__/
 # Jupyter
 .ipynb_checkpoints/
 
-# Data / generated artifacts
+# Data: sequence tensors via Git LFS; rebuild features/processed with scripts 04/06
 data/processed/
 data/features/
-data/sequences/
 data/**/*.parquet
-data/**/*.npz
+data/**/*.csv.gz
 
 # Reports (keep tables if you want; ignore heavy figures by default)
 reports/figures/

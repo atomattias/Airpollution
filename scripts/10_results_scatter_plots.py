@@ -39,6 +39,7 @@ except Exception:
 
 ROOT = project_path.ROOT
 FEATURE_DIR = ROOT / "data" / "features"
+PRED_DIR = ROOT / "reports" / "predictions"
 FIGS_DIR = ROOT / "reports" / "figures"
 
 
@@ -150,17 +151,45 @@ def _plot_triptych(
     plt.close(fig)
 
 
+def _scatter_from_predictions(hz: str, model_names: list[str]) -> None:
+    """Plot test-set diagnostics from exported prediction CSVs (scripts/05)."""
+    for name in model_names:
+        pred_path = PRED_DIR / f"tabular_{hz}_{name}.csv"
+        if not pred_path.exists():
+            print(f"Skipping {name}: missing {pred_path.name}")
+            continue
+        df = pd.read_csv(pred_path)
+        df["target_time"] = pd.to_datetime(df["target_time"])
+        y_true = df["y_true"].to_numpy(dtype=float)
+        y_pred = df["y_pred"].to_numpy(dtype=float)
+        tt = df["target_time"].to_numpy()
+        t0 = df["target_time"].min()
+        t1 = df["target_time"].max()
+        title = f"{name} ({hz}) — test predictions {t0:%Y-%m-%d} to {t1:%Y-%m-%d}"
+        out = FIGS_DIR / f"results_scatter_{name}_{hz}.png"
+        _plot_triptych(y_true=y_true, y_pred=y_pred, tt=tt, title=title, out_path=out)
+        print(f"Wrote {out}")
+
+
 def main() -> None:
     FIGS_DIR.mkdir(parents=True, exist_ok=True)
 
     hz = os.environ.get("AIRP_SCATTER_HZ", "h24").strip()
     path_csv = FEATURE_DIR / f"tabular_{hz}.csv.gz"
+    use_preds = os.environ.get("AIRP_SCATTER_FROM_PREDICTIONS", "").strip() in {"1", "true", "yes"}
+
+    if use_preds or not path_csv.exists():
+        if not PRED_DIR.exists():
+            raise FileNotFoundError(
+                f"Missing {path_csv.name} and no {PRED_DIR}; run 04 locally or paste Colab predictions."
+            )
+        requested = os.environ.get("AIRP_SCATTER_MODELS", "rf,linear_svr,xgboost").strip()
+        model_names = [m.strip() for m in requested.split(",") if m.strip()]
+        _scatter_from_predictions(hz, model_names)
+        return
 
     # Prefer CSV to avoid pyarrow/parquet syscalls blocked in sandboxed environments.
-    if path_csv.exists():
-        ds = pd.read_csv(path_csv)
-    else:
-        raise FileNotFoundError(f"Missing feature dataset for {hz}. Expected {path_csv.name}.")
+    ds = pd.read_csv(path_csv)
 
     ds["target_time"] = pd.to_datetime(ds["target_time"])
     cfg = SplitConfig(

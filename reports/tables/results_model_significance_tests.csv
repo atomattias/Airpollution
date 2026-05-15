@@ -1,0 +1,13 @@
+comparison,horizon,model_a,model_b,n_aligned,error,mae_a,mae_b,delta_mae_point,delta_mean_bootstrap,delta_lower95,delta_upper95,ci_excludes_zero,n_bootstrap,block_len
+mh_lstm vs per-horizon lstm,h24,deep:mh_lstm,deep:lstm,0,y_true mismatch after merge — check prediction exports.,,,,,,,,,
+mh_lstm vs per-horizon lstm,h168,deep:mh_lstm,deep:lstm,0,y_true mismatch after merge — check prediction exports.,,,,,,,,,
+mh_lstm vs per-horizon lstm,h336,deep:mh_lstm,deep:lstm,0,y_true mismatch after merge — check prediction exports.,,,,,,,,,
+mh_lstm vs per-horizon lstm,h672,deep:mh_lstm,deep:lstm,1957,,14.924237760281649,13.985429189493903,0.9388085707877449,0.9488460875054558,-0.5308111962945588,2.447621497415924,False,1000.0,168.0
+mh_lstm_mha vs mh_lstm,h24,deep:mh_lstm_mha,deep:mh_lstm,1957,,12.944830288372907,12.314267803347105,0.6305624850258026,0.36547351426985664,-3.1172582514869602,3.5970311828943675,False,1000.0,168.0
+mh_lstm_mha vs mh_lstm,h168,deep:mh_lstm_mha,deep:mh_lstm,1957,,11.320641884830573,15.018171507056172,-3.697529622225598,-3.5577769954663854,-6.168380407563387,-0.712690929045894,True,1000.0,168.0
+mh_lstm_mha vs mh_lstm,h336,deep:mh_lstm_mha,deep:mh_lstm,1957,,9.778585240861622,16.57764462140609,-6.799059380544469,-6.837702882431451,-8.793442156586528,-4.985642019095443,True,1000.0,168.0
+mh_lstm_mha vs mh_lstm,h672,deep:mh_lstm_mha,deep:mh_lstm,1957,,13.563320740547239,14.924237760281649,-1.360917019734409,-1.298977724538753,-4.565331465831264,2.3754777086956738,False,1000.0,168.0
+mh_lstm_mha vs Ridge AR+Fourier,h24,deep:mh_lstm_mha,tabular:ridge_ar_lag_fourier,0,y_true mismatch after merge — check prediction exports.,,,,,,,,,
+mh_lstm_mha vs Ridge AR+Fourier,h168,deep:mh_lstm_mha,tabular:ridge_ar_lag_fourier,0,y_true mismatch after merge — check prediction exports.,,,,,,,,,
+mh_lstm_mha vs Ridge AR+Fourier,h336,deep:mh_lstm_mha,tabular:ridge_ar_lag_fourier,0,y_true mismatch after merge — check prediction exports.,,,,,,,,,
+mh_lstm_mha vs Ridge AR+Fourier,h672,deep:mh_lstm_mha,tabular:ridge_ar_lag_fourier,1957,,13.563320740547239,15.729986832550559,-2.1666660920033207,-2.4480414198846563,-5.145029849286155,-0.09896741464872585,True,1000.0,168.0

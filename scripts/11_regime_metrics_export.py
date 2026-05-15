@@ -64,7 +64,7 @@ def main() -> None:
             raise FileNotFoundError(f"Missing tabular dataset for {hz}")
 
         ds["target_time"] = pd.to_datetime(ds["target_time"])
-        train, val, test, _meta = t.time_split_by_target_time(ds, cfg=cfg)
+        train, val, test, meta = t.time_split_by_target_time(ds, cfg=cfg)
 
         models = {"ridge": t.Ridge(alpha=1.0, random_state=42)}
         if not t.FAST_MODE:
@@ -105,7 +105,9 @@ def main() -> None:
             )
 
         for name, model in models.items():
-            m = t._eval_model(name, model, train, val, test)  # noqa: SLF001
+            m = t._eval_model(  # noqa: SLF001
+                name, model, train, val, test, horizon=hz, split_meta=meta
+            )
             wide_rows.append(
                 {
                     "horizon": hz,

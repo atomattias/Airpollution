@@ -117,6 +117,7 @@ def train_one(
     epochs: int = 80,
     batch_size: int = 128,
 ):
+    batch_size = int(os.environ.get("AIRP_BATCH_SIZE", str(batch_size)))
     model.compile(optimizer=keras.optimizers.Adam(1e-3), loss="mse", metrics=["mae"])
     cb = [
         keras.callbacks.EarlyStopping(monitor="val_loss", patience=12, restore_best_weights=True),

@@ -61,7 +61,7 @@
 \shorttitle{Multi-Horizon Machine Learning Forecasting}
 
 % Short author
-\shortauthors{JB Diekuu et~al.}
+\shortauthors{Diekuu and Gebire et~al.}
 
 % Main title of the paper
 \title [mode = title]{Leakage-Safe Multi-Horizon Forecasting of Urban PM$_{2.5}$ Using Joint LSTM Sequence Models with Attention: Evidence from Coastal Ghana}                      
@@ -92,18 +92,10 @@
 %       twitter=<twitter id>,
 %       linkedin=<linkedin id>,
 %       gplus=<gplus id>]
-\author[]{John-Bosco Diekuu}
-                        %[type=editor,
-                        %auid=000,bioid=1,
-                        %prefix=Sir,
-                        %role=Researcher,
-                        %orcid=0000-0001-7511-2910]
+\author[1]{John-Bosco Diekuu}\fnmark[1]
 
 % Corresponding author indication
 \cormark[1]
-
-% Footnote of the first author
-%\fnmark[1]
 
 % Email id of the first author
 \ead{j.diekuu@rgu.ac.uk}
@@ -122,6 +114,10 @@
     postcode={AB10 7GJ}, 
     % state={},
     country={UK}}
+
+% Joint first author
+\author[1]{Mattias Tsegaye Gebire}\fnmark[1]
+\ead{atomattias@gmail.com}
 
 % Second author
 \author%
@@ -198,6 +194,9 @@
 % \credit{Conceptualization, Methodology, Formal analysis, Investigation, Writing - original draft, Writing - review \& editing, Data curation}
 
 
+% Joint first-authorship footnote
+\fntext[fn1]{These authors contributed equally to this work and should be considered joint first authors.}
+
 % Corresponding author text
 \cortext[cor1]{Corresponding author}
 % \cortext[cor2]{Principal corresponding author}
@@ -221,19 +220,19 @@
 \begin{abstract}
 Accurate forecasting of fine particulate matter (PM$_{2.5}$) is critical for managing air quality risks in rapidly urbanising cities, yet forecasting in sub-Saharan Africa is constrained by sparse monitoring and limited leakage-safe evaluation of modern models. This study presents a multi-horizon PM$_{2.5}$ forecasting framework using five months of hourly ground-based observations (September 2025--February 2026) from seven fixed sites in Tema, coastal Ghana, a city that experiences strong seasonal pollution from Harmattan dust.
 
-We benchmark Long Short-Term Memory (LSTM) sequence models against seasonal-na\"{i}ve and Ridge+Fourier autoregressive baselines, and classical machine learning models (linear SVR, Random Forest, XGBoost) using direct forecasting at 24~h, 7~d, 14~d, and 28~d horizons under leakage-safe, label-time blocked splits. We additionally evaluate \emph{joint} multi-horizon training, where one model predicts all horizons simultaneously, to test whether sharing information across lead times improves generalisation. Evaluation reports pooled MAE and upper-decile MAE (MAE$^{90}$), alongside regime-aware diagnostics where feasible.
+We benchmark Long Short-Term Memory (LSTM) sequence models against seasonal-na\"{i}ve and Ridge+Fourier autoregressive baselines, and classical machine learning models (linear SVR, Random Forest, XGBoost) using direct forecasting at 24~h, 7~d, 14~d, and 28~d horizons under leakage-safe, label-time blocked splits. We additionally evaluate \emph{joint} multi-horizon training, where one model predicts all horizons simultaneously, to test whether sharing information across lead times improves generalisation. All models export row-level test predictions; uncertainty is quantified with moving-block bootstrap confidence intervals ($B{=}1000$) and pre-specified paired comparisons of $\Delta$MAE on aligned forecast rows. Evaluation reports pooled MAE (with 95\% CIs), upper-decile MAE (MAE$^{90}$), and regime-aware diagnostics where feasible.
 
 Four findings emerge from this limited five-month observational window.
 
-\textbf{First, joint multi-horizon training materially improves accuracy across horizons.} The best model at 24~h is a jointly trained LSTM (MAE 10.82~\textmu g/m\textsuperscript{3}), while a jointly trained LSTM+multi-head attention achieves the lowest MAE at 7~d, 14~d, and 28~d (12.03, 9.88, and 12.00~\textmu g/m\textsuperscript{3}, respectively), outperforming both per-horizon LSTM baselines and seasonal-na\"{i}ve forecasts.
+\textbf{First, jointly trained sequence models with multi-head attention achieve the lowest pooled MAE at 7~d, 14~d, and 28~d} (11.32, 9.78, and 13.56~\textmu g/m\textsuperscript{3}; 95\% CIs in Table~\ref{tab:forecast-summary}). At 24~h, a restricted Ridge autoregressive benchmark attains the lowest pooled MAE (11.96~\textmu g/m\textsuperscript{3}; CI [10.96, 12.98]), marginally below jointly trained LSTMs (12.31--12.94~\textmu g/m\textsuperscript{3}).
 
-\textbf{Second, attention alone does not consistently improve per-horizon models, but becomes highly effective under joint multi-horizon training.} In per-horizon direct training, the attention-augmented LSTM is not consistently better than a vanilla LSTM; however, in the jointly trained setting, attention yields the best pooled MAE at 7--28~days.
+\textbf{Second, attention is most beneficial under joint multi-horizon training at medium horizons.} Paired block-bootstrap comparisons show statistically significant MAE reductions for joint LSTM+attention versus joint LSTM alone at 7~d and 14~d ($\Delta$MAE $\approx$ $-3.7$ and $-6.8$~\textmu g/m\textsuperscript{3}; 95\% CIs exclude zero), whereas per-horizon attention does not consistently outperform vanilla LSTM in this record.
 
-\textbf{Third, spike prediction remains an open challenge for all models.} Even for the best-performing joint models, upper-decile error MAE$^{90}$ is typically about three times larger than pooled MAE (e.g., at 14~d: 34.33 vs 9.88~\textmu g/m\textsuperscript{3}).
+\textbf{Third, spike prediction remains an open challenge for all models.} Even for the best-performing joint models, upper-decile error (MAE$^{90}$: mean absolute error on test hours in the top 10\% of observed PM$_{2.5}$) is typically about three times larger than pooled MAE (e.g., at 14~d: 33.35 vs 9.78~\textmu g/m\textsuperscript{3}).
 
 \textbf{Fourth, the Harmattan regime shift substantially increases forecast error.} Regime-stratified evaluation indicates that Harmattan-period error is consistently higher than pre-Harmattan error for multiple baselines, underscoring the need for regime-aware reporting in seasonal West African settings.
 
-Given the limited five-month observational window, these findings are preliminary but actionable. We conclude that (a) leakage-safe evaluation is essential; (b) joint multi-horizon training can substantially improve medium- and long-horizon forecasting; and (c) tail-aware metrics such as MAE$^{90}$ should be standard reporting practice for public-health-oriented forecasting systems.
+Given the limited five-month observational window, these findings are preliminary but actionable. We conclude that (a) leakage-safe evaluation with time-aware uncertainty quantification is essential; (b) joint multi-horizon training can materially improve medium-horizon forecasting when combined with attention; and (c) tail-aware metrics such as MAE$^{90}$ should be standard reporting practice for public-health-oriented forecasting systems.
 
 \end{abstract}
 
@@ -246,9 +245,9 @@ Given the limited five-month observational window, these findings are preliminar
 
 % Research highlights
 \begin{highlights}
-\item Leakage-safe multi-horizon evaluation of PM$_{2.5}$ forecasting in Tema, Ghana using five months of hourly data from seven fixed sites.
-\item Joint multi-horizon training improves accuracy across lead times: best MAE at 24~h is 10.82~\textmu g/m\textsuperscript{3} (joint LSTM), while joint LSTM+attention achieves 12.03 (7~d), 9.88 (14~d), and 12.00 (28~d).
-\item Upper-decile error (MAE$^{90}$) remains $\sim$3$\times$ larger than pooled MAE even for the best models (e.g., 14~d: 34.33 vs 9.88~\textmu g/m\textsuperscript{3}), highlighting persistent spike prediction difficulty.
+\item Leakage-safe multi-horizon evaluation with exported test predictions, block-bootstrap 95\% CIs, and pre-specified paired $\Delta$MAE tests.
+\item Joint LSTM+attention achieves the lowest pooled MAE at 7--28~d (11.32, 9.78, and 13.56~\textmu g/m\textsuperscript{3}); at 24~h, Ridge AR+Fourier is marginally best (11.96~\textmu g/m\textsuperscript{3}).
+\item Paired tests: joint attention significantly outperforms joint LSTM at 7~d and 14~d (Table~\ref{tab:significance}); MAE$^{90}$ remains $\sim$3$\times$ pooled MAE (e.g., 14~d: 33.35 vs 9.78~\textmu g/m\textsuperscript{3}).
 \item Harmattan regime shift degrades forecast accuracy relative to pre-Harmattan, motivating regime-stratified evaluation for operational early warning.
 \end{highlights}
 
@@ -288,7 +287,7 @@ School-based and urban monitoring campaigns report pronounced peaks driven by th
 
 
 
-We propose a sequence-based forecasting framework using Long Short-Term Memory (LSTM) networks with two training strategies: (1) conventional per-horizon direct forecasting, and (2) joint multi-horizon training where one model predicts all lead times simultaneously. We evaluate both vanilla LSTM and multi-head attention-augmented variants. The joint training approach --- particularly when combined with attention --- yields the strongest results at 7--28~day horizons in this dataset, suggesting that sharing information across lead times provides valuable inductive bias in this data-sparse setting. Performance is assessed at 24~h, 7~d, 14~d, and 28~d, benchmarked against seasonal-na\"{i}ve, Ridge+Fourier, and classical machine learning baselines, with stress testing on upper-decile PM$_{2.5}$ episodes.
+We propose a sequence-based forecasting framework using Long Short-Term Memory (LSTM) networks with two training strategies: (1) conventional per-horizon direct forecasting, and (2) joint multi-horizon training where one model predicts all lead times simultaneously. We evaluate both vanilla LSTM and multi-head attention-augmented variants. The joint training approach --- particularly when combined with attention --- yields the strongest sequence-model results at 7--14~day horizons in this dataset, suggesting that sharing information across lead times provides useful inductive bias in this data-sparse setting. Performance is assessed at 24~h, 7~d, 14~d, and 28~d, benchmarked against seasonal-na\"{i}ve, Ridge+Fourier, and classical machine learning baselines, with block-bootstrap confidence intervals and paired significance tests on exported test predictions, plus stress testing on upper-decile PM$_{2.5}$ episodes (MAE$^{90}$).
 
 
 
@@ -336,7 +335,18 @@ We include operational baselines based on persistence and seasonal recurrence us
 
 \subsubsection{LSTM sequence models and attention augmentation}
 
-We evaluate Long Short-Term Memory (LSTM) networks to model nonlinear temporal dynamics from multivariate input windows. The LSTM unit is defined by standard gating equations (Eqs.~\ref{equ1}--\ref{equ5}). We additionally test a multi-head attention augmentation that computes content-based reweighting over the sequence representation and fuses the attention summary with the LSTM representation and a pooled summary of the raw inputs.
+We evaluate Long Short-Term Memory (LSTM) networks to model nonlinear temporal dynamics from multivariate input windows. The LSTM unit is defined by standard gating equations (Eqs.~\ref{equ1}--\ref{equ5}). We additionally test a multi-head attention augmentation that computes content-based reweighting over the sequence representation and fuses the attention summary with the LSTM representation and a pooled summary of the raw inputs. Figure~\ref{fig:architecture} summarises the two deep-learning setups: (left) per-horizon direct training with a single output head per model; (right) joint multi-horizon training with a shared encoder and multiple horizon outputs (with optional multi-head attention over the sequence).
+
+\begin{figure*}[t]
+    \centering
+    \IfFileExists{Architecture.png}{%
+        \includegraphics[width=0.95\textwidth]{Architecture.png}%
+    }{%
+        \fbox{\parbox[c][0.22\textheight][c]{0.95\linewidth}{\centering \textbf{Missing figure:} \texttt{figs/Architecture.png}}}%
+    }%
+    \caption{Deep sequence model architectures. \textbf{(a)} Per-horizon direct forecasting: multivariate input window $\rightarrow$ LSTM encoder $\rightarrow$ optional multi-head attention pooling and fusion $\rightarrow$ dense head predicting PM$_{2.5}$ at one lead time $H$. \textbf{(b)} Joint multi-horizon training: shared representation predicts all horizons $\{24,168,336,672\}$~h simultaneously from one forward pass; splits are keyed to the maximum-horizon label time for leakage safety.}
+    \label{fig:architecture}
+\end{figure*}
 
 \begin{equation}
 i_t = \sigma \left( W_{x_i} x_t + W_{h_i} h_{t-1} + W_{c_i} c_{t-1} + b_i\right)
@@ -365,7 +375,23 @@ Importantly, the utility of attention in this study is contingent on training se
 
 All train/validation/test splits are defined by \emph{label time} (``target\_time'') using contiguous blocked windows, with the most recent segment reserved for testing. This prevents leakage that would occur if observations from the test label period influenced training through feature construction or random shuffling. Unless otherwise specified, we use a 14-day validation window and a 28-day held-out test window for pooled evaluation; for regime-stratified diagnostics we also compute an extended regime-spanning test window (84 days) so that both pre-Harmattan and Harmattan label times are represented.
 
-Models are evaluated using mean absolute error (MAE), root mean squared error (RMSE), and coefficient of determination (\(R^2\)). To stress-test performance on high-pollution events, we compute upper-decile error (MAE$^{90}$), defined as MAE on test rows where observed PM$_{2.5}$ falls in the top 10\% of the test window. Where the test window spans both regimes, we also report regime-stratified metrics for pre-Harmattan versus Harmattan subsets.
+Models are evaluated using mean absolute error (MAE), root mean squared error (RMSE), and coefficient of determination (\(R^2\)). To stress-test performance on high-pollution events, we compute \textbf{upper-decile error} (MAE$^{90}$): MAE restricted to test rows whose observed PM$_{2.5}$ is at or above the 90th percentile of observed concentrations in the pooled test window. MAE$^{90}$ is reported alongside pooled MAE because public-health risk is driven disproportionately by tail hours, even when bulk accuracy appears acceptable. Where the test window spans both regimes, we also report regime-stratified metrics for pre-Harmattan versus Harmattan subsets.
+
+\subsubsection{Statistical uncertainty and paired comparisons}
+
+After each fitted model is evaluated on the held-out test window, we write one CSV per model and horizon under \texttt{reports/predictions/} with at least \texttt{target\_time}, \texttt{y\_true}, \texttt{y\_pred}, site/location, horizon, and model identifier (tabular and deep pipelines). These exports are the single source for bootstrap resampling and paired tests.
+
+We quantify uncertainty with a \textbf{moving-block bootstrap} on time-ordered test indices ($B{=}1000$ resamples; block length 168~h by default) to respect autocorrelation. We report bootstrap means and percentile 95\% confidence intervals for MAE, RMSE, and MAE$^{90}$ (script~12), merged into \texttt{results\_merged\_long.csv} (script~08) and reported in Table~\ref{tab:forecast-summary} and Figure~\ref{fig:forecast_mae}.
+
+We pre-specify a small set of \textbf{paired} comparisons on aligned rows (same \texttt{target\_time} and site; script~13): joint \texttt{mh\_lstm} vs per-horizon \texttt{lstm}; \texttt{mh\_lstm\_mha} vs \texttt{mh\_lstm}; and \texttt{mh\_lstm\_mha} vs Ridge AR+Fourier. For each pair we bootstrap the distribution of $\Delta$MAE (model~A minus model~B) using the same blocks and flag comparisons whose 95\% CI excludes zero (Table~\ref{tab:significance}). In the current export, statistically significant improvements ($\Delta$MAE CI excludes zero) are: \texttt{mh\_lstm\_mha} vs \texttt{mh\_lstm} at 7~d and 14~d, and \texttt{mh\_lstm\_mha} vs Ridge AR+Fourier at 28~d; all other pre-specified pairs in the table are non-significant or omitted. We tested multiple horizon--pair combinations; claims of significance are stated conservatively and should not be over-interpreted given the short record. Some joint-vs-per-horizon comparisons at short horizons are \emph{not} row-alignable because joint models use a single multi-horizon sequence split (label time keyed to the maximum horizon); those pairs are omitted from paired testing rather than forced.
+
+\subsubsection{Horizon target variability (14-day contextualisation)}
+
+To contextualise apparent ease of 14~d forecasting, we summarise test-set target distributions by horizon (script~15). On the pooled 28-day test window, marginal summaries of $y(t+H)$ are identical across $H$ when the same test row index set is used (Table~\ref{tab:horizon-variability}), so lower 14~d MAE should \emph{not} be interpreted as intrinsically lower target variance in this diagnostic alone. Figure~\ref{fig:horizon_variability} provides a visual check; definitive claims require horizon-specific label alignment and longer records.
+
+\subsubsection{Reproducibility}
+
+Training and evaluation are scripted in a public repository (commit pinned at submission). Deep models use TensorFlow/Keras with fixed random seeds; sequence construction, split boundaries, and exported prediction CSVs fully determine the reported metrics. Environment variables (\texttt{AIRP\_BATCH\_SIZE}, \texttt{AIRP\_TEST\_DAYS}, attention stride/head counts for multi-horizon runs) are documented in the repository README. Colab runs scripts 01--07 (feature construction through model training and prediction export); local runs merge metrics, bootstrap CIs, significance tests, and figures (scripts 08, 09, 11--13, 15).
 
 \begin{table}[htb]
 \centering
@@ -522,18 +548,18 @@ Harmattan versus pre-Harmattan regimes further reshape the diurnal curve (Figure
 \end{figure*}
 
 \subsection{Temporal Multi-Horizon predictions}
-Forecasting models are trained and evaluated as \emph{direct} horizon-specific regressors on leakage-safe splits defined by label time (Section~\ref{sec2}), with horizons $H\in\{24,168,336,672\}$ hours. Table~\ref{tab:eval-splits} reports train, validation, and test row counts and the test-window start date for each horizon (label-time contiguous blocks; the most recent segment is held out for testing). Pooled metrics, upper-decile MAE, and the figures below are generated from the merged tabular and sequence evaluation outputs produced by the project scripts.
+Forecasting models are trained and evaluated as \emph{direct} horizon-specific regressors on leakage-safe splits defined by label time (Section~\ref{sec2}), with horizons $H\in\{24,168,336,672\}$ hours. Table~\ref{tab:eval-splits} reports train, validation, and test row counts and the test-window start date for each horizon (label-time contiguous blocks; the most recent segment is held out for testing). Pooled metrics, bootstrap 95\% CIs, paired significance tests (Table~\ref{tab:significance}), upper-decile MAE, and the figures below are generated from exported test predictions and merged pipeline outputs (scripts~05/07 $\rightarrow$ 12 $\rightarrow$ 08 $\rightarrow$ 13; figures via scripts~09--10, 15).
 
-Figure~\ref{fig:forecast_mae} summarises pooled test-set MAE across horizons for a compact set of interpretable benchmarks. In addition to per-horizon sequence models (LSTM and LSTM with multi-head attention), we include jointly trained multi-horizon sequence models (``mh\_lstm'' and ``mh\_lstm\_mha'') to test whether sharing information across lead times improves generalisation. The chart makes two empirical features immediate: joint training yields the strongest accuracy at 7--28~days in this dataset, while the upper tail remains challenging for all approaches (Table~\ref{tab:forecast-upper-decile}).
+Figure~\ref{fig:forecast_mae} summarises pooled test-set MAE across horizons for a compact set of interpretable benchmarks, with 95\% bootstrap confidence intervals where available. In addition to per-horizon sequence models (LSTM and LSTM with multi-head attention), we include jointly trained multi-horizon sequence models (``mh\_lstm'' and ``mh\_lstm\_mha'') to test whether sharing information across lead times improves generalisation. The chart highlights that joint LSTM+attention attains the lowest pooled MAE at 7--28~days among sequence models in this window, while the upper tail remains challenging for all approaches (Table~\ref{tab:forecast-upper-decile}).
 
 \begin{figure*}[t]
     \centering
     \includegraphics[width=0.92\textwidth]{results_mae_by_horizon.png}%
-    \caption{Mean absolute error (MAE; $\mu$g/m$^3$) on pooled multi-site test windows for selected models, shown by direct forecasting horizon.}
+    \caption{Mean absolute error (MAE; $\mu$g/m$^3$) on pooled multi-site test windows for selected models, shown by direct forecasting horizon. Error bars denote 95\% percentile intervals from a moving-block bootstrap ($B{=}1000$, block length 168~h) on time-ordered test rows.}
     \label{fig:forecast_mae}
 \end{figure*}
 
-Table~\ref{tab:forecast-summary} complements Figure~\ref{fig:forecast_mae} with RMSE and $R^2$ alongside MAE for headline comparisons used in Sections~\ref{sec:res24}--\ref{sec:res672}. Episode-focused error on hours whose realised PM$_{2.5}$ lies in the upper decile of the test window (MAE$^{90}$) is reported explicitly in Table~\ref{tab:forecast-upper-decile}; values there are typically far larger than pooled MAE, reflecting the heavy upper tail documented in Section~3.1.
+Table~\ref{tab:forecast-summary} complements Figure~\ref{fig:forecast_mae} with RMSE and $R^2$ alongside pooled MAE and block-bootstrap 95\% CIs for headline models. Table~\ref{tab:significance} reports pre-specified paired $\Delta$MAE tests on aligned rows. Episode-focused error on hours whose realised PM$_{2.5}$ lies in the upper decile of the test window (MAE$^{90}$) is reported in Table~\ref{tab:forecast-upper-decile}; values there are typically far larger than pooled MAE, reflecting the heavy upper tail documented in Section~3.1. Systematic feature-importance or ablation analysis is \emph{not} included in this version (see Limitations).
 
 \begin{table}[H]
 \centering
@@ -554,32 +580,33 @@ Horizon & $n_{\mathrm{train}}$ & $n_{\mathrm{val}}$ & $n_{\mathrm{test}}$ & Test
 
 \begin{table}[H]
 \centering
-\caption{Representative out-of-sample forecasting accuracy on pooled multi-site test splits (corrected PM$_{2.5}$, $\mu$g/m$^3$). ``mh\_lstm'' / ``mh\_lstm\_mha'' are jointly trained multi-horizon sequence models that output all horizons. ``Ridge AR+Fourier'' denotes the restricted autoregressive ridge baseline with seasonal Fourier terms. Values match merged pipeline outputs.}
+\caption{Representative out-of-sample forecasting accuracy on pooled multi-site test splits (corrected PM$_{2.5}$, $\mu$g/m$^3$). ``mh\_lstm'' / ``mh\_lstm\_mha'' are jointly trained multi-horizon sequence models. MAE 95\% CI: moving-block bootstrap on exported test predictions ($B{=}1000$, block length 168~h).}
 \label{tab:forecast-summary}
-\resizebox{0.95\textwidth}{!}{%
-\begin{tabular}{llrrr}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{llrrrr}
 \toprule
-Horizon & Model & MAE & RMSE & $R^2$ \\
+Horizon & Model & MAE & MAE 95\% CI & RMSE & $R^2$ \\
 \midrule
-24~h & Joint multi-horizon LSTM (mh\_lstm) & 10.82 & 17.71 & 0.176 \\
-24~h & LSTM & 11.31 & 17.77 & 0.190 \\
-24~h & Ridge AR+Fourier & 11.96 & 18.22 & 0.210 \\
-24~h & Seasonal naïve (24h anchor) & 13.76 & 21.94 & $-0.144$ \\
+24~h & Ridge AR+Fourier & 11.96 & [10.96, 12.98] & 18.22 & 0.210 \\
+24~h & Joint multi-horizon LSTM (mh\_lstm) & 12.31 & [9.99, 14.59] & 19.23 & 0.028 \\
+24~h & Joint multi-horizon LSTM + attention (mh\_lstm\_mha) & 12.94 & [10.66, 14.87] & 18.30 & 0.120 \\
+24~h & LSTM (per-horizon direct) & 23.19 & [19.92, 27.08] & 30.24 & $-1.344$ \\
+24~h & Seasonal naïve (24h anchor) & 13.76 & [12.24, 15.10] & 21.94 & $-0.144$ \\
 \midrule
-7~d (168~h) & Joint multi-horizon LSTM + attention (mh\_lstm\_mha) & 12.03 & 18.34 & 0.117 \\
-7~d (168~h) & Joint multi-horizon LSTM (mh\_lstm) & 12.85 & 19.54 & $-0.002$ \\
-7~d (168~h) & LSTM & 13.40 & 18.80 & 0.151 \\
-7~d (168~h) & Seasonal naïve (weekly anchor) & 15.39 & 22.74 & $-0.226$ \\
+7~d (168~h) & Joint multi-horizon LSTM + attention (mh\_lstm\_mha) & 11.32 & [9.68, 12.92] & 17.94 & 0.155 \\
+7~d (168~h) & LSTM (per-horizon direct) & 13.04 & [11.92, 14.05] & 18.80 & 0.207 \\
+7~d (168~h) & Joint multi-horizon LSTM (mh\_lstm) & 15.02 & [12.75, 16.59] & 21.55 & $-0.219$ \\
+7~d (168~h) & Seasonal naïve (weekly anchor) & 15.39 & [13.40, 17.23] & 22.74 & $-0.226$ \\
 \midrule
-14~d (336~h) & Joint multi-horizon LSTM + attention (mh\_lstm\_mha) & 9.88 & 16.63 & 0.102 \\
-14~d (336~h) & Joint multi-horizon LSTM (mh\_lstm) & 13.64 & 19.39 & $-0.220$ \\
-14~d (336~h) & LSTM & 14.68 & 20.79 & 0.120 \\
-14~d (336~h) & Linear SVR (tabular lags) & 14.52 & 19.49 & 0.096 \\
+14~d (336~h) & Joint multi-horizon LSTM + attention (mh\_lstm\_mha) & 9.78 & [8.69, 10.80] & 16.58 & 0.108 \\
+14~d (336~h) & LSTM (per-horizon direct) & 14.31 & [12.70, 15.72] & 21.41 & $-0.011$ \\
+14~d (336~h) & Linear SVR (tabular lags) & 14.52 & [12.57, 16.27] & 19.49 & 0.096 \\
+14~d (336~h) & Joint multi-horizon LSTM (mh\_lstm) & 16.58 & [14.72, 18.45] & 22.00 & $-0.571$ \\
 \midrule
-28~d (672~h) & Joint multi-horizon LSTM + attention (mh\_lstm\_mha) & 12.00 & 19.26 & 0.109 \\
-28~d (672~h) & Joint multi-horizon LSTM (mh\_lstm) & 13.53 & 19.79 & 0.060 \\
-28~d (672~h) & Ridge AR+Fourier & 15.48 & 21.02 & $-0.051$ \\
-28~d (672~h) & Seasonal naïve (28d anchor) & 17.99 & 25.17 & $-0.507$ \\
+28~d (672~h) & Joint multi-horizon LSTM + attention (mh\_lstm\_mha) & 13.56 & [11.25, 16.35] & 19.98 & 0.041 \\
+28~d (672~h) & Joint multi-horizon LSTM (mh\_lstm) & 14.92 & [13.41, 16.76] & 21.37 & $-0.097$ \\
+28~d (672~h) & Ridge AR+Fourier & 15.48 & [14.16, 16.78] & 21.02 & $-0.051$ \\
+28~d (672~h) & Seasonal naïve (28d anchor) & 17.99 & [16.65, 19.60] & 25.17 & $-0.507$ \\
 \bottomrule
 \end{tabular}}
 \end{table}
@@ -593,22 +620,68 @@ Horizon & Model & MAE & RMSE & $R^2$ \\
 \toprule
 Horizon & Model & MAE & MAE$^{90}$ \\
 \midrule
-24~h & Joint multi-horizon LSTM (mh\_lstm) & 10.82 & 37.34 \\
-24~h & Joint multi-horizon LSTM + attention (mh\_lstm\_mha) & 12.42 & 32.78 \\
-24~h & LSTM & 11.31 & 36.37 \\
 24~h & Ridge AR+Fourier & 11.96 & 35.65 \\
+24~h & Joint multi-horizon LSTM (mh\_lstm) & 12.31 & 39.61 \\
+24~h & Joint multi-horizon LSTM + attention (mh\_lstm\_mha) & 12.94 & 28.95 \\
+24~h & LSTM (per-horizon direct) & 23.19 & 53.36 \\
 \midrule
-7~d (168~h) & Joint multi-horizon LSTM + attention (mh\_lstm\_mha) & 12.03 & 33.99 \\
-7~d (168~h) & Joint multi-horizon LSTM (mh\_lstm) & 12.85 & 38.71 \\
-7~d (168~h) & LSTM & 13.40 & 31.72 \\
+7~d (168~h) & Joint multi-horizon LSTM + attention (mh\_lstm\_mha) & 11.32 & 33.45 \\
+7~d (168~h) & LSTM (per-horizon direct) & 13.04 & 33.97 \\
+7~d (168~h) & Joint multi-horizon LSTM (mh\_lstm) & 15.02 & 42.42 \\
 \midrule
-14~d (336~h) & Joint multi-horizon LSTM + attention (mh\_lstm\_mha) & 9.88 & 34.33 \\
-14~d (336~h) & Joint multi-horizon LSTM (mh\_lstm) & 13.64 & 37.04 \\
-14~d (336~h) & LSTM & 14.68 & 31.51 \\
+14~d (336~h) & Joint multi-horizon LSTM + attention (mh\_lstm\_mha) & 9.78 & 33.35 \\
+14~d (336~h) & Joint multi-horizon LSTM (mh\_lstm) & 16.58 & 40.84 \\
+14~d (336~h) & LSTM (per-horizon direct) & 14.31 & 43.51 \\
 \midrule
-28~d (672~h) & Joint multi-horizon LSTM + attention (mh\_lstm\_mha) & 12.00 & 37.88 \\
-28~d (672~h) & Joint multi-horizon LSTM (mh\_lstm) & 13.53 & 35.96 \\
+28~d (672~h) & Joint multi-horizon LSTM + attention (mh\_lstm\_mha) & 13.56 & 32.17 \\
+28~d (672~h) & Joint multi-horizon LSTM (mh\_lstm) & 14.92 & 39.61 \\
 28~d (672~h) & Ridge AR+Fourier & 15.48 & 32.73 \\
+\bottomrule
+\end{tabular}}
+\end{table}
+
+\begin{table}[H]
+\centering
+\caption{Test-set target variability by forecast horizon on the pooled 28-day test window (script~15). Identical moments across $H$ indicate the diagnostic used the same test row set rather than horizon-specific label times; see text.}
+\label{tab:horizon-variability}
+\begin{tabular}{lrrrr}
+\toprule
+Horizon & $n_{\mathrm{test}}$ & Mean & Std & ACF(1) \\
+\midrule
+24~h & 4037 & 39.02 & 20.50 & 0.735 \\
+7~d (168~h) & 4037 & 39.02 & 20.50 & 0.735 \\
+14~d (336~h) & 4037 & 39.02 & 20.50 & 0.735 \\
+28~d (672~h) & 4037 & 39.02 & 20.50 & 0.735 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[H]
+    \centering
+    \IfFileExists{results_horizon_target_variability_box.png}{%
+        \includegraphics[width=0.72\textwidth]{results_horizon_target_variability_box.png}%
+    }{%
+        \fbox{\parbox[c][0.12\textheight][c]{0.72\linewidth}{\centering \textbf{Missing:} \texttt{results\_horizon\_target\_variability\_box.png}}}%
+    }%
+    \caption{Distribution of test-set forecast targets $y(t+H)$ by horizon (pooled 28-day test window). Identical boxplots reflect the same underlying test rows in this export, not necessarily equal difficulty at each $H$.}
+    \label{fig:horizon_variability}
+\end{figure}
+
+\begin{table}[H]
+\centering
+\caption{Pre-specified paired comparisons on aligned test rows. $\Delta$MAE is model~A minus model~B (negative favours A). 95\% CIs from the same moving-block bootstrap as Table~\ref{tab:forecast-summary}; ``CI excludes 0'' indicates the interval does not contain zero. Comparisons with mismatched row alignment (joint vs per-horizon at short horizons) are omitted.}
+\label{tab:significance}
+\resizebox{0.98\textwidth}{!}{%
+\begin{tabular}{llrrl}
+\toprule
+Comparison (A vs B) & Horizon & $\Delta$MAE & 95\% CI & CI excludes 0? \\
+\midrule
+mh\_lstm\_mha vs mh\_lstm & 7~d & $-3.70$ & [$-6.17$, $-0.71$] & Yes \\
+mh\_lstm\_mha vs mh\_lstm & 14~d & $-6.80$ & [$-8.79$, $-4.99$] & Yes \\
+mh\_lstm\_mha vs mh\_lstm & 24~h & $+0.63$ & [$-3.12$, $3.60$] & No \\
+mh\_lstm\_mha vs mh\_lstm & 28~d & $-1.36$ & [$-4.57$, $2.38$] & No \\
+mh\_lstm vs per-horizon lstm & 28~d & $+0.94$ & [$-0.53$, $2.45$] & No \\
+mh\_lstm\_mha vs Ridge AR+Fourier & 28~d & $-2.17$ & [$-5.15$, $-0.10$] & Yes \\
 \bottomrule
 \end{tabular}}
 \end{table}
@@ -646,7 +719,7 @@ To complement pooled accuracy in Table~\ref{tab:forecast-summary}, Figure~\ref{f
         }%
         \caption{XGBoost (tabular lags).}
     \end{subfigure}
-    \caption{Diagnostic scatter plots for direct 24~h forecasts on the pooled multi-site test split (tabular models refit with the same leakage-safe protocol as Table~\ref{tab:forecast-summary}). The layout mirrors standard regression and residual views used in applied ML reporting: departure from the diagonal at high concentrations indicates conditional bias in the upper tail; the time overlay highlights how point forecasts track the bulk trajectory but often smooth short-lived spikes.}
+    \caption{Diagnostic scatter plots for direct 24~h forecasts on the pooled multi-site test split, using exported test predictions (\texttt{reports/predictions/}; script~10). The layout mirrors standard regression and residual views: departure from the diagonal at high concentrations indicates conditional bias in the upper tail; the time overlay highlights how point forecasts track the bulk trajectory but often smooth short-lived spikes.}
     \label{fig:scatter_tabular_h24}
 \end{figure*}
 
@@ -701,28 +774,37 @@ Horizon & Model & Overall MAE & Pre-Harmattan MAE & Harmattan MAE \\
 \end{table}
 
 \subsubsection{Short-term (24hr)}\label{sec:res24}
-At $H=24$~h, the best pooled MAE is achieved by the jointly trained multi-horizon LSTM (mh\_lstm; MAE~=~10.82~$\mu$g/m$^3$; Table~\ref{tab:forecast-summary}), improving on the per-horizon LSTM baseline (11.31) and on the restricted Ridge AR+Fourier benchmark (11.96). However, spike hours remain difficult: mh\_lstm exhibits MAE$^{90}$~=~37.34~$\mu$g/m$^3$ versus pooled MAE 10.82 (Table~\ref{tab:forecast-upper-decile}), a $\approx$3.5$\times$ gap. Figure~\ref{fig:scatter_tabular_h24} illustrates how models can track the bulk trajectory while smoothing short-lived high-concentration excursions. Harmattan-aware tabular diagnostics on an extended 84-day test window appear in Tables~\ref{tab:forecast-regime}--\ref{tab:tabular-regime-mae}; pooled MAE in Table~\ref{tab:tabular-regime-mae} is not directly comparable to Table~\ref{tab:forecast-summary} because of window length (and stochasticity in tree ensembles).
+At $H=24$~h, the lowest pooled MAE among models in Table~\ref{tab:forecast-summary} is achieved by the restricted Ridge AR+Fourier benchmark (11.96~$\mu$g/m$^3$; bootstrap 95\% CI [10.96, 12.98]), marginally below jointly trained sequence models (mh\_lstm: 12.31; mh\_lstm\_mha: 12.94). The per-horizon direct LSTM underperforms badly at this lead (MAE 23.19; $R^2<0$), illustrating that rankings are not stable across training paradigms in a short record. Paired tests do not show a significant advantage of joint attention over joint LSTM at 24~h (Table~\ref{tab:significance}). Spike hours remain difficult for all approaches: Ridge MAE$^{90}$~=~35.65~$\mu$g/m$^3$ versus pooled MAE 11.96 (Table~\ref{tab:forecast-upper-decile}), a $\approx$3$\times$ gap. Figure~\ref{fig:scatter_tabular_h24} illustrates how tabular models can track the bulk trajectory while smoothing short-lived high-concentration excursions. Harmattan-aware tabular diagnostics on an extended 84-day test window appear in Tables~\ref{tab:forecast-regime}--\ref{tab:tabular-regime-mae}; pooled MAE in Table~\ref{tab:tabular-regime-mae} is not directly comparable to Table~\ref{tab:forecast-summary} because of window length (and stochasticity in tree ensembles).
 
 \subsubsection{Mid-terms (7d and 14d)}\label{sec:res714}
-For $H=168$~h, joint multi-horizon training yields the strongest pooled accuracy. The attention-augmented jointly trained model (mh\_lstm\_mha) achieves MAE~=~12.03~$\mu$g/m$^3$, outperforming both the jointly trained mh\_lstm (12.85) and the per-horizon LSTM baseline (13.40), as well as the weekly seasonal-na\"{i}ve comparator (15.39; Table~\ref{tab:forecast-summary}). This suggests that, within this limited window, sharing supervision across horizons improves medium-term generalisation and that attention can be beneficial when trained jointly. As at 24~h, upper-decile error remains much larger than pooled MAE (Table~\ref{tab:forecast-upper-decile}), indicating persistent difficulty in the upper tail even when average error improves.
+For $H=168$~h, the jointly trained attention model (mh\_lstm\_mha) achieves the lowest pooled MAE (11.32~$\mu$g/m$^3$; CI [9.68, 12.92]), outperforming the per-horizon LSTM (13.04), jointly trained mh\_lstm (15.02), and the weekly seasonal-na\"{i}ve comparator (15.39; Table~\ref{tab:forecast-summary}). Paired block-bootstrap inference supports a significant MAE reduction for mh\_lstm\_mha versus mh\_lstm at this horizon ($\Delta$MAE $\approx -3.7$~\textmu g/m$^3$; Table~\ref{tab:significance}). This suggests that, within this limited window, sharing supervision across horizons can improve medium-term generalisation when combined with attention, although upper-decile error remains much larger than pooled MAE (mh\_lstm\_mha MAE$^{90}$ 33.45 vs 11.32; Table~\ref{tab:forecast-upper-decile}).
 
-At $H=336$~h, the joint attention model (mh\_lstm\_mha) achieves a substantial reduction in pooled MAE (9.88~$\mu$g/m$^3$), beating all listed tabular baselines (e.g., linear SVR: 14.52) and the per-horizon LSTM (14.68). This is the strongest relative gain observed in the updated experiments and indicates that the most informative improvements may arise when the model can learn a shared representation of temporal structure across horizons rather than being trained independently per lead time. Nevertheless, the spike gap remains: MAE$^{90}$ at 14~d is 34.33~$\mu$g/m$^3$ for mh\_lstm\_mha (Table~\ref{tab:forecast-upper-decile}), still $\approx$3.5$\times$ its pooled MAE.
+At $H=336$~h, mh\_lstm\_mha attains the strongest pooled accuracy in the experiment (MAE 9.78~$\mu$g/m$^3$; CI [8.69, 10.80]), beating tabular linear SVR (14.52) and per-horizon LSTM (14.31), with a statistically significant paired advantage over mh\_lstm ($\Delta$MAE $\approx -6.8$~\textmu g/m$^3$; Table~\ref{tab:significance}). This is the largest relative gain for joint attention in the study. We do not attribute the low 14~d pooled MAE solely to intrinsically ``easier'' targets in this window without longer records: Table~\ref{tab:horizon-variability} and Figure~\ref{fig:horizon_variability} show identical marginal target summaries across horizons in the current 28-day test export (same $n_{\mathrm{test}}$ and moments), so apparent ease at 14~d is not established by target variance alone. Nevertheless, the spike gap persists: MAE$^{90}$ at 14~d is 33.35~$\mu$g/m$^3$ for mh\_lstm\_mha ($\approx$3.4$\times$ pooled MAE).
 
 \subsubsection{Long-terms (28d)}\label{sec:res672}
-At $H=672$~h, the jointly trained attention model (mh\_lstm\_mha) attains MAE~=~12.00~$\mu$g/m$^3$ and positive pooled $R^2$ (0.109; Table~\ref{tab:forecast-summary}), outperforming the jointly trained mh\_lstm (13.53) and the Ridge AR+Fourier benchmark (15.48). This result contrasts sharply with the per-horizon attention model (lstm\_mha) which performs poorly at 28~d in the direct-training setting, suggesting that attention capacity can overfit when trained independently per horizon but can become effective when regularised implicitly through joint training across horizons. Upper-tail episodes remain systematically harder than pooled MAE at this lead (mh\_lstm\_mha MAE$^{90}$~=~37.88; Table~\ref{tab:forecast-upper-decile}), consistent with the heavy-tailed distributions in Figure~\ref{fig:pm25_distribution}.
+At $H=672$~h, mh\_lstm\_mha attains the lowest pooled MAE among listed models (13.56~$\mu$g/m$^3$; Table~\ref{tab:forecast-summary}), with a significant paired advantage over Ridge AR+Fourier at this lead ($\Delta$MAE $\approx -2.2$~\textmu g/m$^3$; Table~\ref{tab:significance}) but not over mh\_lstm. Pooled $R^2$ remains weakly positive (0.041), consistent with high episodic variance in a short test window. Per-horizon attention models remain unstable at long leads when trained independently. Upper-tail episodes remain systematically harder than pooled MAE (mh\_lstm\_mha MAE$^{90}$ 32.17; Table~\ref{tab:forecast-upper-decile}), consistent with the heavy-tailed distributions in Figure~\ref{fig:pm25_distribution}.
 
 \section{Discussion}\label{sec4}
-\subsection{Joint Multi-Horizon Training Substantially Improves Forecasts}
 
-The central methodological finding of the updated experiments is that joint multi-horizon training changes model rankings and improves accuracy at medium and long horizons. Instead of training one independent model per horizon, the joint models learn a shared representation that must support multiple lead times simultaneously. In this dataset, mh\_lstm is the best-performing model at 24~h (MAE 10.82~$\mu$g/m$^3$), while mh\_lstm\_mha yields the lowest pooled MAE at 7~d, 14~d, and 28~d (12.03, 9.88, and 12.00~$\mu$g/m$^3$; Table~\ref{tab:forecast-summary}). A plausible explanation is multi-task regularisation: gradients from multiple horizons constrain the representation to remain useful beyond a single lead time, reducing variance and mitigating overfitting that can occur when optimising one horizon in isolation.
+\subsection{Preliminary evidence in a short observational window}
 
-\subsection{Attention Is Beneficial Only Under Joint Training}
+All quantitative claims in this study should be read as \textbf{preliminary feasibility evidence} rather than definitive rankings. The record spans five months with a single Harmattan transition; bootstrap intervals are wide and several $R^2$ values are near zero or negative despite reasonable MAE. Model orderings can change with additional seasons, sites, or hyperparameter choices. We therefore emphasise \textbf{leakage-safe protocols}, \textbf{time-aware uncertainty}, and \textbf{tail-aware reporting} as methodological contributions that remain valuable even when point estimates shift.
 
-The attention mechanism is not uniformly beneficial in per-horizon direct training; its value depends on the training setup. In the per-horizon setting, the attention-augmented model is not consistently better than vanilla LSTM and can fail badly at long horizons (e.g., 28~d; Table~\ref{tab:forecast-summary}). Under joint training, however, attention becomes the best-performing variant at 7--28~days. One interpretation is that attention introduces additional capacity that is too flexible for a short record when trained independently, but becomes usable when the model is forced to satisfy multiple horizon objectives simultaneously. In effect, joint training provides an implicit regulariser and encourages attention weights to reflect stable temporal patterns that generalise across lead times.
+\subsection{Joint Multi-Horizon Training and Attention at Medium Horizons}
+
+Joint multi-horizon training changes model rankings relative to per-horizon direct training. In our exports, mh\_lstm\_mha yields the lowest pooled MAE among sequence models at 7~d, 14~d, and 28~d (11.32, 9.78, and 13.56~$\mu$g/m$^3$; Table~\ref{tab:forecast-summary}), with paired bootstrap support at 7~d and 14~d versus mh\_lstm (Table~\ref{tab:significance}). At 24~h, a simple Ridge AR+Fourier tabular model remains competitive (11.96~$\mu$g/m$^3$), reminding us that strong baselines are essential in data-sparse settings. A plausible mechanism is multi-task regularisation: gradients from multiple horizons constrain the representation to remain useful across lead times, while attention reweights temporal features in a way that appears beneficial only when shared across tasks in this record.
+
+\subsection{$R^2$ versus MAE in episodic air quality}
+
+Coefficients of determination can be negative or weak even when MAE is operationally acceptable, because $R^2$ penalises variance explained relative to a mean baseline and is sensitive to a few extreme hours and regime shifts. MAE, by contrast, reports average absolute error in $\mu$g/m$^3$ on the physical scale and aligns with public-health interpretation. We therefore treat MAE and MAE$^{90}$ as primary metrics and use $R^2$ only as a secondary diagnostic.
+
+\subsection{Attention Is Most Beneficial Under Joint Training}
+
+The attention mechanism is not uniformly beneficial in per-horizon direct training; its value depends on the training setup. In the per-horizon setting, attention-augmented models are unstable relative to vanilla LSTM (e.g., very poor 24~h and 168~h direct runs in Table~\ref{tab:forecast-summary}). Under joint training, attention is the best-performing sequence variant at 7~d and 14~d with statistically significant paired gains over joint LSTM alone. One interpretation is that attention adds capacity that overfits when each horizon is optimised in isolation, but becomes usable when regularised through multi-horizon objectives.
 
 \subsection{The Spike Prediction Gap Persists Across All Models}
 
-Although pooled accuracy improves under joint training, spike prediction remains a binding limitation for public-health-oriented use. At 14~d, mh\_lstm\_mha attains MAE~=~9.88~$\mu$g/m$^3$, while MAE$^{90}$~=~34.33~$\mu$g/m$^3$ (Table~\ref{tab:forecast-upper-decile}), a ratio of approximately 3.5$\times$. This persistent gap indicates that standard point-forecast objectives weight the bulk of hours more heavily than rare high-pollution episodes. For early warning systems, this argues for explicit tail-aware modelling (e.g., weighted losses, quantile regression, or multi-task episode classification) and for routine reporting of tail metrics alongside pooled MAE/RMSE.
+Although pooled accuracy improves under joint training at medium horizons, spike prediction remains a binding limitation for public-health-oriented use. At 14~d, mh\_lstm\_mha attains MAE~=~9.78~$\mu$g/m$^3$, while MAE$^{90}$~=~33.35~$\mu$g/m$^3$ (Table~\ref{tab:forecast-upper-decile}), a ratio of approximately 3.4$\times$. This persistent gap indicates that standard point-forecast objectives weight the bulk of hours more heavily than rare high-pollution episodes. For early warning systems, this argues for explicit tail-aware modelling (e.g., weighted losses, quantile regression, or multi-task episode classification) and for routine reporting of tail metrics alongside pooled MAE/RMSE.
 
 \subsection{Regime Shift Remains Operationally Important}
 
@@ -739,8 +821,11 @@ Several limitations constrain the generalisability of these findings.
     \item The dataset spans only five months and includes only one Harmattan transition; longer records (e.g., $\geq$12 months) may change model rankings and stability.
     \item The analysis focuses on one city (Tema) and seven sites; generalisation to other West African cities and seasons should be tested.
     \item We report point forecasts; probabilistic forecasting would better quantify uncertainty during spikes.
-    \item We do not perform explicit tail optimisation; this likely contributes to the persistent MAE$^{90}$ gap.
-    \item Joint models share one architecture across horizons; horizon-specific fine-tuning or hybrid strategies may yield further gains.
+    \item We do not report systematic feature-importance analysis (e.g., SHAP or grouped ablations); interpretability of predictors remains for future work.
+    \item We do not perform explicit tail optimisation or systematic ablation of feature groups; this likely contributes to the persistent MAE$^{90}$ gap.
+    \item Joint models share one architecture and split keyed to the maximum horizon; paired comparisons to per-horizon models are not always row-alignable at short leads.
+    \item Deep models lack regime-stratified metrics on the primary 28-day test window in this export; tabular regime tables use a longer 84-day window and are not directly comparable to pooled deep scores.
+    \item Multiple pre-specified horizon--pair tests were run; significant results should be interpreted cautiously without multiplicity adjustment.
 \end{itemize}
 
 \subsection{Implications for Practice}
@@ -749,7 +834,7 @@ For air quality managers and public health stakeholders, the updated evidence su
 
 \section{Conclusion}\label{sec5}
 
-Using five months of hourly observations from seven sites in Tema, Ghana, we evaluated leakage-safe multi-horizon PM$_{2.5}$ forecasting at 24~h, 7~d, 14~d, and 28~d. Joint multi-horizon training substantially improves medium and long horizon accuracy relative to per-horizon direct training and simple baselines: mh\_lstm is best at 24~h (MAE 10.82~$\mu$g/m$^3$), while mh\_lstm\_mha achieves the lowest MAE at 7~d, 14~d, and 28~d (12.03, 9.88, and 12.00~$\mu$g/m$^3$). However, upper-decile errors remain $\sim$3$\times$ larger than pooled MAE, highlighting persistent difficulty in forecasting extreme pollution hours. Finally, regime-aware evaluation remains essential in Harmattan-affected settings where seasonal shifts can dominate generalisation behaviour.
+Using five months of hourly observations from seven sites in Tema, Ghana, we evaluated leakage-safe multi-horizon PM$_{2.5}$ forecasting at 24~h, 7~d, 14~d, and 28~d with exported test predictions, block-bootstrap confidence intervals, and pre-specified paired comparisons. Joint LSTM+attention achieves the lowest pooled MAE among sequence models at 7~d, 14~d, and 28~d (11.32, 9.78, and 13.56~$\mu$g/m$^3$), with significant paired gains over joint LSTM at 7~d and 14~d; at 24~h, Ridge AR+Fourier remains marginally best (11.96~$\mu$g/m$^3$). Upper-decile errors remain $\sim$3--4$\times$ larger than pooled MAE, highlighting persistent difficulty in forecasting extreme pollution hours. Regime-aware evaluation remains essential in Harmattan-affected settings where seasonal shifts can dominate generalisation behaviour. Findings should be treated as preliminary evidence within a short window rather than definitive operational rankings.
 
 Future work should extend the observational window to capture multiple Harmattan cycles, evaluate tail-aware loss functions (e.g., weighted MSE, quantile regression), and develop probabilistic forecasts to better characterise spike uncertainty. Operational deployment should pair joint-trained models with regime-specific calibration and explicit reporting of upper-decile error.
 

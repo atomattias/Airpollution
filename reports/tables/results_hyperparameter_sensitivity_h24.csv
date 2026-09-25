@@ -1,0 +1,9 @@
+model,setting,val_mae
+Ridge (all numeric),alpha=0.1,17.480532491137023
+Ridge (all numeric),alpha=1.0,16.3552245398826
+Ridge (all numeric),alpha=10.0,15.503946674021178
+Ridge (all numeric),alpha=100.0,14.221137026498045
+Random Forest,"n_estimators=200, min_samples_leaf=3",9.874911855331002
+Random Forest,"n_estimators=600, min_samples_leaf=3",9.842344378390665
+Random Forest,"n_estimators=600, min_samples_leaf=1",11.808275086160956
+Random Forest,"n_estimators=600, min_samples_leaf=5",9.626975309828985

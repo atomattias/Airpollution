@@ -1,0 +1,13 @@
+family,horizon,horizon_hours,n_test,q90_ugm3,n90,n_sites,pooled_across_sites,source_file
+tabular,h24,24,4037,59.6,406,6,true,tabular_h24_ridge_ar_lag_fourier.csv
+tabular,h168,168,4037,59.6,406,6,true,tabular_h168_rf.csv
+tabular,h336,336,4037,59.6,406,6,true,tabular_h336_rf.csv
+tabular,h672,672,4037,59.6,406,6,true,tabular_h672_ridge_ar_lag_fourier.csv
+joint,h24,24,1957,53.6,197,6,true,deep_mh_h24_mh_lstm_mha.csv
+joint,h168,168,1957,55.0,198,6,true,deep_mh_h168_mh_lstm_mha.csv
+joint,h336,336,1957,57.3,197,6,true,deep_mh_h336_mh_lstm_mha.csv
+joint,h672,672,1957,58.0,197,6,true,deep_mh_h672_mh_lstm_mha.csv
+direct,h24,24,3807,59.9,382,6,true,deep_h24_lstm.csv
+direct,h168,168,2782,59.4,279,6,true,deep_h168_lstm.csv
+direct,h336,336,1557,57.8,156,6,true,deep_h336_lstm.csv
+direct,h672,672,2507,60.3,252,6,true,deep_h672_lstm.csv

@@ -1,0 +1,4 @@
+horizon,model,framing,seq_len,lstm_units,n_train,n_val,n_test,val_mae,test_mae,delta_val_mae,delta_test_mae,bias_test,keras_backend,pred_file,headline_direct_lstm_mae,headline_ridge_mae
+24h,LSTM residual (Δy + y_t),diagnostic,168,64,14379,1016,3807,10.917932510375977,12.682782173156738,10.917932510375977,12.682784080505371,-5.8430657386779785,jax,deep_h24_lstm_residual.csv,23.19,11.96
+24h,LSTM direct (same-run control),diagnostic,168,64,14379,1016,3807,9.257275581359863,16.26751136779785,,,-14.438226699829102,jax,deep_h24_lstm_direct_control.csv,23.19,11.96
+24h,Persistence (y_t),diagnostic,168,0,14379,1016,3807,10.45000171661377,12.93312931060791,10.45000171661377,12.93312931060791,0.5135539174079895,,,23.19,11.96

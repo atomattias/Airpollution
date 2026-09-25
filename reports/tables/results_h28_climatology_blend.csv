@@ -1,0 +1,7 @@
+horizon,model,alpha,tuned,framing,n_test,val_start,n_train_obs,n_clim_cells,n_harmattan_hour_cells,clim_global_mean,mae,bias,headline_attn_mae,headline_joint_lstm_mae,pred_file
+28d,climatology only (reference),0.0,0,robustness_reference,1957,2026-01-04 23:00:00,17453,48,24,23.960579843006933,14.038559740989347,-8.685643206183256,13.56,14.92,
+28d,headline attention (reference),1.0,0,robustness_reference,1957,2026-01-04 23:00:00,17453,48,24,23.960579843006933,13.563320740547239,1.8071521625996372,13.56,14.92,
+28d,attention × climatology (α=0.5),0.5,0,robustness,1957,2026-01-04 23:00:00,17453,48,24,23.960579843006933,11.912611221829383,-3.439245521791808,13.56,14.92,deep_mh_h672_mh_lstm_mha_clim_a05.csv
+28d,attention × climatology (α=0.7),0.7,0,robustness,1957,2026-01-04 23:00:00,17453,48,24,23.960579843006933,11.98761863587683,-1.340686448035231,13.56,14.92,deep_mh_h672_mh_lstm_mha_clim_a07.csv
+28d,attention × climatology (α=0.9),0.9,0,robustness,1957,2026-01-04 23:00:00,17453,48,24,23.960579843006933,12.889992539375074,0.7578726257213491,13.56,14.92,deep_mh_h672_mh_lstm_mha_clim_a09.csv
+28d,headline joint LSTM (reference),,0,robustness_reference,1957,2026-01-04 23:00:00,17453,48,24,23.960579843006933,14.924237760281649,-9.526361569008415,13.56,14.92,

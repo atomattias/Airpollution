@@ -1,0 +1,313 @@
+file,pipeline,horizon,model,site,n,q_pool,n90_pool,mae90_pool_thr,q_site,n90_site,mae90_site_thr
+deep_h168_lstm.csv,deep,h168,lstm,"Divine healer's Church, Bethlehem",346,59.39,53,29.313683059980285,67.9,36,37.79225805070665
+deep_h168_lstm.csv,deep,h168,lstm,"Satet International School, Tema Manhean",377,59.39,49,35.243965732808014,64.7,39,42.08410326639811
+deep_h168_lstm.csv,deep,h168,lstm,Tema Community 25 Estate,386,59.39,13,44.30274376502404,41.8,39,22.60952621851212
+deep_h168_lstm.csv,deep,h168,lstm,Tema Community 3 SSNIT Flat,601,59.39,62,38.73559899483958,60.0,61,38.91343792149278
+deep_h168_lstm.csv,deep,h168,lstm,"Tema Community 7, Royal School",673,59.39,69,31.58907127380371,59.66,68,31.9521507655873
+deep_h168_lstm.csv,deep,h168,lstm,Tema Port,399,59.39,33,31.539501652573094,54.98,40,29.682801055908204
+deep_h168_lstm_mha.csv,deep,h168,lstm_mha,"Divine healer's Church, Bethlehem",346,59.39,53,55.707161993350624,67.9,36,64.99419911702473
+deep_h168_lstm_mha.csv,deep,h168,lstm_mha,"Satet International School, Tema Manhean",377,59.39,49,65.01884339780224,64.7,39,71.93455725449782
+deep_h168_lstm_mha.csv,deep,h168,lstm_mha,Tema Community 25 Estate,386,59.39,13,68.36877700457207,41.8,39,49.17535122388448
+deep_h168_lstm_mha.csv,deep,h168,lstm_mha,Tema Community 3 SSNIT Flat,601,59.39,62,68.16878164295227,60.0,61,68.37502629737385
+deep_h168_lstm_mha.csv,deep,h168,lstm_mha,"Tema Community 7, Royal School",673,59.39,69,60.57916559862054,59.66,68,61.028662893702005
+deep_h168_lstm_mha.csv,deep,h168,lstm_mha,Tema Port,399,59.39,33,61.239870421814196,54.98,40,58.73317792415619
+deep_h24_lstm.csv,deep,h24,lstm,"Divine healer's Church, Bethlehem",658,59.9,100,43.32316998004913,65.1,67,51.12368931699155
+deep_h24_lstm.csv,deep,h24,lstm,"Satet International School, Tema Manhean",673,59.9,106,59.13561536680977,69.6,69,71.02188412585984
+deep_h24_lstm.csv,deep,h24,lstm,Tema Community 25 Estate,673,59.9,13,72.89353217700354,43.3,70,40.54194075678076
+deep_h24_lstm.csv,deep,h24,lstm,Tema Community 3 SSNIT Flat,457,59.9,48,49.46716596931219,60.48,46,50.602638267952464
+deep_h24_lstm.csv,deep,h24,lstm,"Tema Community 7, Royal School",673,59.9,67,57.82523964856988,59.66,68,57.460920205011085
+deep_h24_lstm.csv,deep,h24,lstm,Tema Port,673,59.9,48,53.86281790335973,55.98,68,47.54820787731339
+deep_h24_lstm_mha.csv,deep,h24,lstm_mha,"Divine healer's Church, Bethlehem",658,59.9,100,39.42969402313233,65.1,67,46.652593726542456
+deep_h24_lstm_mha.csv,deep,h24,lstm_mha,"Satet International School, Tema Manhean",673,59.9,106,49.40864720434513,69.6,69,60.53785780892856
+deep_h24_lstm_mha.csv,deep,h24,lstm_mha,Tema Community 25 Estate,673,59.9,13,67.33627638908533,43.3,70,39.71621173151902
+deep_h24_lstm_mha.csv,deep,h24,lstm_mha,Tema Community 3 SSNIT Flat,457,59.9,48,49.25174174706141,60.48,46,50.13735412514728
+deep_h24_lstm_mha.csv,deep,h24,lstm_mha,"Tema Community 7, Royal School",673,59.9,67,52.218890987225436,59.66,68,51.82320164231693
+deep_h24_lstm_mha.csv,deep,h24,lstm_mha,Tema Port,673,59.9,48,51.27546551078558,55.98,68,45.98817462254973
+deep_h336_lstm.csv,deep,h336,lstm,"Divine healer's Church, Bethlehem",53,57.78,5,30.964637756347656,53.78,6,26.393818537394207
+deep_h336_lstm.csv,deep,h336,lstm,"Satet International School, Tema Manhean",53,57.78,5,48.74013061523438,56.66,6,41.92930793762207
+deep_h336_lstm.csv,deep,h336,lstm,Tema Community 25 Estate,53,57.78,0,,38.68,6,23.297563870747883
+deep_h336_lstm.csv,deep,h336,lstm,Tema Community 3 SSNIT Flat,672,57.78,71,46.65286356966261,58.37,68,47.70242225422579
+deep_h336_lstm.csv,deep,h336,lstm,"Tema Community 7, Royal School",673,57.78,71,40.3067487797267,59.66,68,41.395214810090906
+deep_h336_lstm.csv,deep,h336,lstm,Tema Port,53,57.78,4,53.76210689544678,53.44,6,43.25080553690592
+deep_h336_lstm_mha.csv,deep,h336,lstm_mha,"Divine healer's Church, Bethlehem",53,57.78,5,24.188536071777342,53.78,6,20.548295338948567
+deep_h336_lstm_mha.csv,deep,h336,lstm_mha,"Satet International School, Tema Manhean",53,57.78,5,43.30782470703125,56.66,6,36.40751202901205
+deep_h336_lstm_mha.csv,deep,h336,lstm_mha,Tema Community 25 Estate,53,57.78,0,,38.68,6,25.717294851938885
+deep_h336_lstm_mha.csv,deep,h336,lstm_mha,Tema Community 3 SSNIT Flat,672,57.78,71,48.609836766417594,58.37,68,49.67670263963587
+deep_h336_lstm_mha.csv,deep,h336,lstm_mha,"Tema Community 7, Royal School",673,57.78,71,39.71115754355847,59.66,68,40.82703262216904
+deep_h336_lstm_mha.csv,deep,h336,lstm_mha,Tema Port,53,57.78,4,55.456790924072266,53.44,6,46.39503447214762
+deep_h672_lstm.csv,deep,h672,lstm,"Divine healer's Church, Bethlehem",389,60.3,59,39.9635078300864,64.04,39,45.4861983763866
+deep_h672_lstm.csv,deep,h672,lstm,"Satet International School, Tema Manhean",240,60.3,46,48.244988317074984,71.92,24,62.62480107943217
+deep_h672_lstm.csv,deep,h672,lstm,Tema Community 25 Estate,389,60.3,1,30.468677520751946,43.5,41,18.40595733828661
+deep_h672_lstm.csv,deep,h672,lstm,Tema Community 3 SSNIT Flat,672,60.3,62,53.887134029019265,58.37,68,51.47474732118494
+deep_h672_lstm.csv,deep,h672,lstm,"Tema Community 7, Royal School",673,60.3,67,49.330676576984466,59.66,68,49.00937433803783
+deep_h672_lstm.csv,deep,h672,lstm,Tema Port,144,60.3,17,38.419097788193646,62.24,15,39.60810419718425
+deep_h672_lstm_mha.csv,deep,h672,lstm_mha,"Divine healer's Church, Bethlehem",389,60.3,59,36.03836098363844,64.04,39,41.654253837389824
+deep_h672_lstm_mha.csv,deep,h672,lstm_mha,"Satet International School, Tema Manhean",240,60.3,46,47.947078331657075,71.92,24,62.502541065216064
+deep_h672_lstm_mha.csv,deep,h672,lstm_mha,Tema Community 25 Estate,389,60.3,1,31.962274551391598,43.5,41,21.962492175218536
+deep_h672_lstm_mha.csv,deep,h672,lstm_mha,Tema Community 3 SSNIT Flat,672,60.3,62,54.46965663663803,58.37,68,52.1302497807671
+deep_h672_lstm_mha.csv,deep,h672,lstm_mha,"Tema Community 7, Royal School",673,60.3,67,48.18411189406665,59.66,68,47.880291013156665
+deep_h672_lstm_mha.csv,deep,h672,lstm_mha,Tema Port,144,60.3,17,37.88684418622185,62.24,15,39.03036282857259
+deep_mh_h168_mh_lstm.csv,deep,h168,mh_lstm,"Divine healer's Church, Bethlehem",151,55.0,37,41.997872636124896,69.6,16,73.12067866325378
+deep_mh_h168_mh_lstm.csv,deep,h168,mh_lstm,"Satet International School, Tema Manhean",140,55.0,29,39.32256803841427,68.04,14,50.60488755362375
+deep_mh_h168_mh_lstm.csv,deep,h168,mh_lstm,Tema Community 25 Estate,231,55.0,5,40.123647117614745,39.9,24,29.191145539283752
+deep_mh_h168_mh_lstm.csv,deep,h168,mh_lstm,Tema Community 3 SSNIT Flat,672,55.0,53,50.69303199480165,52.69,68,44.10826478284948
+deep_mh_h168_mh_lstm.csv,deep,h168,mh_lstm,"Tema Community 7, Royal School",673,55.0,67,36.78256644063921,54.54,68,36.4646845144384
+deep_mh_h168_mh_lstm.csv,deep,h168,mh_lstm,Tema Port,90,55.0,7,50.36961555480957,51.81,9,45.12521171569824
+deep_mh_h168_mh_lstm_mha.csv,deep,h168,mh_lstm_mha,"Divine healer's Church, Bethlehem",151,55.0,37,35.344704705315664,69.6,16,64.23689556121826
+deep_mh_h168_mh_lstm_mha.csv,deep,h168,mh_lstm_mha,"Satet International School, Tema Manhean",140,55.0,29,29.36781047952586,68.04,14,42.82134328569685
+deep_mh_h168_mh_lstm_mha.csv,deep,h168,mh_lstm_mha,Tema Community 25 Estate,231,55.0,5,36.06592350006103,39.9,24,19.047555406888325
+deep_mh_h168_mh_lstm_mha.csv,deep,h168,mh_lstm_mha,Tema Community 3 SSNIT Flat,672,55.0,53,40.9876451312371,52.69,68,34.47824960596421
+deep_mh_h168_mh_lstm_mha.csv,deep,h168,mh_lstm_mha,"Tema Community 7, Royal School",673,55.0,67,27.93530956666861,54.54,68,27.664932194878073
+deep_mh_h168_mh_lstm_mha.csv,deep,h168,mh_lstm_mha,Tema Port,90,55.0,7,34.05510602678571,51.81,9,28.502296871609158
+deep_mh_h24_mh_lstm.csv,deep,h24,mh_lstm,"Divine healer's Church, Bethlehem",151,53.6,34,34.26271388109993,67.9,16,51.45997762680054
+deep_mh_h24_mh_lstm.csv,deep,h24,mh_lstm,"Satet International School, Tema Manhean",140,53.6,24,59.26410230000814,68.71,14,83.02884565080915
+deep_mh_h24_mh_lstm.csv,deep,h24,mh_lstm,Tema Community 25 Estate,231,53.6,6,45.91799386342367,31.8,24,22.794183254241943
+deep_mh_h24_mh_lstm.csv,deep,h24,mh_lstm,Tema Community 3 SSNIT Flat,672,53.6,58,45.137589816389415,51.19,68,41.050171459422394
+deep_mh_h24_mh_lstm.csv,deep,h24,mh_lstm,"Tema Community 7, Royal School",673,53.6,74,30.864815840850007,53.8,69,31.564695109491762
+deep_mh_h24_mh_lstm.csv,deep,h24,mh_lstm,Tema Port,90,53.6,1,37.73199462890625,35.92,9,14.3172607421875
+deep_mh_h24_mh_lstm_mha.csv,deep,h24,mh_lstm_mha,"Divine healer's Church, Bethlehem",151,53.6,34,26.12884723438936,67.9,16,43.172199010849
+deep_mh_h24_mh_lstm_mha.csv,deep,h24,mh_lstm_mha,"Satet International School, Tema Manhean",140,53.6,24,47.34109322230021,68.71,14,70.90501267569405
+deep_mh_h24_mh_lstm_mha.csv,deep,h24,mh_lstm_mha,Tema Community 25 Estate,231,53.6,6,36.57503573099772,31.8,24,20.332634329795837
+deep_mh_h24_mh_lstm_mha.csv,deep,h24,mh_lstm_mha,Tema Community 3 SSNIT Flat,672,53.6,58,33.35222592847101,51.19,68,29.892245517057532
+deep_mh_h24_mh_lstm_mha.csv,deep,h24,mh_lstm_mha,"Tema Community 7, Royal School",673,53.6,74,20.248489482982738,53.8,69,21.159924051036004
+deep_mh_h24_mh_lstm_mha.csv,deep,h24,mh_lstm_mha,Tema Port,90,53.6,1,26.26877212524414,35.92,9,8.182690938313804
+deep_mh_h336_mh_lstm.csv,deep,h336,mh_lstm,"Divine healer's Church, Bethlehem",151,57.3,31,28.943285049930697,64.2,17,42.58553897633272
+deep_mh_h336_mh_lstm.csv,deep,h336,mh_lstm,"Satet International School, Tema Manhean",140,57.3,30,47.66142692565918,78.36,14,69.5961880002703
+deep_mh_h336_mh_lstm.csv,deep,h336,mh_lstm,Tema Community 25 Estate,231,57.3,2,45.12751293182373,42.3,24,27.24079179763794
+deep_mh_h336_mh_lstm.csv,deep,h336,mh_lstm,Tema Community 3 SSNIT Flat,672,57.3,64,48.25808036327362,56.77,68,46.546702216653266
+deep_mh_h336_mh_lstm.csv,deep,h336,mh_lstm,"Tema Community 7, Royal School",673,57.3,63,35.10607380337186,56.56,68,33.86575073354385
+deep_mh_h336_mh_lstm.csv,deep,h336,mh_lstm,Tema Port,90,57.3,7,46.806008747645784,54.79,9,40.9049858517117
+deep_mh_h336_mh_lstm_mha.csv,deep,h336,mh_lstm_mha,"Divine healer's Church, Bethlehem",151,57.3,31,22.86539557672316,64.2,17,34.495844448313996
+deep_mh_h336_mh_lstm_mha.csv,deep,h336,mh_lstm_mha,"Satet International School, Tema Manhean",140,57.3,30,39.51830240885417,78.36,14,63.31525175912039
+deep_mh_h336_mh_lstm_mha.csv,deep,h336,mh_lstm_mha,Tema Community 25 Estate,231,57.3,2,42.611459732055664,42.3,24,19.83217128117879
+deep_mh_h336_mh_lstm_mha.csv,deep,h336,mh_lstm_mha,Tema Community 3 SSNIT Flat,672,57.3,64,40.28719934821129,56.77,68,38.77536989660824
+deep_mh_h336_mh_lstm_mha.csv,deep,h336,mh_lstm_mha,"Tema Community 7, Royal School",673,57.3,63,28.451070936899338,56.56,68,27.152114924262552
+deep_mh_h336_mh_lstm_mha.csv,deep,h336,mh_lstm_mha,Tema Port,90,57.3,7,31.461727142333984,54.79,9,26.80217742919922
+deep_mh_h672_mh_lstm.csv,deep,h672,mh_lstm,"Divine healer's Church, Bethlehem",151,58.0,22,22.69479898972945,63.8,16,26.329575896263123
+deep_mh_h672_mh_lstm.csv,deep,h672,mh_lstm,"Satet International School, Tema Manhean",140,58.0,25,42.81661506652832,71.36,14,57.6591363634382
+deep_mh_h672_mh_lstm.csv,deep,h672,mh_lstm,Tema Community 25 Estate,231,58.0,0,,42.7,24,20.65438199043274
+deep_mh_h672_mh_lstm.csv,deep,h672,mh_lstm,Tema Community 3 SSNIT Flat,672,58.0,70,47.27661225455148,58.37,68,47.9051630637225
+deep_mh_h672_mh_lstm.csv,deep,h672,mh_lstm,"Tema Community 7, Royal School",673,58.0,71,35.89316053793464,59.66,68,37.282099050634045
+deep_mh_h672_mh_lstm.csv,deep,h672,mh_lstm,Tema Port,90,58.0,9,41.773827446831596,57.83,9,41.773827446831596
+deep_mh_h672_mh_lstm_mha.csv,deep,h672,mh_lstm_mha,"Divine healer's Church, Bethlehem",151,58.0,22,17.686073650013316,63.8,16,22.032206058502197
+deep_mh_h672_mh_lstm_mha.csv,deep,h672,mh_lstm_mha,"Satet International School, Tema Manhean",140,58.0,25,35.27585876464844,71.36,14,52.133955819266184
+deep_mh_h672_mh_lstm_mha.csv,deep,h672,mh_lstm_mha,Tema Community 25 Estate,231,58.0,0,,42.7,24,24.293708602587383
+deep_mh_h672_mh_lstm_mha.csv,deep,h672,mh_lstm_mha,Tema Community 3 SSNIT Flat,672,58.0,70,37.955560193743025,58.37,68,38.6426783730002
+deep_mh_h672_mh_lstm_mha.csv,deep,h672,mh_lstm_mha,"Tema Community 7, Royal School",673,58.0,71,30.687196436062663,59.66,68,31.86772402595071
+deep_mh_h672_mh_lstm_mha.csv,deep,h672,mh_lstm_mha,Tema Port,90,58.0,9,25.654035356309677,57.83,9,25.654035356309677
+tabular_h168_linear_svr.csv,tabular,h168,linear_svr,"Divine healer's Church, Bethlehem",673,59.6,104,66.77405030395941,65.1,69,74.15149183124903
+tabular_h168_linear_svr.csv,tabular,h168,linear_svr,"Satet International School, Tema Manhean",673,59.6,107,68.16487582364383,69.6,69,78.72438446302158
+tabular_h168_linear_svr.csv,tabular,h168,linear_svr,Tema Community 25 Estate,673,59.6,13,82.1264777032537,43.3,70,59.51125836663085
+tabular_h168_linear_svr.csv,tabular,h168,linear_svr,Tema Community 3 SSNIT Flat,672,59.6,64,77.43338427303647,58.37,68,75.61013584891546
+tabular_h168_linear_svr.csv,tabular,h168,linear_svr,"Tema Community 7, Royal School",673,59.6,68,69.06604419360353,59.66,68,69.06604419360353
+tabular_h168_linear_svr.csv,tabular,h168,linear_svr,Tema Port,673,59.6,50,65.04043119098571,55.98,68,61.778793884573105
+tabular_h168_naive_level.csv,tabular,h168,naive_level,"Divine healer's Church, Bethlehem",673,59.6,104,28.565384615384616,65.1,69,34.67971014492754
+tabular_h168_naive_level.csv,tabular,h168,naive_level,"Satet International School, Tema Manhean",673,59.6,107,32.88411214953271,69.6,69,41.657971014492745
+tabular_h168_naive_level.csv,tabular,h168,naive_level,Tema Community 25 Estate,673,59.6,13,37.93846153846154,43.3,70,20.80857142857143
+tabular_h168_naive_level.csv,tabular,h168,naive_level,Tema Community 3 SSNIT Flat,672,59.6,64,41.86718750000001,58.37,68,40.29558823529412
+tabular_h168_naive_level.csv,tabular,h168,naive_level,"Tema Community 7, Royal School",673,59.6,68,33.11764705882352,59.66,68,33.11764705882352
+tabular_h168_naive_level.csv,tabular,h168,naive_level,Tema Port,673,59.6,50,26.791999999999998,55.98,68,24.24264705882353
+tabular_h168_rf.csv,tabular,h168,rf,"Divine healer's Church, Bethlehem",673,59.6,104,19.148419761004444,65.1,69,25.268352162981667
+tabular_h168_rf.csv,tabular,h168,rf,"Satet International School, Tema Manhean",673,59.6,107,23.88225170929438,69.6,69,30.842445372664777
+tabular_h168_rf.csv,tabular,h168,rf,Tema Community 25 Estate,673,59.6,13,27.0241249964817,43.3,70,11.700755623281593
+tabular_h168_rf.csv,tabular,h168,rf,Tema Community 3 SSNIT Flat,672,59.6,64,28.968362489170936,58.37,68,27.73772607423379
+tabular_h168_rf.csv,tabular,h168,rf,"Tema Community 7, Royal School",673,59.6,68,21.919755609217106,59.66,68,21.919755609217106
+tabular_h168_rf.csv,tabular,h168,rf,Tema Port,673,59.6,50,21.29821073464918,55.98,68,18.534510442359903
+tabular_h168_ridge_ar_lag_fourier.csv,tabular,h168,ridge_ar_lag_fourier,"Divine healer's Church, Bethlehem",673,59.6,104,126.50191059613657,65.1,69,134.8146788863253
+tabular_h168_ridge_ar_lag_fourier.csv,tabular,h168,ridge_ar_lag_fourier,"Satet International School, Tema Manhean",673,59.6,107,125.88274334065245,69.6,69,135.7478654750271
+tabular_h168_ridge_ar_lag_fourier.csv,tabular,h168,ridge_ar_lag_fourier,Tema Community 25 Estate,673,59.6,13,145.8770145678158,43.3,70,120.50702816392732
+tabular_h168_ridge_ar_lag_fourier.csv,tabular,h168,ridge_ar_lag_fourier,Tema Community 3 SSNIT Flat,672,59.6,64,138.28794853130614,58.37,68,136.59198483723347
+tabular_h168_ridge_ar_lag_fourier.csv,tabular,h168,ridge_ar_lag_fourier,"Tema Community 7, Royal School",673,59.6,68,128.3531790522733,59.66,68,128.3531790522733
+tabular_h168_ridge_ar_lag_fourier.csv,tabular,h168,ridge_ar_lag_fourier,Tema Port,673,59.6,50,128.94391628948594,55.98,68,124.91939598119889
+tabular_h168_seasonal_naive_168h.csv,tabular,h168,seasonal_naive_168h,"Divine healer's Church, Bethlehem",673,59.6,104,,65.1,69,
+tabular_h168_seasonal_naive_168h.csv,tabular,h168,seasonal_naive_168h,"Satet International School, Tema Manhean",673,59.6,107,,69.6,69,
+tabular_h168_seasonal_naive_168h.csv,tabular,h168,seasonal_naive_168h,Tema Community 25 Estate,673,59.6,13,43.66153846153846,43.3,70,
+tabular_h168_seasonal_naive_168h.csv,tabular,h168,seasonal_naive_168h,Tema Community 3 SSNIT Flat,672,59.6,64,37.4859375,58.37,68,36.06029411764706
+tabular_h168_seasonal_naive_168h.csv,tabular,h168,seasonal_naive_168h,"Tema Community 7, Royal School",673,59.6,68,31.288235294117644,59.66,68,31.288235294117644
+tabular_h168_seasonal_naive_168h.csv,tabular,h168,seasonal_naive_168h,Tema Port,673,59.6,50,,55.98,68,
+tabular_h168_seasonal_naive_24h.csv,tabular,h168,seasonal_naive_24h,"Divine healer's Church, Bethlehem",673,59.6,104,,65.1,69,
+tabular_h168_seasonal_naive_24h.csv,tabular,h168,seasonal_naive_24h,"Satet International School, Tema Manhean",673,59.6,107,32.91869158878505,69.6,69,38.69130434782609
+tabular_h168_seasonal_naive_24h.csv,tabular,h168,seasonal_naive_24h,Tema Community 25 Estate,673,59.6,13,43.369230769230775,43.3,70,23.062142857142856
+tabular_h168_seasonal_naive_24h.csv,tabular,h168,seasonal_naive_24h,Tema Community 3 SSNIT Flat,672,59.6,64,37.6078125,58.37,68,36.92205882352942
+tabular_h168_seasonal_naive_24h.csv,tabular,h168,seasonal_naive_24h,"Tema Community 7, Royal School",673,59.6,68,31.096323529411766,59.66,68,31.096323529411766
+tabular_h168_seasonal_naive_24h.csv,tabular,h168,seasonal_naive_24h,Tema Port,673,59.6,50,24.026,55.98,68,22.494117647058818
+tabular_h168_seasonal_naive_336h.csv,tabular,h168,seasonal_naive_336h,"Divine healer's Church, Bethlehem",673,59.6,104,,65.1,69,
+tabular_h168_seasonal_naive_336h.csv,tabular,h168,seasonal_naive_336h,"Satet International School, Tema Manhean",673,59.6,107,,69.6,69,
+tabular_h168_seasonal_naive_336h.csv,tabular,h168,seasonal_naive_336h,Tema Community 25 Estate,673,59.6,13,45.19230769230769,43.3,70,
+tabular_h168_seasonal_naive_336h.csv,tabular,h168,seasonal_naive_336h,Tema Community 3 SSNIT Flat,672,59.6,64,44.3546875,58.37,68,43.46029411764706
+tabular_h168_seasonal_naive_336h.csv,tabular,h168,seasonal_naive_336h,"Tema Community 7, Royal School",673,59.6,68,35.725,59.66,68,35.725
+tabular_h168_seasonal_naive_336h.csv,tabular,h168,seasonal_naive_336h,Tema Port,673,59.6,50,,55.98,68,
+tabular_h168_seasonal_naive_672h.csv,tabular,h168,seasonal_naive_672h,"Divine healer's Church, Bethlehem",673,59.6,104,,65.1,69,
+tabular_h168_seasonal_naive_672h.csv,tabular,h168,seasonal_naive_672h,"Satet International School, Tema Manhean",673,59.6,107,,69.6,69,
+tabular_h168_seasonal_naive_672h.csv,tabular,h168,seasonal_naive_672h,Tema Community 25 Estate,673,59.6,13,,43.3,70,
+tabular_h168_seasonal_naive_672h.csv,tabular,h168,seasonal_naive_672h,Tema Community 3 SSNIT Flat,672,59.6,64,46.543749999999996,58.37,68,45.21029411764706
+tabular_h168_seasonal_naive_672h.csv,tabular,h168,seasonal_naive_672h,"Tema Community 7, Royal School",673,59.6,68,37.963235294117645,59.66,68,37.963235294117645
+tabular_h168_seasonal_naive_672h.csv,tabular,h168,seasonal_naive_672h,Tema Port,673,59.6,50,,55.98,68,
+tabular_h168_xgboost.csv,tabular,h168,xgboost,"Divine healer's Church, Bethlehem",673,59.6,104,29.076969014681307,65.1,69,24.7467655568883
+tabular_h168_xgboost.csv,tabular,h168,xgboost,"Satet International School, Tema Manhean",673,59.6,107,34.18521269325898,69.6,69,31.903794263756797
+tabular_h168_xgboost.csv,tabular,h168,xgboost,Tema Community 25 Estate,673,59.6,13,24.604969640878533,43.3,70,26.351484505789617
+tabular_h168_xgboost.csv,tabular,h168,xgboost,Tema Community 3 SSNIT Flat,672,59.6,64,26.902973693609237,58.37,68,26.109321263257193
+tabular_h168_xgboost.csv,tabular,h168,xgboost,"Tema Community 7, Royal School",673,59.6,68,28.265189372791962,59.66,68,28.265189372791962
+tabular_h168_xgboost.csv,tabular,h168,xgboost,Tema Port,673,59.6,50,20.997000846862793,55.98,68,19.050268504198858
+tabular_h24_linear_svr.csv,tabular,h24,linear_svr,"Divine healer's Church, Bethlehem",673,59.6,104,46.657131890045896,65.1,69,55.022765018629414
+tabular_h24_linear_svr.csv,tabular,h24,linear_svr,"Satet International School, Tema Manhean",673,59.6,107,51.34555572599767,69.6,69,62.97339759701954
+tabular_h24_linear_svr.csv,tabular,h24,linear_svr,Tema Community 25 Estate,673,59.6,13,65.92845745261774,43.3,70,41.76490438687578
+tabular_h24_linear_svr.csv,tabular,h24,linear_svr,Tema Community 3 SSNIT Flat,672,59.6,64,60.8589988204603,58.37,68,59.50766588921335
+tabular_h24_linear_svr.csv,tabular,h24,linear_svr,"Tema Community 7, Royal School",673,59.6,68,53.337572393811875,59.66,68,53.337572393811875
+tabular_h24_linear_svr.csv,tabular,h24,linear_svr,Tema Port,673,59.6,50,47.13412154634109,55.98,68,42.94900028138281
+tabular_h24_naive_level.csv,tabular,h24,naive_level,"Divine healer's Church, Bethlehem",673,59.6,104,29.261538461538464,65.1,69,35.6927536231884
+tabular_h24_naive_level.csv,tabular,h24,naive_level,"Satet International School, Tema Manhean",673,59.6,107,37.702803738317755,69.6,69,47.10579710144926
+tabular_h24_naive_level.csv,tabular,h24,naive_level,Tema Community 25 Estate,673,59.6,13,53.60000000000001,43.3,70,21.864285714285714
+tabular_h24_naive_level.csv,tabular,h24,naive_level,Tema Community 3 SSNIT Flat,672,59.6,64,40.116796875000006,58.37,68,38.267279411764704
+tabular_h24_naive_level.csv,tabular,h24,naive_level,"Tema Community 7, Royal School",673,59.6,68,35.68529411764706,59.66,68,35.68529411764706
+tabular_h24_naive_level.csv,tabular,h24,naive_level,Tema Port,673,59.6,50,25.306000000000004,55.98,68,21.38823529411765
+tabular_h24_rf.csv,tabular,h24,rf,"Divine healer's Church, Bethlehem",673,59.6,104,22.671702122752052,65.1,69,30.577966623819165
+tabular_h24_rf.csv,tabular,h24,rf,"Satet International School, Tema Manhean",673,59.6,107,24.727115643787325,69.6,69,32.493616565869864
+tabular_h24_rf.csv,tabular,h24,rf,Tema Community 25 Estate,673,59.6,13,35.32783688035856,43.3,70,12.609485351352717
+tabular_h24_rf.csv,tabular,h24,rf,Tema Community 3 SSNIT Flat,672,59.6,64,35.69409024151295,58.37,68,34.052615733699426
+tabular_h24_rf.csv,tabular,h24,rf,"Tema Community 7, Royal School",673,59.6,68,28.713090923164287,59.66,68,28.713090923164287
+tabular_h24_rf.csv,tabular,h24,rf,Tema Port,673,59.6,50,25.569720054960406,55.98,68,21.741558479984082
+tabular_h24_ridge_ar_lag_fourier.csv,tabular,h24,ridge_ar_lag_fourier,"Divine healer's Church, Bethlehem",673,59.6,104,29.986973397176623,65.1,69,38.269633135816115
+tabular_h24_ridge_ar_lag_fourier.csv,tabular,h24,ridge_ar_lag_fourier,"Satet International School, Tema Manhean",673,59.6,107,34.2208197701864,69.6,69,44.71538332542587
+tabular_h24_ridge_ar_lag_fourier.csv,tabular,h24,ridge_ar_lag_fourier,Tema Community 25 Estate,673,59.6,13,48.793350098692045,43.3,70,26.130712199033997
+tabular_h24_ridge_ar_lag_fourier.csv,tabular,h24,ridge_ar_lag_fourier,Tema Community 3 SSNIT Flat,672,59.6,64,45.95368043172275,58.37,68,44.5314813370114
+tabular_h24_ridge_ar_lag_fourier.csv,tabular,h24,ridge_ar_lag_fourier,"Tema Community 7, Royal School",673,59.6,68,35.434375406876036,59.66,68,35.434375406876036
+tabular_h24_ridge_ar_lag_fourier.csv,tabular,h24,ridge_ar_lag_fourier,Tema Port,673,59.6,50,34.18118548377099,55.98,68,30.693046080793156
+tabular_h24_seasonal_naive_168h.csv,tabular,h24,seasonal_naive_168h,"Divine healer's Church, Bethlehem",673,59.6,104,,65.1,69,
+tabular_h24_seasonal_naive_168h.csv,tabular,h24,seasonal_naive_168h,"Satet International School, Tema Manhean",673,59.6,107,32.91869158878505,69.6,69,38.69130434782609
+tabular_h24_seasonal_naive_168h.csv,tabular,h24,seasonal_naive_168h,Tema Community 25 Estate,673,59.6,13,43.369230769230775,43.3,70,23.062142857142856
+tabular_h24_seasonal_naive_168h.csv,tabular,h24,seasonal_naive_168h,Tema Community 3 SSNIT Flat,672,59.6,64,37.6078125,58.37,68,36.92205882352942
+tabular_h24_seasonal_naive_168h.csv,tabular,h24,seasonal_naive_168h,"Tema Community 7, Royal School",673,59.6,68,31.096323529411766,59.66,68,31.096323529411766
+tabular_h24_seasonal_naive_168h.csv,tabular,h24,seasonal_naive_168h,Tema Port,673,59.6,50,24.026,55.98,68,22.494117647058818
+tabular_h24_seasonal_naive_24h.csv,tabular,h24,seasonal_naive_24h,"Divine healer's Church, Bethlehem",673,59.6,104,31.158653846153847,65.1,69,37.462318840579705
+tabular_h24_seasonal_naive_24h.csv,tabular,h24,seasonal_naive_24h,"Satet International School, Tema Manhean",673,59.6,107,35.59345794392523,69.6,69,42.798550724637686
+tabular_h24_seasonal_naive_24h.csv,tabular,h24,seasonal_naive_24h,Tema Community 25 Estate,673,59.6,13,48.07692307692308,43.3,70,21.851428571428578
+tabular_h24_seasonal_naive_24h.csv,tabular,h24,seasonal_naive_24h,Tema Community 3 SSNIT Flat,672,59.6,64,43.1884765625,58.37,68,41.85974264705882
+tabular_h24_seasonal_naive_24h.csv,tabular,h24,seasonal_naive_24h,"Tema Community 7, Royal School",673,59.6,68,35.7595588235294,59.66,68,35.7595588235294
+tabular_h24_seasonal_naive_24h.csv,tabular,h24,seasonal_naive_24h,Tema Port,673,59.6,50,31.996000000000002,55.98,68,27.151470588235295
+tabular_h24_seasonal_naive_336h.csv,tabular,h24,seasonal_naive_336h,"Divine healer's Church, Bethlehem",673,59.6,104,,65.1,69,
+tabular_h24_seasonal_naive_336h.csv,tabular,h24,seasonal_naive_336h,"Satet International School, Tema Manhean",673,59.6,107,,69.6,69,
+tabular_h24_seasonal_naive_336h.csv,tabular,h24,seasonal_naive_336h,Tema Community 25 Estate,673,59.6,13,42.92307692307692,43.3,70,
+tabular_h24_seasonal_naive_336h.csv,tabular,h24,seasonal_naive_336h,Tema Community 3 SSNIT Flat,672,59.6,64,41.6703125,58.37,68,40.17205882352941
+tabular_h24_seasonal_naive_336h.csv,tabular,h24,seasonal_naive_336h,"Tema Community 7, Royal School",673,59.6,68,31.5,59.66,68,31.5
+tabular_h24_seasonal_naive_336h.csv,tabular,h24,seasonal_naive_336h,Tema Port,673,59.6,50,,55.98,68,
+tabular_h24_seasonal_naive_672h.csv,tabular,h24,seasonal_naive_672h,"Divine healer's Church, Bethlehem",673,59.6,104,,65.1,69,
+tabular_h24_seasonal_naive_672h.csv,tabular,h24,seasonal_naive_672h,"Satet International School, Tema Manhean",673,59.6,107,,69.6,69,
+tabular_h24_seasonal_naive_672h.csv,tabular,h24,seasonal_naive_672h,Tema Community 25 Estate,673,59.6,13,49.223076923076924,43.3,70,
+tabular_h24_seasonal_naive_672h.csv,tabular,h24,seasonal_naive_672h,Tema Community 3 SSNIT Flat,672,59.6,64,49.06406249999999,58.37,68,48.1485294117647
+tabular_h24_seasonal_naive_672h.csv,tabular,h24,seasonal_naive_672h,"Tema Community 7, Royal School",673,59.6,68,37.235294117647065,59.66,68,37.235294117647065
+tabular_h24_seasonal_naive_672h.csv,tabular,h24,seasonal_naive_672h,Tema Port,673,59.6,50,35.01,55.98,68,32.275000000000006
+tabular_h24_xgboost.csv,tabular,h24,xgboost,"Divine healer's Church, Bethlehem",673,59.6,104,18.47666427905743,65.1,69,19.472138501595758
+tabular_h24_xgboost.csv,tabular,h24,xgboost,"Satet International School, Tema Manhean",673,59.6,107,26.57076095866266,69.6,69,30.346164437998898
+tabular_h24_xgboost.csv,tabular,h24,xgboost,Tema Community 25 Estate,673,59.6,13,25.189624874408427,43.3,70,14.690495223999022
+tabular_h24_xgboost.csv,tabular,h24,xgboost,Tema Community 3 SSNIT Flat,672,59.6,64,26.765816962718965,58.37,68,26.15195202546961
+tabular_h24_xgboost.csv,tabular,h24,xgboost,"Tema Community 7, Royal School",673,59.6,68,22.425533552730784,59.66,68,22.425533552730784
+tabular_h24_xgboost.csv,tabular,h24,xgboost,Tema Port,673,59.6,50,19.345153846740722,55.98,68,16.13007154464722
+tabular_h336_linear_svr.csv,tabular,h336,linear_svr,"Divine healer's Church, Bethlehem",673,59.6,104,22.5011974346122,65.1,69,29.825489965583095
+tabular_h336_linear_svr.csv,tabular,h336,linear_svr,"Satet International School, Tema Manhean",673,59.6,107,27.339837747435467,69.6,69,35.79979246002841
+tabular_h336_linear_svr.csv,tabular,h336,linear_svr,Tema Community 25 Estate,673,59.6,13,38.733922194426086,43.3,70,14.413996330671095
+tabular_h336_linear_svr.csv,tabular,h336,linear_svr,Tema Community 3 SSNIT Flat,672,59.6,64,34.35529766097276,58.37,68,32.92039274328319
+tabular_h336_linear_svr.csv,tabular,h336,linear_svr,"Tema Community 7, Royal School",673,59.6,68,25.144110837164785,59.66,68,25.144110837164785
+tabular_h336_linear_svr.csv,tabular,h336,linear_svr,Tema Port,673,59.6,50,21.866554735628657,55.98,68,18.749612880280793
+tabular_h336_naive_level.csv,tabular,h336,naive_level,"Divine healer's Church, Bethlehem",673,59.6,104,,65.1,69,
+tabular_h336_naive_level.csv,tabular,h336,naive_level,"Satet International School, Tema Manhean",673,59.6,107,,69.6,69,
+tabular_h336_naive_level.csv,tabular,h336,naive_level,Tema Community 25 Estate,673,59.6,13,43.66153846153846,43.3,70,
+tabular_h336_naive_level.csv,tabular,h336,naive_level,Tema Community 3 SSNIT Flat,672,59.6,64,37.4859375,58.37,68,36.06029411764706
+tabular_h336_naive_level.csv,tabular,h336,naive_level,"Tema Community 7, Royal School",673,59.6,68,31.288235294117644,59.66,68,31.288235294117644
+tabular_h336_naive_level.csv,tabular,h336,naive_level,Tema Port,673,59.6,50,,55.98,68,
+tabular_h336_rf.csv,tabular,h336,rf,"Divine healer's Church, Bethlehem",673,59.6,104,22.61366084901982,65.1,69,28.902704018772017
+tabular_h336_rf.csv,tabular,h336,rf,"Satet International School, Tema Manhean",673,59.6,107,27.305828737905017,69.6,69,35.711098253238156
+tabular_h336_rf.csv,tabular,h336,rf,Tema Community 25 Estate,673,59.6,13,19.620908089567333,43.3,70,12.731255256600418
+tabular_h336_rf.csv,tabular,h336,rf,Tema Community 3 SSNIT Flat,672,59.6,64,29.513688586770826,58.37,68,28.012513686241824
+tabular_h336_rf.csv,tabular,h336,rf,"Tema Community 7, Royal School",673,59.6,68,19.830582185165888,59.66,68,19.830582185165888
+tabular_h336_rf.csv,tabular,h336,rf,Tema Port,673,59.6,50,20.804140446956485,55.98,68,18.23277217483712
+tabular_h336_ridge_ar_lag_fourier.csv,tabular,h336,ridge_ar_lag_fourier,"Divine healer's Church, Bethlehem",673,59.6,104,22.131772167185012,65.1,69,29.87647880338281
+tabular_h336_ridge_ar_lag_fourier.csv,tabular,h336,ridge_ar_lag_fourier,"Satet International School, Tema Manhean",673,59.6,107,26.136821689784348,69.6,69,32.97019763985897
+tabular_h336_ridge_ar_lag_fourier.csv,tabular,h336,ridge_ar_lag_fourier,Tema Community 25 Estate,673,59.6,13,40.92832949111457,43.3,70,15.471684921942208
+tabular_h336_ridge_ar_lag_fourier.csv,tabular,h336,ridge_ar_lag_fourier,Tema Community 3 SSNIT Flat,672,59.6,64,32.60785737577652,58.37,68,31.03744430859171
+tabular_h336_ridge_ar_lag_fourier.csv,tabular,h336,ridge_ar_lag_fourier,"Tema Community 7, Royal School",673,59.6,68,23.92655428188673,59.66,68,23.92655428188673
+tabular_h336_ridge_ar_lag_fourier.csv,tabular,h336,ridge_ar_lag_fourier,Tema Port,673,59.6,50,21.87231777241952,55.98,68,18.365483069465064
+tabular_h336_seasonal_naive_168h.csv,tabular,h336,seasonal_naive_168h,"Divine healer's Church, Bethlehem",673,59.6,104,,65.1,69,
+tabular_h336_seasonal_naive_168h.csv,tabular,h336,seasonal_naive_168h,"Satet International School, Tema Manhean",673,59.6,107,,69.6,69,
+tabular_h336_seasonal_naive_168h.csv,tabular,h336,seasonal_naive_168h,Tema Community 25 Estate,673,59.6,13,45.19230769230769,43.3,70,
+tabular_h336_seasonal_naive_168h.csv,tabular,h336,seasonal_naive_168h,Tema Community 3 SSNIT Flat,672,59.6,64,44.3546875,58.37,68,43.46029411764706
+tabular_h336_seasonal_naive_168h.csv,tabular,h336,seasonal_naive_168h,"Tema Community 7, Royal School",673,59.6,68,35.725,59.66,68,35.725
+tabular_h336_seasonal_naive_168h.csv,tabular,h336,seasonal_naive_168h,Tema Port,673,59.6,50,,55.98,68,
+tabular_h336_seasonal_naive_24h.csv,tabular,h336,seasonal_naive_24h,"Divine healer's Church, Bethlehem",673,59.6,104,,65.1,69,
+tabular_h336_seasonal_naive_24h.csv,tabular,h336,seasonal_naive_24h,"Satet International School, Tema Manhean",673,59.6,107,,69.6,69,
+tabular_h336_seasonal_naive_24h.csv,tabular,h336,seasonal_naive_24h,Tema Community 25 Estate,673,59.6,13,42.92307692307692,43.3,70,
+tabular_h336_seasonal_naive_24h.csv,tabular,h336,seasonal_naive_24h,Tema Community 3 SSNIT Flat,672,59.6,64,41.6703125,58.37,68,40.17205882352941
+tabular_h336_seasonal_naive_24h.csv,tabular,h336,seasonal_naive_24h,"Tema Community 7, Royal School",673,59.6,68,31.5,59.66,68,31.5
+tabular_h336_seasonal_naive_24h.csv,tabular,h336,seasonal_naive_24h,Tema Port,673,59.6,50,,55.98,68,
+tabular_h336_seasonal_naive_336h.csv,tabular,h336,seasonal_naive_336h,"Divine healer's Church, Bethlehem",673,59.6,104,,65.1,69,
+tabular_h336_seasonal_naive_336h.csv,tabular,h336,seasonal_naive_336h,"Satet International School, Tema Manhean",673,59.6,107,,69.6,69,
+tabular_h336_seasonal_naive_336h.csv,tabular,h336,seasonal_naive_336h,Tema Community 25 Estate,673,59.6,13,,43.3,70,
+tabular_h336_seasonal_naive_336h.csv,tabular,h336,seasonal_naive_336h,Tema Community 3 SSNIT Flat,672,59.6,64,48.368750000000006,58.37,68,47.21029411764706
+tabular_h336_seasonal_naive_336h.csv,tabular,h336,seasonal_naive_336h,"Tema Community 7, Royal School",673,59.6,68,37.54117647058824,59.66,68,37.54117647058824
+tabular_h336_seasonal_naive_336h.csv,tabular,h336,seasonal_naive_336h,Tema Port,673,59.6,50,,55.98,68,
+tabular_h336_seasonal_naive_672h.csv,tabular,h336,seasonal_naive_672h,"Divine healer's Church, Bethlehem",673,59.6,104,34.40865384615385,65.1,69,40.265217391304354
+tabular_h336_seasonal_naive_672h.csv,tabular,h336,seasonal_naive_672h,"Satet International School, Tema Manhean",673,59.6,107,42.192523364485986,69.6,69,49.31159420289855
+tabular_h336_seasonal_naive_672h.csv,tabular,h336,seasonal_naive_672h,Tema Community 25 Estate,673,59.6,13,49.94615384615385,43.3,70,28.894285714285715
+tabular_h336_seasonal_naive_672h.csv,tabular,h336,seasonal_naive_672h,Tema Community 3 SSNIT Flat,672,59.6,64,46.284375,58.37,68,45.692647058823525
+tabular_h336_seasonal_naive_672h.csv,tabular,h336,seasonal_naive_672h,"Tema Community 7, Royal School",673,59.6,68,38.27941176470589,59.66,68,38.27941176470589
+tabular_h336_seasonal_naive_672h.csv,tabular,h336,seasonal_naive_672h,Tema Port,673,59.6,50,33.764,55.98,68,29.69705882352941
+tabular_h336_xgboost.csv,tabular,h336,xgboost,"Divine healer's Church, Bethlehem",673,59.6,104,17.487210251734805,65.1,69,21.162415125750112
+tabular_h336_xgboost.csv,tabular,h336,xgboost,"Satet International School, Tema Manhean",673,59.6,107,24.599197148831095,69.6,69,28.49646921019623
+tabular_h336_xgboost.csv,tabular,h336,xgboost,Tema Community 25 Estate,673,59.6,13,16.702870530348562,43.3,70,16.99194884163993
+tabular_h336_xgboost.csv,tabular,h336,xgboost,Tema Community 3 SSNIT Flat,672,59.6,64,25.343805289268495,58.37,68,24.889807241103227
+tabular_h336_xgboost.csv,tabular,h336,xgboost,"Tema Community 7, Royal School",673,59.6,68,16.550376207688274,59.66,68,16.550376207688274
+tabular_h336_xgboost.csv,tabular,h336,xgboost,Tema Port,673,59.6,50,17.62010269165039,55.98,68,15.716945934295651
+tabular_h672_linear_svr.csv,tabular,h672,linear_svr,"Divine healer's Church, Bethlehem",673,59.6,104,21.960469288973172,65.1,69,24.479699685979245
+tabular_h672_linear_svr.csv,tabular,h672,linear_svr,"Satet International School, Tema Manhean",673,59.6,107,29.373834197232473,69.6,69,35.3585083611612
+tabular_h672_linear_svr.csv,tabular,h672,linear_svr,Tema Community 25 Estate,673,59.6,13,20.262044697219718,43.3,70,19.658612923666105
+tabular_h672_linear_svr.csv,tabular,h672,linear_svr,Tema Community 3 SSNIT Flat,672,59.6,64,35.587849967479315,58.37,68,34.61320081176698
+tabular_h672_linear_svr.csv,tabular,h672,linear_svr,"Tema Community 7, Royal School",673,59.6,68,26.417054881795828,59.66,68,26.417054881795828
+tabular_h672_linear_svr.csv,tabular,h672,linear_svr,Tema Port,673,59.6,50,19.862256024198796,55.98,68,18.667331616514982
+tabular_h672_naive_level.csv,tabular,h672,naive_level,"Divine healer's Church, Bethlehem",673,59.6,104,,65.1,69,
+tabular_h672_naive_level.csv,tabular,h672,naive_level,"Satet International School, Tema Manhean",673,59.6,107,,69.6,69,
+tabular_h672_naive_level.csv,tabular,h672,naive_level,Tema Community 25 Estate,673,59.6,13,,43.3,70,
+tabular_h672_naive_level.csv,tabular,h672,naive_level,Tema Community 3 SSNIT Flat,672,59.6,64,48.368750000000006,58.37,68,47.21029411764706
+tabular_h672_naive_level.csv,tabular,h672,naive_level,"Tema Community 7, Royal School",673,59.6,68,37.54117647058824,59.66,68,37.54117647058824
+tabular_h672_naive_level.csv,tabular,h672,naive_level,Tema Port,673,59.6,50,,55.98,68,
+tabular_h672_rf.csv,tabular,h672,rf,"Divine healer's Church, Bethlehem",673,59.6,104,22.283493320713564,65.1,69,29.553925063938006
+tabular_h672_rf.csv,tabular,h672,rf,"Satet International School, Tema Manhean",673,59.6,107,28.067715292752226,69.6,69,33.355503742562895
+tabular_h672_rf.csv,tabular,h672,rf,Tema Community 25 Estate,673,59.6,13,32.16545079879666,43.3,70,16.737739975434184
+tabular_h672_rf.csv,tabular,h672,rf,Tema Community 3 SSNIT Flat,672,59.6,64,39.35962169165272,58.37,68,38.228255195738534
+tabular_h672_rf.csv,tabular,h672,rf,"Tema Community 7, Royal School",673,59.6,68,25.268847338652897,59.66,68,25.268847338652897
+tabular_h672_rf.csv,tabular,h672,rf,Tema Port,673,59.6,50,26.227934641521404,55.98,68,23.32215166682957
+tabular_h672_ridge_ar_lag_fourier.csv,tabular,h672,ridge_ar_lag_fourier,"Divine healer's Church, Bethlehem",673,59.6,104,28.30744537472688,65.1,69,35.16236855282075
+tabular_h672_ridge_ar_lag_fourier.csv,tabular,h672,ridge_ar_lag_fourier,"Satet International School, Tema Manhean",673,59.6,107,31.92063335075862,69.6,69,37.733495350179794
+tabular_h672_ridge_ar_lag_fourier.csv,tabular,h672,ridge_ar_lag_fourier,Tema Community 25 Estate,673,59.6,13,41.22179068260285,43.3,70,26.78677914401959
+tabular_h672_ridge_ar_lag_fourier.csv,tabular,h672,ridge_ar_lag_fourier,Tema Community 3 SSNIT Flat,672,59.6,64,42.73369419109728,58.37,68,41.21426599593949
+tabular_h672_ridge_ar_lag_fourier.csv,tabular,h672,ridge_ar_lag_fourier,"Tema Community 7, Royal School",673,59.6,68,31.248518531925356,59.66,68,31.248518531925356
+tabular_h672_ridge_ar_lag_fourier.csv,tabular,h672,ridge_ar_lag_fourier,Tema Port,673,59.6,50,30.642602734801958,55.98,68,27.549646147970527
+tabular_h672_seasonal_naive_168h.csv,tabular,h672,seasonal_naive_168h,"Divine healer's Church, Bethlehem",673,59.6,104,,65.1,69,
+tabular_h672_seasonal_naive_168h.csv,tabular,h672,seasonal_naive_168h,"Satet International School, Tema Manhean",673,59.6,107,,69.6,69,
+tabular_h672_seasonal_naive_168h.csv,tabular,h672,seasonal_naive_168h,Tema Community 25 Estate,673,59.6,13,,43.3,70,
+tabular_h672_seasonal_naive_168h.csv,tabular,h672,seasonal_naive_168h,Tema Community 3 SSNIT Flat,672,59.6,64,46.543749999999996,58.37,68,45.21029411764706
+tabular_h672_seasonal_naive_168h.csv,tabular,h672,seasonal_naive_168h,"Tema Community 7, Royal School",673,59.6,68,37.963235294117645,59.66,68,37.963235294117645
+tabular_h672_seasonal_naive_168h.csv,tabular,h672,seasonal_naive_168h,Tema Port,673,59.6,50,,55.98,68,
+tabular_h672_seasonal_naive_24h.csv,tabular,h672,seasonal_naive_24h,"Divine healer's Church, Bethlehem",673,59.6,104,,65.1,69,
+tabular_h672_seasonal_naive_24h.csv,tabular,h672,seasonal_naive_24h,"Satet International School, Tema Manhean",673,59.6,107,,69.6,69,
+tabular_h672_seasonal_naive_24h.csv,tabular,h672,seasonal_naive_24h,Tema Community 25 Estate,673,59.6,13,49.223076923076924,43.3,70,
+tabular_h672_seasonal_naive_24h.csv,tabular,h672,seasonal_naive_24h,Tema Community 3 SSNIT Flat,672,59.6,64,49.06406249999999,58.37,68,48.1485294117647
+tabular_h672_seasonal_naive_24h.csv,tabular,h672,seasonal_naive_24h,"Tema Community 7, Royal School",673,59.6,68,37.235294117647065,59.66,68,37.235294117647065
+tabular_h672_seasonal_naive_24h.csv,tabular,h672,seasonal_naive_24h,Tema Port,673,59.6,50,35.01,55.98,68,32.275000000000006
+tabular_h672_seasonal_naive_336h.csv,tabular,h672,seasonal_naive_336h,"Divine healer's Church, Bethlehem",673,59.6,104,34.40865384615385,65.1,69,40.265217391304354
+tabular_h672_seasonal_naive_336h.csv,tabular,h672,seasonal_naive_336h,"Satet International School, Tema Manhean",673,59.6,107,42.192523364485986,69.6,69,49.31159420289855
+tabular_h672_seasonal_naive_336h.csv,tabular,h672,seasonal_naive_336h,Tema Community 25 Estate,673,59.6,13,49.94615384615385,43.3,70,28.894285714285715
+tabular_h672_seasonal_naive_336h.csv,tabular,h672,seasonal_naive_336h,Tema Community 3 SSNIT Flat,672,59.6,64,46.284375,58.37,68,45.692647058823525
+tabular_h672_seasonal_naive_336h.csv,tabular,h672,seasonal_naive_336h,"Tema Community 7, Royal School",673,59.6,68,38.27941176470589,59.66,68,38.27941176470589
+tabular_h672_seasonal_naive_336h.csv,tabular,h672,seasonal_naive_336h,Tema Port,673,59.6,50,33.764,55.98,68,29.69705882352941
+tabular_h672_seasonal_naive_672h.csv,tabular,h672,seasonal_naive_672h,"Divine healer's Church, Bethlehem",673,59.6,104,37.95480769230769,65.1,69,45.35797101449275
+tabular_h672_seasonal_naive_672h.csv,tabular,h672,seasonal_naive_672h,"Satet International School, Tema Manhean",673,59.6,107,40.93551401869158,69.6,69,48.007246376811594
+tabular_h672_seasonal_naive_672h.csv,tabular,h672,seasonal_naive_672h,Tema Community 25 Estate,673,59.6,13,57.24615384615384,43.3,70,33.771428571428565
+tabular_h672_seasonal_naive_672h.csv,tabular,h672,seasonal_naive_672h,Tema Community 3 SSNIT Flat,672,59.6,64,52.150000000000006,58.37,68,50.75
+tabular_h672_seasonal_naive_672h.csv,tabular,h672,seasonal_naive_672h,"Tema Community 7, Royal School",673,59.6,68,42.13529411764706,59.66,68,42.13529411764706
+tabular_h672_seasonal_naive_672h.csv,tabular,h672,seasonal_naive_672h,Tema Port,673,59.6,50,39.352,55.98,68,35.45441176470588
+tabular_h672_xgboost.csv,tabular,h672,xgboost,"Divine healer's Church, Bethlehem",673,59.6,104,18.644623022813064,65.1,69,23.10090547644574
+tabular_h672_xgboost.csv,tabular,h672,xgboost,"Satet International School, Tema Manhean",673,59.6,107,29.230434339291584,69.6,69,33.876611449753035
+tabular_h672_xgboost.csv,tabular,h672,xgboost,Tema Community 25 Estate,673,59.6,13,30.386324603740984,43.3,70,19.79782806941441
+tabular_h672_xgboost.csv,tabular,h672,xgboost,Tema Community 3 SSNIT Flat,672,59.6,64,37.30530551671981,58.37,68,36.36369372536154
+tabular_h672_xgboost.csv,tabular,h672,xgboost,"Tema Community 7, Royal School",673,59.6,68,22.439722711899698,59.66,68,22.439722711899698
+tabular_h672_xgboost.csv,tabular,h672,xgboost,Tema Port,673,59.6,50,29.014835010528564,55.98,68,26.27118971488055

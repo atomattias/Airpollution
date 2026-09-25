@@ -1,0 +1,10 @@
+horizon,model,seq_len,lstm_units,is_paper_setting,n_train,n_val,n_test,val_mae,test_mae,keras_backend,pred_file
+24h,LSTM (per-horizon direct),168,32,0,14379,1016,3807,11.430694580078125,15.669251441955566,jax,deep_h24_lstm_L168_u32.csv
+24h,LSTM (per-horizon direct),168,64,1,14379,1016,3807,9.970610618591309,14.698768615722656,jax,deep_h24_lstm_L168_u64.csv
+24h,LSTM (per-horizon direct),168,128,0,14379,1016,3807,9.386703491210938,22.712541580200195,jax,deep_h24_lstm_L168_u128.csv
+24h,LSTM (per-horizon direct),336,32,0,12195,937,3214,11.007383346557617,16.271509170532227,jax,deep_h24_lstm_L336_u32.csv
+24h,LSTM (per-horizon direct),336,64,0,12195,937,3214,9.375988006591797,15.327385902404785,jax,deep_h24_lstm_L336_u64.csv
+24h,LSTM (per-horizon direct),336,128,0,12195,937,3214,10.062512397766113,12.583930015563965,jax,deep_h24_lstm_L336_u128.csv
+24h,LSTM (per-horizon direct),672,32,0,9548,937,1870,10.73044204711914,16.748756408691406,jax,deep_h24_lstm_L672_u32.csv
+24h,LSTM (per-horizon direct),672,64,0,9548,937,1870,10.456720352172852,22.58451271057129,jax,deep_h24_lstm_L672_u64.csv
+24h,LSTM (per-horizon direct),672,128,0,9548,937,1870,11.050582885742188,22.46562957763672,jax,deep_h24_lstm_L672_u128.csv

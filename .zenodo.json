@@ -1,0 +1,21 @@
+{
+  "title": "Tema PM2.5 multi-horizon forecasting pipeline (code only)",
+  "upload_type": "software",
+  "description": "<p>Python package (<code>src/airpollution</code>) and numbered pipeline scripts for multi-horizon PM2.5 forecasting at Tema, Ghana. Manuscript, PDFs, reports, figures, and observational data are not part of this deposit.</p>",
+  "creators": [
+    {"name": "Diekuu, John-Bosco", "affiliation": "University of Ghana Business School"},
+    {"name": "Yeng, Prosper K.", "affiliation": "Abu Dhabi University"},
+    {"name": "Gebire, Mattias Tsegaye", "affiliation": "Oslo Metropolitan University"},
+    {"name": "Abonie, Ulric Sena", "affiliation": "Northumbria University"},
+    {"name": "Afful-Dadzie, Eric", "affiliation": "University of Ghana Business School"}
+  ],
+  "keywords": ["PM2.5", "air quality", "forecasting", "LSTM", "Ghana", "Tema"],
+  "related_identifiers": [
+    {
+      "identifier": "https://github.com/atomattias/Airpollution",
+      "relation": "isSupplementTo",
+      "resource_type": "software",
+      "scheme": "url"
+    }
+  ]
+}

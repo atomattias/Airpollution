@@ -21,14 +21,20 @@ import numpy as np
 import pandas as pd
 from sklearn.preprocessing import StandardScaler
 
-from airpollution.eval import SplitConfig, regression_metrics, time_split_masks, top_decile_mask
+from airpollution.eval import (
+    SplitConfig,
+    attach_regime_metrics,
+    regression_metrics,
+    time_split_masks,
+    top_decile_mask,
+)
 from airpollution.predictions_export import safe_model_filename_tag, write_test_predictions_csv
 from airpollution.utils import ensure_dir
 
 ROOT = project_path.ROOT
-SEQ_DIR = ROOT / "data" / "sequences"
-TABLES_DIR = ensure_dir(ROOT / "reports" / "tables")
-PRED_DIR = ensure_dir(ROOT / "reports" / "predictions")
+SEQ_DIR = Path(os.environ.get("AIRP_SEQ_DIR", ROOT / "data" / "sequences"))
+TABLES_DIR = ensure_dir(Path(os.environ.get("AIRP_TABLES_DIR", ROOT / "reports" / "tables")))
+PRED_DIR = ensure_dir(Path(os.environ.get("AIRP_PRED_DIR", ROOT / "reports" / "predictions")))
 
 HOURS_TO_HORIZON = {24: "h24", 168: "h168", 336: "h336", 672: "h672"}
 TRAIN_SEED = int(os.environ.get("AIRP_SEED", "42"))
@@ -221,7 +227,7 @@ def main() -> None:
         loc_te = loc[m_te] if loc is not None else None
         hz_tag = HOURS_TO_HORIZON[int(data["horizon_hours"])]
 
-        if len(X_tr) < 500 or len(X_va) < 100:
+        if len(X_tr) < int(os.environ.get("AIRP_MIN_TRAIN", "400")) or len(X_va) < 100:
             rows.append({"file": npz_path.name, "model": "—", "mae": np.nan, "note": "insufficient samples after split"})
             continue
 
@@ -229,10 +235,12 @@ def main() -> None:
         input_shape = X_tr.shape
 
         tag = npz_path.stem
-        for name, builder in [
+        wanted = {x.strip() for x in os.environ.get("AIRP_MODELS", "lstm,lstm_mha").split(",") if x.strip()}
+        builders = [
             ("lstm", lambda: build_lstm(keras, input_shape)),
             ("lstm_mha", lambda: build_lstm_attention(keras, input_shape)),
-        ]:
+        ]
+        for name, builder in [(n, b) for n, b in builders if n in wanted]:
             model = builder()
             model = train_one(keras, model, X_tr, y_tr, X_va, y_va)
             pred = model.predict(X_te, verbose=0).reshape(-1)
@@ -276,24 +284,7 @@ def main() -> None:
                 m["mae_top_decile"] = np.nan
                 m["rmse_top_decile"] = np.nan
 
-            # Regime-slice metrics (pre-Harmattan vs Harmattan).
-            # Always write keys so downstream tables can rely on stable columns.
-            for k in ("mae_pre_harmattan", "rmse_pre_harmattan", "r2_pre_harmattan", "mae_harmattan", "rmse_harmattan", "r2_harmattan"):
-                m.setdefault(k, np.nan)
-            if harm is not None:
-                h_te = harm[m_te]
-                pre = h_te < 0.5
-                ha = h_te >= 0.5
-                if pre.sum() > 50 and ha.sum() > 50:
-                    m_pre = regression_metrics(y_te[pre], pred[pre])
-                    m_ha = regression_metrics(y_te[ha], pred[ha])
-                    m["mae_pre_harmattan"] = m_pre["mae"]
-                    m["rmse_pre_harmattan"] = m_pre["rmse"]
-                    m["r2_pre_harmattan"] = m_pre["r2"]
-                    m["mae_harmattan"] = m_ha["mae"]
-                    m["rmse_harmattan"] = m_ha["rmse"]
-                    m["r2_harmattan"] = m_ha["r2"]
-
+            attach_regime_metrics(m, y_te, pred, harm_te)
             rows.append(m)
 
         print(f"Trained {tag}: lstm + lstm_mha, test n={split_meta['n_test']}")

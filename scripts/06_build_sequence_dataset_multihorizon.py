@@ -12,6 +12,7 @@ Run before: scripts/07_train_lstm_multihorizon.py
 
 from __future__ import annotations
 
+import os
 from pathlib import Path
 
 import numpy as np
@@ -23,7 +24,7 @@ from airpollution.sequences import MultiHorizonSequenceSpec, build_multihorizon_
 from airpollution.utils import ensure_dir
 
 ROOT = Path(__file__).resolve().parents[1]
-OUT_DIR = ensure_dir(ROOT / "data" / "sequences")
+OUT_DIR = ensure_dir(Path(os.environ.get("AIRP_SEQ_DIR", ROOT / "data" / "sequences")))
 
 # Joint training horizons (hours ahead)
 HORIZONS = [24, 168, 336, 672]
@@ -33,9 +34,9 @@ def main() -> None:
     df_raw = load_raw()
     df = preprocess(df_raw, PreprocessOptions(use_local_time=True))
 
-    # For multi-horizon training, choose a lookback that is long enough for the longest horizon.
     # Default: 56 days (helps 28d-ahead event persistence + regime/seasonality).
-    seq_len = 1344
+    # AIRP_SEQ_LEN=336 (etc.) for a shorter lookback so an 84-day regime test still leaves training rows.
+    seq_len = int(os.environ.get("AIRP_SEQ_LEN", "1344"))
 
     spec = MultiHorizonSequenceSpec(
         horizons_hours=tuple(HORIZONS),

@@ -25,14 +25,21 @@ import numpy as np
 import pandas as pd
 from sklearn.preprocessing import StandardScaler
 
-from airpollution.eval import SplitConfig, regression_metrics, time_split_masks, top_decile_mask
+from airpollution.eval import (
+    SplitConfig,
+    attach_regime_metrics,
+    is_harmattan,
+    regression_metrics,
+    time_split_masks,
+    top_decile_mask,
+)
 from airpollution.predictions_export import safe_model_filename_tag, write_test_predictions_csv
 from airpollution.utils import ensure_dir
 
 ROOT = project_path.ROOT
-SEQ_DIR = ROOT / "data" / "sequences"
-TABLES_DIR = ensure_dir(ROOT / "reports" / "tables")
-PRED_DIR = ensure_dir(ROOT / "reports" / "predictions")
+SEQ_DIR = Path(os.environ.get("AIRP_SEQ_DIR", ROOT / "data" / "sequences"))
+TABLES_DIR = ensure_dir(Path(os.environ.get("AIRP_TABLES_DIR", ROOT / "reports" / "tables")))
+PRED_DIR = ensure_dir(Path(os.environ.get("AIRP_PRED_DIR", ROOT / "reports" / "predictions")))
 
 HOURS_TO_HORIZON = {24: "h24", 168: "h168", 336: "h336", 672: "h672"}
 TRAIN_SEED = int(os.environ.get("AIRP_SEED", "42"))
@@ -198,8 +205,28 @@ def main() -> None:
     harm_te = harm[m_te] if harm is not None else None
     loc_te = loc[m_te] if loc is not None else None
 
-    if len(X_tr) < 500 or len(X_va) < 100:
-        raise RuntimeError("Insufficient samples after split; adjust AIRP_VAL_DAYS/AIRP_TEST_DAYS.")
+    min_train = int(os.environ.get("AIRP_MIN_TRAIN", "400"))
+    if len(X_tr) < min_train or len(X_va) < 100:
+        stub = {
+            "status": "skipped",
+            "reason": "insufficient_samples_after_split",
+            "n_train": int(len(X_tr)),
+            "n_val": int(len(X_va)),
+            "n_test": int(len(X_te)),
+            "test_start": str(split_meta["test_start"]),
+            "val_start": str(split_meta["val_start"]),
+            "hint": (
+                "Joint sequences are keyed to the 672 h label time and need a long lookback, "
+                "so an 84-day test can leave zero training rows. Use the 28-day split, "
+                "or a shorter lookback, if both regimes are required in test."
+            ),
+        }
+        TABLES_DIR.mkdir(parents=True, exist_ok=True)
+        (TABLES_DIR / "results_deep_models_status_multihorizon.json").write_text(
+            json.dumps(stub, indent=2)
+        )
+        print(stub["reason"], stub, flush=True)
+        return
 
     X_tr, X_va, X_te = _scale_fit_train(X_tr, X_va, X_te)
     input_shape = X_tr.shape
@@ -208,10 +235,12 @@ def main() -> None:
     rows: list[dict] = []
     tag = npz_path.stem
 
-    for name, builder in [
+    wanted = {x.strip() for x in os.environ.get("AIRP_MODELS", "mh_lstm,mh_lstm_mha").split(",") if x.strip()}
+    builders = [
         ("mh_lstm", lambda: build_mh_lstm(keras, input_shape, out_dim)),
         ("mh_lstm_mha", lambda: build_mh_lstm_attention(keras, input_shape, out_dim)),
-    ]:
+    ]
+    for name, builder in [(n, b) for n, b in builders if n in wanted]:
         model = builder()
         model = train_one(keras, model, X_tr, y_tr, X_va, y_va)
         pred = model.predict(X_te, verbose=0)  # (N_test, K)
@@ -221,6 +250,10 @@ def main() -> None:
             yk = y_te[:, k].reshape(-1)
             pk = pred[:, k].reshape(-1)
             hz_tag = HOURS_TO_HORIZON[int(h)]
+            # Split key is max-horizon label time; Harmattan for this head is at t+h.
+            hmax = int(max(horizons))
+            tt_h = pd.to_datetime(tt_te) - pd.Timedelta(hours=hmax - int(h))
+            harm_h = is_harmattan(tt_h).astype(np.float32)
             write_test_predictions_csv(
                 PRED_DIR / f"deep_mh_{hz_tag}_{safe_model_filename_tag(name)}.csv",
                 target_time=tt_te,
@@ -229,7 +262,7 @@ def main() -> None:
                 pipeline="deep",
                 model=name,
                 horizon=hz_tag,
-                harmattan=harm_te,
+                harmattan=harm_h,
                 location=loc_te,
                 split_meta=split_meta,
                 keras_backend=backend_name,
@@ -262,18 +295,7 @@ def main() -> None:
                 m["mae_top_decile"] = np.nan
                 m["rmse_top_decile"] = np.nan
 
-            # Regime metrics can be computed only on the split key label time (max-horizon label time).
-            # We therefore omit per-horizon regime slicing here (leave NaN for stable columns).
-            for kk in (
-                "mae_pre_harmattan",
-                "rmse_pre_harmattan",
-                "r2_pre_harmattan",
-                "mae_harmattan",
-                "rmse_harmattan",
-                "r2_harmattan",
-            ):
-                m.setdefault(kk, np.nan)
-
+            attach_regime_metrics(m, yk, pk, harm_h)
             rows.append(m)
 
         print(f"Trained {tag}: {name}, test n={split_meta['n_test']}", flush=True)
